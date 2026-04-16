@@ -8,5 +8,7 @@ namespace BE
 {
     public class Class1
     {
+
+        //comentario prueba
     }
 }
