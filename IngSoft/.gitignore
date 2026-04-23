@@ -1,0 +1,4 @@
+﻿appsettings.Development.json
+appsettings.Local.json
+dbconfig.json
+*.user
