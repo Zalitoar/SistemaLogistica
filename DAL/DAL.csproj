@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="ACCESO.cs" />
     <Compile Include="MAPPER.cs" />
+    <Compile Include="MP_Usuario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
