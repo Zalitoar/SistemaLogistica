@@ -8,7 +8,21 @@ namespace BE
 {
     public class Usuario
     {
+		private string nombre;
 
-        //comentario prueba
-    }
+		public string Nombre
+		{
+			get { return nombre; }
+			set { nombre = value; }
+		}
+
+		private string clave;
+
+		public string Clave
+		{
+			get { return clave; }
+			set { clave = value; }
+		}
+
+	}
 }
