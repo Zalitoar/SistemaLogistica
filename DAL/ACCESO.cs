@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
@@ -15,7 +16,8 @@ namespace DAL
         public void Abrir()
         {
             conexion = new SqlConnection();
-            conexion.ConnectionString = "Data Source=LAPTOP-FNR0GHL3\\SQLEXPRESS;Initial Catalog=Practica2Parcial;Integrated Security=True";
+            //conexion.ConnectionString = "Data Source=LAPTOP-FNR0GHL3\\SQLEXPRESS;Initial Catalog=Practica2Parcial;Integrated Security=True";
+            conexion.ConnectionString = ConfigurationManager.ConnectionStrings["SQL"].ConnectionString;
             conexion.Open();
         }
 
