@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BE;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -26,23 +27,52 @@ namespace IngSoft
 
         private void Login_Load(object sender, EventArgs e)
         {
-            txtUsuario.Text = "HOLAAAAAA";
+            
+
         }
 
         private void btnIngresar_Click(object sender, EventArgs e)
         {
-            if(txtUsuario.Text != "" && txtClave.Text != "")
+
+            if (txtUsuario.Text != "" && txtClave.Text != "")
             {
-                if (ClaveValida(txtClave.Text))
-                {
-                    MessageBox.Show("Clave Válida.");
+                BLL.Usuario bllu = new BLL.Usuario();
+                List<Usuario> usuarios = bllu.Listar();
+
+                Usuario uEncontrado = usuarios.FirstOrDefault(u => u.Nombre == txtUsuario.Text);
+                
+                if (uEncontrado != null)
+                {                    
+                    string claveCifradaIngresada = BLL.CryptoManager.Hash(txtClave.Text);
+
+                    if (uEncontrado.Clave == claveCifradaIngresada)
+                    {
+                        BLL.SessionManager.Login(uEncontrado);
+                        MessageBox.Show("Ingreso exitoso.");
+                        App App = new App();
+                        App.Show();
+                        this.Hide();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Usuario y/o Clave incorrecta o inexistente.");
+                    }
                 }
-                else
-                {
-                    MessageBox.Show("La clave no cumple los valores.");
-                }
+
             }
-            else { MessageBox.Show("Complete todos los campos."); }
+
+            //if(txtUsuario.Text != "" && txtClave.Text != "")
+            //{
+            //    if (ClaveValida(txtClave.Text))
+            //    {
+            //        MessageBox.Show("Clave Válida.");
+            //    }
+            //    else
+            //    {
+            //        MessageBox.Show("La clave no cumple los valores.");
+            //    }
+            //}
+            //else { MessageBox.Show("Complete todos los campos."); }
         }
 
         public bool ClaveValida(string _c)
