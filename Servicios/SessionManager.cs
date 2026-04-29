@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BLL
+namespace Servicios
 {
     public class SessionManager
     {
@@ -32,10 +32,6 @@ namespace BLL
                 session.Usuario = usuario;
                 session.FechaInicio = DateTime.Now;
             }
-            else
-            {
-                throw new Exception("Sesión ya iniciada.");
-            }
         }
 
         public static void Logout()
@@ -43,16 +39,11 @@ namespace BLL
             if (session != null)
             {
                 session = null;
-            }
-            else
-            {
-                throw new Exception("Sesión no iniciada.");
-            }
+            }            
         }
 
         private SessionManager() 
-        {
-            
+        {            
         
         }
 

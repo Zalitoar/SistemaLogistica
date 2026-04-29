@@ -40,6 +40,15 @@ namespace BE
 			set { id_perfil = value; }
 		}
 
+		private string descripcionPerfil;
+
+		public string DescripcionPerfil
+		{
+			get { return descripcionPerfil; }
+			set { descripcionPerfil = value; }
+		}
+
+
 
 
 

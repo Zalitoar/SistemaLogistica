@@ -1,6 +1,6 @@
 ﻿namespace IngSoft
 {
-    partial class Login
+    partial class FrmLogin
     {
         /// <summary>
         /// Required designer variable.
@@ -59,14 +59,14 @@
             this.txtUsuario.Location = new System.Drawing.Point(164, 94);
             this.txtUsuario.Name = "txtUsuario";
             this.txtUsuario.Size = new System.Drawing.Size(174, 20);
-            this.txtUsuario.TabIndex = 2;
+            this.txtUsuario.TabIndex = 0;
             // 
             // btnIngresar
             // 
             this.btnIngresar.Location = new System.Drawing.Point(111, 167);
             this.btnIngresar.Name = "btnIngresar";
             this.btnIngresar.Size = new System.Drawing.Size(117, 35);
-            this.btnIngresar.TabIndex = 4;
+            this.btnIngresar.TabIndex = 2;
             this.btnIngresar.Text = "Ingresar";
             this.btnIngresar.UseVisualStyleBackColor = true;
             this.btnIngresar.Click += new System.EventHandler(this.btnIngresar_Click);
@@ -76,7 +76,7 @@
             this.btnSalir.Location = new System.Drawing.Point(234, 167);
             this.btnSalir.Name = "btnSalir";
             this.btnSalir.Size = new System.Drawing.Size(103, 35);
-            this.btnSalir.TabIndex = 6;
+            this.btnSalir.TabIndex = 3;
             this.btnSalir.Text = "Salir";
             this.btnSalir.UseVisualStyleBackColor = true;
             this.btnSalir.Click += new System.EventHandler(this.btnSalir_Click);
@@ -87,9 +87,9 @@
             this.txtClave.Name = "txtClave";
             this.txtClave.PasswordChar = '*';
             this.txtClave.Size = new System.Drawing.Size(174, 20);
-            this.txtClave.TabIndex = 7;
+            this.txtClave.TabIndex = 1;
             // 
-            // Login
+            // FrmLogin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -100,7 +100,8 @@
             this.Controls.Add(this.txtUsuario);
             this.Controls.Add(this.lblClave);
             this.Controls.Add(this.lblUsuario);
-            this.Name = "Login";
+            this.Name = "FrmLogin";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Login";
             this.Load += new System.EventHandler(this.Login_Load);
             this.ResumeLayout(false);

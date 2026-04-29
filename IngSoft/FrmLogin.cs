@@ -13,27 +13,25 @@ using System.Windows.Forms;
 
 namespace IngSoft
 {
-    public partial class Login : Form
+    public partial class FrmLogin : Form
     {
-        public Login()
+        public FrmLogin()
         {
             InitializeComponent();
         }
 
         private void btnSalir_Click(object sender, EventArgs e)
         {
-
+            this.Close();
         }
 
         private void Login_Load(object sender, EventArgs e)
         {
             
-
         }
 
         private void btnIngresar_Click(object sender, EventArgs e)
         {
-
             if (txtUsuario.Text != "" && txtClave.Text != "")
             {
                 BLL.Usuario bllu = new BLL.Usuario();
@@ -43,13 +41,14 @@ namespace IngSoft
                 
                 if (uEncontrado != null)
                 {                    
-                    string claveCifradaIngresada = BLL.CryptoManager.Hash(txtClave.Text);
+                    string claveCifradaIngresada = Servicios.CryptoManager.Hash(txtClave.Text);
 
                     if (uEncontrado.Clave == claveCifradaIngresada)
                     {
-                        BLL.SessionManager.Login(uEncontrado);
+                        Servicios.SessionManager.Login(uEncontrado);
+
                         MessageBox.Show("Ingreso exitoso.");
-                        App App = new App();
+                        FrmApp App = new FrmApp();
                         App.Show();
                         this.Hide();
                     }
@@ -58,7 +57,6 @@ namespace IngSoft
                         MessageBox.Show("Usuario y/o Clave incorrecta o inexistente.");
                     }
                 }
-
             }
 
             //if(txtUsuario.Text != "" && txtClave.Text != "")
