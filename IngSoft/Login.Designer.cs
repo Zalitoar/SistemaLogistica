@@ -32,7 +32,6 @@
             this.lblClave = new System.Windows.Forms.Label();
             this.txtUsuario = new System.Windows.Forms.TextBox();
             this.btnIngresar = new System.Windows.Forms.Button();
-            this.btnRegistrarse = new System.Windows.Forms.Button();
             this.btnSalir = new System.Windows.Forms.Button();
             this.txtClave = new System.Windows.Forms.MaskedTextBox();
             this.SuspendLayout();
@@ -40,7 +39,7 @@
             // lblUsuario
             // 
             this.lblUsuario.AutoSize = true;
-            this.lblUsuario.Location = new System.Drawing.Point(61, 84);
+            this.lblUsuario.Location = new System.Drawing.Point(109, 97);
             this.lblUsuario.Name = "lblUsuario";
             this.lblUsuario.Size = new System.Drawing.Size(43, 13);
             this.lblUsuario.TabIndex = 0;
@@ -49,7 +48,7 @@
             // lblClave
             // 
             this.lblClave.AutoSize = true;
-            this.lblClave.Location = new System.Drawing.Point(61, 118);
+            this.lblClave.Location = new System.Drawing.Point(109, 131);
             this.lblClave.Name = "lblClave";
             this.lblClave.Size = new System.Drawing.Size(34, 13);
             this.lblClave.TabIndex = 1;
@@ -57,34 +56,26 @@
             // 
             // txtUsuario
             // 
-            this.txtUsuario.Location = new System.Drawing.Point(130, 81);
+            this.txtUsuario.Location = new System.Drawing.Point(164, 94);
             this.txtUsuario.Name = "txtUsuario";
             this.txtUsuario.Size = new System.Drawing.Size(174, 20);
             this.txtUsuario.TabIndex = 2;
             // 
             // btnIngresar
             // 
-            this.btnIngresar.Location = new System.Drawing.Point(89, 156);
+            this.btnIngresar.Location = new System.Drawing.Point(111, 167);
             this.btnIngresar.Name = "btnIngresar";
-            this.btnIngresar.Size = new System.Drawing.Size(88, 35);
+            this.btnIngresar.Size = new System.Drawing.Size(117, 35);
             this.btnIngresar.TabIndex = 4;
             this.btnIngresar.Text = "Ingresar";
             this.btnIngresar.UseVisualStyleBackColor = true;
-            // 
-            // btnRegistrarse
-            // 
-            this.btnRegistrarse.Location = new System.Drawing.Point(179, 156);
-            this.btnRegistrarse.Name = "btnRegistrarse";
-            this.btnRegistrarse.Size = new System.Drawing.Size(88, 35);
-            this.btnRegistrarse.TabIndex = 5;
-            this.btnRegistrarse.Text = "Registrarse";
-            this.btnRegistrarse.UseVisualStyleBackColor = true;
+            this.btnIngresar.Click += new System.EventHandler(this.btnIngresar_Click);
             // 
             // btnSalir
             // 
-            this.btnSalir.Location = new System.Drawing.Point(130, 197);
+            this.btnSalir.Location = new System.Drawing.Point(234, 167);
             this.btnSalir.Name = "btnSalir";
-            this.btnSalir.Size = new System.Drawing.Size(88, 35);
+            this.btnSalir.Size = new System.Drawing.Size(103, 35);
             this.btnSalir.TabIndex = 6;
             this.btnSalir.Text = "Salir";
             this.btnSalir.UseVisualStyleBackColor = true;
@@ -92,7 +83,7 @@
             // 
             // txtClave
             // 
-            this.txtClave.Location = new System.Drawing.Point(130, 115);
+            this.txtClave.Location = new System.Drawing.Point(164, 128);
             this.txtClave.Name = "txtClave";
             this.txtClave.PasswordChar = '*';
             this.txtClave.Size = new System.Drawing.Size(174, 20);
@@ -102,10 +93,9 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(484, 333);
             this.Controls.Add(this.txtClave);
             this.Controls.Add(this.btnSalir);
-            this.Controls.Add(this.btnRegistrarse);
             this.Controls.Add(this.btnIngresar);
             this.Controls.Add(this.txtUsuario);
             this.Controls.Add(this.lblClave);
@@ -124,7 +114,6 @@
         private System.Windows.Forms.Label lblClave;
         private System.Windows.Forms.TextBox txtUsuario;
         private System.Windows.Forms.Button btnIngresar;
-        private System.Windows.Forms.Button btnRegistrarse;
         private System.Windows.Forms.Button btnSalir;
         private System.Windows.Forms.MaskedTextBox txtClave;
     }
