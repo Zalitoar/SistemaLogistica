@@ -37,21 +37,19 @@ namespace Servicios
         }
 
         public static List<BE.Bitacora> FiltrarBitacora(string usuario, DateTime fdesde, DateTime fhasta)
-        {
+        {          
             DAL.MP_Bitacora mp = new DAL.MP_Bitacora();
             List<BE.Bitacora> todasLasEntradas = mp.Listar();
-            if(string.IsNullOrEmpty(usuario))
-            {
-                return todasLasEntradas
-                    .Where(x => x.FechaHora.Date >= fdesde.Date && x.FechaHora.Date <= fhasta)
-                    .OrderByDescending(x => x.FechaHora)
-                    .ToList();
-            }
-            return todasLasEntradas
-                .Where(x => x.Usuario == usuario && x.FechaHora.Date >= fdesde.Date && x.FechaHora <= fhasta.Date)
-                .OrderByDescending(x => x.FechaHora)
-                .ToList();
 
+            var consulta = todasLasEntradas.AsEnumerable();
+
+            consulta = consulta.Where(x => x.FechaHora.Date >= fdesde.Date && x.FechaHora.Date <= fhasta.Date);
+
+            if (!string.IsNullOrEmpty(usuario))
+            {
+                consulta = consulta.Where(x => x.Usuario.Trim().Equals(usuario.Trim(), StringComparison.OrdinalIgnoreCase));
+            }
+            return consulta.OrderByDescending(x => x.FechaHora).ToList();
         }
     }
 }
