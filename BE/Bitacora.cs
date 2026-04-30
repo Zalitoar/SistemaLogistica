@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BE
 {
-    internal class Bitacora
+    public class Bitacora
     {
 		private int id_bitacora;
 
@@ -24,9 +24,9 @@ namespace BE
 			set { fechahora = value; }
 		}
 
-		private Usuario usuario;
+		private string usuario;
 
-		public Usuario Usuario
+		public string Usuario
 		{
 			get { return usuario; }
 			set { usuario = value; }

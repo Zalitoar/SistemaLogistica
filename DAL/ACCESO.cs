@@ -15,8 +15,7 @@ namespace DAL
 
         public void Abrir()
         {
-            conexion = new SqlConnection();
-            //conexion.ConnectionString = "Data Source=LAPTOP-FNR0GHL3\\SQLEXPRESS;Initial Catalog=Practica2Parcial;Integrated Security=True";
+            conexion = new SqlConnection();         
             conexion.ConnectionString = ConfigurationManager.ConnectionStrings["SQL"].ConnectionString;
             conexion.Open();
         }
@@ -44,6 +43,16 @@ namespace DAL
             parametro.ParameterName = nombre;
             parametro.Value = valor;
             parametro.DbType = DbType.String;
+
+            return parametro;
+        }
+
+        public SqlParameter CrearParametro(string nombre, DateTime valor)
+        {
+            SqlParameter parametro = new SqlParameter();
+            parametro.ParameterName = nombre;
+            parametro.Value = valor;
+            parametro.DbType = DbType.DateTime;
 
             return parametro;
         }
