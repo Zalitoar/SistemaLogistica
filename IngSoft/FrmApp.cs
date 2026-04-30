@@ -38,6 +38,7 @@ namespace IngSoft
             if(respuesta == DialogResult.Yes)
             {
                 Servicios.SessionManager.Logout();
+                Environment.Exit(0);
             }
             else
             {
@@ -62,6 +63,18 @@ namespace IngSoft
                 FrmLogin login = new FrmLogin();
                 login.ShowDialog();
             }
+        }
+
+        private void usuariosToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FrmABMUsuarios frmu = new FrmABMUsuarios();
+            frmu.MdiParent = this;
+            frmu.Show();
+        }
+
+        private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
         }
     }
 }
