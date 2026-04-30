@@ -1,4 +1,5 @@
 ﻿using BE;
+using Servicios;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -52,6 +53,7 @@ namespace IngSoft
 
                     BLL.Usuario bllu = new BLL.Usuario();
                     bllu.Grabar(u);
+                    BitacoraManager.Registrar("Se crea el usuario: " + u.Nombre);
                     Listar();
                     LimpiarCampos();
                 }                
@@ -87,6 +89,7 @@ namespace IngSoft
             u.Id_Usuario = int.Parse(txtIdUsuario.Text);
             BLL.Usuario bllu = new BLL.Usuario();
             bllu.Borrar(u);
+            BitacoraManager.Registrar("Se borra el usuario: " + u.Nombre);
             Listar();
             LimpiarCampos();
         }
@@ -108,6 +111,7 @@ namespace IngSoft
             u.Clave = Servicios.CryptoManager.Hash(txtClave.Text);
             BLL.Usuario bllu = new BLL.Usuario();
             bllu.Grabar(u);
+            BitacoraManager.Registrar("Se modifica el usuario " + u.Nombre);
             Listar();
             LimpiarCampos();
         }
