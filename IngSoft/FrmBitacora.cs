@@ -22,7 +22,10 @@ namespace IngSoft
         private void FrmBitacora_Load(object sender, EventArgs e)
         {
             cbUsuarios.DataSource = BitacoraManager.ListarUsuariosAuditados();
-            cbUsuarios.SelectedIndex = -1;           
+            cbUsuarios.SelectedIndex = -1;        
+            
+            dgvBitacora.DataSource = null;
+            dgvBitacora.DataSource = BitacoraManager.FiltrarBitacora("", DateTime.MinValue, DateTime.MaxValue);
         }
 
         private void gbFiltros_Enter(object sender, EventArgs e)

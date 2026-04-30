@@ -43,12 +43,12 @@ namespace Servicios
             if(string.IsNullOrEmpty(usuario))
             {
                 return todasLasEntradas
-                    .Where(x => x.FechaHora >= fdesde && x.FechaHora <= fhasta)
+                    .Where(x => x.FechaHora.Date >= fdesde.Date && x.FechaHora.Date <= fhasta)
                     .OrderByDescending(x => x.FechaHora)
                     .ToList();
             }
             return todasLasEntradas
-                .Where(x => x.Usuario == usuario && x.FechaHora >= fdesde && x.FechaHora <= fhasta)
+                .Where(x => x.Usuario == usuario && x.FechaHora.Date >= fdesde.Date && x.FechaHora <= fhasta.Date)
                 .OrderByDescending(x => x.FechaHora)
                 .ToList();
 
