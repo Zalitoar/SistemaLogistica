@@ -38,7 +38,7 @@ namespace Servicios
         {
             if (session != null)
             {
-                session = null;
+                session = null;                
             }            
         }
 
