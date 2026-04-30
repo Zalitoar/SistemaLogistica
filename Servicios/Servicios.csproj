@@ -41,7 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="BitacoraManager.cs" />
     <Compile Include="CryptoManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SessionManager.cs" />
@@ -50,6 +50,10 @@
     <ProjectReference Include="..\BE\BE.csproj">
       <Project>{c3bbe8de-ffba-4df9-8143-8ed6df2c46c8}</Project>
       <Name>BE</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DAL\DAL.csproj">
+      <Project>{bf1d7a9d-8f89-4aaa-8caa-33ed46cf07f0}</Project>
+      <Name>DAL</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
