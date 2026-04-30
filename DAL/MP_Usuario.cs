@@ -42,6 +42,7 @@ namespace DAL
             List<SqlParameter> parametros = new List<SqlParameter>();
             parametros.Add(acceso.CrearParametro("@Nombre_Usuario", objeto.Nombre));
             parametros.Add(acceso.CrearParametro("@Clave_Usuario", objeto.Clave));
+            parametros.Add(acceso.CrearParametro("@Perfil_Usuario", objeto.Id_Perfil));
             int resultado = acceso.Escribir("INSERTAR_USUARIO", parametros);
             acceso.Cerrar();
             return resultado;
@@ -57,6 +58,7 @@ namespace DAL
             foreach (DataRow dr in tabla.Rows)
             {
                 Usuario u = new Usuario();
+                u.Id_Usuario = int.Parse(dr["Id_Usuario"].ToString());
                 u.Nombre = dr["Nombre_Usuario"].ToString();
                 u.Clave = dr["Clave_Usuario"].ToString();
                 u.Id_Perfil = int.Parse(dr["Perfil_Usuario"].ToString());
