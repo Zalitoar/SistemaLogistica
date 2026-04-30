@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Servicios;
 
 namespace IngSoft
 {
@@ -37,7 +38,8 @@ namespace IngSoft
 
             if(respuesta == DialogResult.Yes)
             {
-                Servicios.SessionManager.Logout();
+                BitacoraManager.Registrar("Cierre de sesión");
+                SessionManager.Logout();
                 Environment.Exit(0);
             }
             else
@@ -58,7 +60,8 @@ namespace IngSoft
             if (respuesta == DialogResult.Yes)
             {
                 cierreVoluntario = true;
-                Servicios.SessionManager.Logout();
+                BitacoraManager.Registrar("Cierre de sesión");
+                SessionManager.Logout();                
                 this.Close();
                 FrmLogin login = new FrmLogin();
                 login.ShowDialog();
@@ -75,6 +78,13 @@ namespace IngSoft
         private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
 
+        }
+
+        private void bitácoraToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FrmBitacora frmb = new FrmBitacora();
+            frmb.MdiParent = this;
+            frmb.Show();
         }
     }
 }

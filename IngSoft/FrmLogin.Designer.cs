@@ -39,7 +39,7 @@
             // lblUsuario
             // 
             this.lblUsuario.AutoSize = true;
-            this.lblUsuario.Location = new System.Drawing.Point(109, 97);
+            this.lblUsuario.Location = new System.Drawing.Point(132, 110);
             this.lblUsuario.Name = "lblUsuario";
             this.lblUsuario.Size = new System.Drawing.Size(43, 13);
             this.lblUsuario.TabIndex = 0;
@@ -48,7 +48,7 @@
             // lblClave
             // 
             this.lblClave.AutoSize = true;
-            this.lblClave.Location = new System.Drawing.Point(109, 131);
+            this.lblClave.Location = new System.Drawing.Point(132, 144);
             this.lblClave.Name = "lblClave";
             this.lblClave.Size = new System.Drawing.Size(34, 13);
             this.lblClave.TabIndex = 1;
@@ -56,14 +56,14 @@
             // 
             // txtUsuario
             // 
-            this.txtUsuario.Location = new System.Drawing.Point(164, 94);
+            this.txtUsuario.Location = new System.Drawing.Point(187, 107);
             this.txtUsuario.Name = "txtUsuario";
             this.txtUsuario.Size = new System.Drawing.Size(174, 20);
             this.txtUsuario.TabIndex = 0;
             // 
             // btnIngresar
             // 
-            this.btnIngresar.Location = new System.Drawing.Point(111, 167);
+            this.btnIngresar.Location = new System.Drawing.Point(134, 180);
             this.btnIngresar.Name = "btnIngresar";
             this.btnIngresar.Size = new System.Drawing.Size(117, 35);
             this.btnIngresar.TabIndex = 2;
@@ -73,7 +73,7 @@
             // 
             // btnSalir
             // 
-            this.btnSalir.Location = new System.Drawing.Point(234, 167);
+            this.btnSalir.Location = new System.Drawing.Point(257, 180);
             this.btnSalir.Name = "btnSalir";
             this.btnSalir.Size = new System.Drawing.Size(103, 35);
             this.btnSalir.TabIndex = 3;
@@ -83,7 +83,7 @@
             // 
             // txtClave
             // 
-            this.txtClave.Location = new System.Drawing.Point(164, 128);
+            this.txtClave.Location = new System.Drawing.Point(187, 141);
             this.txtClave.Name = "txtClave";
             this.txtClave.PasswordChar = '*';
             this.txtClave.Size = new System.Drawing.Size(174, 20);
@@ -93,7 +93,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(484, 333);
+            this.ClientSize = new System.Drawing.Size(526, 362);
             this.Controls.Add(this.txtClave);
             this.Controls.Add(this.btnSalir);
             this.Controls.Add(this.btnIngresar);

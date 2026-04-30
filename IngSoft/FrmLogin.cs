@@ -1,4 +1,5 @@
 ﻿using BE;
+using Servicios;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -47,6 +48,8 @@ namespace IngSoft
                     {
                         Servicios.SessionManager.Login(uEncontrado);
 
+                        BitacoraManager.Registrar("Inicio de Sesión");
+
                         MessageBox.Show("Ingreso exitoso.");
                         FrmApp App = new FrmApp();
                         App.Show();
@@ -57,20 +60,7 @@ namespace IngSoft
                         MessageBox.Show("Usuario y/o Clave incorrecta o inexistente.");
                     }
                 }
-            }
-
-            //if(txtUsuario.Text != "" && txtClave.Text != "")
-            //{
-            //    if (ClaveValida(txtClave.Text))
-            //    {
-            //        MessageBox.Show("Clave Válida.");
-            //    }
-            //    else
-            //    {
-            //        MessageBox.Show("La clave no cumple los valores.");
-            //    }
-            //}
-            //else { MessageBox.Show("Complete todos los campos."); }
+            }           
         }
 
         public bool ClaveValida(string _c)
