@@ -54,12 +54,12 @@ namespace IngSoft
             }                   
         }
 
-        public bool ClaveValida(string _c)
-        {
-            if (string.IsNullOrEmpty(_c)) return false;
-            string patron = @"^(?=.*[A-Z])(?=.*\d).{6,}$";
-            return Regex.IsMatch(_c, patron);
+        //public bool ClaveValida(string _c)
+        //{
+        //    if (string.IsNullOrEmpty(_c)) return false;
+        //    string patron = @"^(?=.*[A-Z])(?=.*\d).{6,}$";
+        //    return Regex.IsMatch(_c, patron);
 
-        }
+        //}
     }
 }
