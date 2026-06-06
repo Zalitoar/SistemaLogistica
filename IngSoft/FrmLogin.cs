@@ -36,31 +36,22 @@ namespace IngSoft
             if (txtUsuario.Text != "" && txtClave.Text != "")
             {
                 BLL.Usuario bllu = new BLL.Usuario();
-                List<Usuario> usuarios = bllu.Listar();
+                BE.Usuario usuario = bllu.ValidarIngreso(txtUsuario.Text, txtClave.Text);
 
-                Usuario uEncontrado = usuarios.FirstOrDefault(u => u.Nombre == txtUsuario.Text);
-                
-                if (uEncontrado != null)
-                {                    
-                    string claveCifradaIngresada = Servicios.CryptoManager.Hash(txtClave.Text);
-
-                    if (uEncontrado.Clave == claveCifradaIngresada)
-                    {
-                        Servicios.SessionManager.Login(uEncontrado);
-
-                        BitacoraManager.Registrar("Inicio de Sesión");
-
-                        MessageBox.Show("Ingreso exitoso.");
-                        FrmApp App = new FrmApp();
-                        App.Show();
-                        this.Hide();
-                    }
-                    else
-                    {
-                        MessageBox.Show("Usuario y/o Clave incorrecta o inexistente.");
-                    }
+                if (usuario != null)
+                {
+                    Servicios.SessionManager.Login(usuario);
+                    BitacoraManager.Registrar("Inicio de Sesión");
+                    MessageBox.Show("Ingreso exitoso.");
+                    FrmApp App = new FrmApp();
+                    App.Show();
+                    this.Hide();
                 }
-            }           
+                else
+                {
+                    MessageBox.Show("Usuario y/o Clave incorrecta o inexistente.");
+                }
+            }                   
         }
 
         public bool ClaveValida(string _c)

@@ -47,7 +47,14 @@ namespace BE
 			get { return descripcionPerfil; }
 			set { descripcionPerfil = value; }
 		}
+		
+		private string dvh;
 
+		public string DVH
+		{
+			get { return dvh; }
+			set { dvh = value; }
+		}
 
 
 
