@@ -17,6 +17,7 @@ namespace DAL
             acceso.Abrir();
             List<SqlParameter> parametros = new List<SqlParameter>();
             parametros.Add(acceso.CrearParametro("@Id_Usuario", objeto.Id_Usuario));
+            parametros.Add(acceso.CrearParametro("@dvh_Usuario", objeto.DVH));
             int resultado = acceso.Escribir("BORRAR_USUARIO", parametros);
             acceso.Cerrar();
             return resultado;

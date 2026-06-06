@@ -88,6 +88,7 @@ namespace IngSoft
         {
             BE.Usuario u = new BE.Usuario();
             u.Id_Usuario = int.Parse(txtIdUsuario.Text);
+            u.DVH = CryptoManager.Hash($"{u.Nombre}|{u.Clave}|{u.Id_Perfil}|{1}");
             BLL.Usuario bllu = new BLL.Usuario();
             bllu.Borrar(u);
             BitacoraManager.Registrar("Se borra el usuario: " + u.Nombre);
