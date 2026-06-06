@@ -31,6 +31,7 @@ namespace DAL
             parametros.Add(acceso.CrearParametro("@Nombre_Usuario", objeto.Nombre));
             parametros.Add(acceso.CrearParametro("@Clave_Usuario", objeto.Clave));
             parametros.Add(acceso.CrearParametro("@Perfil_Usuario", objeto.Id_Perfil));
+            parametros.Add(acceso.CrearParametro("@dvh_Usuario", objeto.DVH));
             int resultado = acceso.Escribir("EDITAR_USUARIO", parametros);
             acceso.Cerrar();
             return resultado;
