@@ -48,8 +48,9 @@ namespace IngSoft
                 {
                     BE.Usuario u = new BE.Usuario();
                     u.Nombre = txtNombreUsuario.Text;
-                    u.Id_Perfil = int.Parse(txtPerfil.Text);
                     u.Clave = Servicios.CryptoManager.Hash(txtClave.Text);
+                    u.Id_Perfil = int.Parse(txtPerfil.Text);
+                    u.DVH = CryptoManager.Hash($"{u.Nombre}|{u.Clave}|{u.Id_Perfil}|{0}");
 
                     BLL.Usuario bllu = new BLL.Usuario();
                     bllu.Grabar(u);
