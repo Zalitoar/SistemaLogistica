@@ -51,7 +51,10 @@ namespace IngSoft
                 {
                     MessageBox.Show("Usuario y/o Clave incorrecta o inexistente.");
                 }
-            }                   
+            }else
+            {
+                MessageBox.Show("Debe completar todos los campos.");
+            }
         }
 
         //public bool ClaveValida(string _c)
