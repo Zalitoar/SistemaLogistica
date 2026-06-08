@@ -143,7 +143,7 @@
             // bitácoraToolStripMenuItem
             // 
             this.bitácoraToolStripMenuItem.Name = "bitácoraToolStripMenuItem";
-            this.bitácoraToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.bitácoraToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
             this.bitácoraToolStripMenuItem.Text = "Bitácora";
             this.bitácoraToolStripMenuItem.Click += new System.EventHandler(this.bitácoraToolStripMenuItem_Click);
             // 
@@ -151,6 +151,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.ClientSize = new System.Drawing.Size(798, 530);
             this.Controls.Add(this.menuStrip1);
             this.IsMdiContainer = true;
