@@ -31,12 +31,14 @@ namespace BLL
             {
                 mp_usuario.Editar(u);
             }
+            new DVVUsuario().Actualizar();
         }
 
         public void Borrar(BE.Usuario u)
         {
             DAL.MP_Usuario mp_usuario = new DAL.MP_Usuario();
             mp_usuario.Borrar(u);
+            new DVVUsuario().Actualizar();
         }
 
         public List<BE.Usuario> Listar()

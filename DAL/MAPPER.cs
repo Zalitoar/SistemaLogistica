@@ -12,7 +12,7 @@ namespace DAL
 
         public abstract int Insertar(T objeto);
 
-        public abstract int Editar(T objeteo);
+        public abstract int Editar(T objeto);
 
         public abstract int Borrar(T objeto);
 
