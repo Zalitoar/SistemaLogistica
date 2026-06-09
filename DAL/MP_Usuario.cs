@@ -66,6 +66,8 @@ namespace DAL
                 u.Nombre = dr["Nombre_Usuario"].ToString();
                 u.Clave = dr["Clave_Usuario"].ToString();
                 u.Id_Perfil = int.Parse(dr["Perfil_Usuario"].ToString());
+                u.Borrado = int.Parse(dr["Borrado_Usuario"].ToString());
+                u.DVH = dr["dvh_Usuario"].ToString();
                 usuarios.Add(u);
             }
             return usuarios;

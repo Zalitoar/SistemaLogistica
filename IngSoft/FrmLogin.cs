@@ -28,7 +28,19 @@ namespace IngSoft
 
         private void Login_Load(object sender, EventArgs e)
         {
-            
+            ValidarIntegridad();
+        }
+
+        private void ValidarIntegridad()
+        {            
+            string nuevoCalculoDvv = new BLL.DVVUsuario().Calcular();
+            List<BE.DVVUsuario> listaDVV = new BLL.DVVUsuario().Listar();
+            if (nuevoCalculoDvv != listaDVV[0].Valor_DVV)
+            {
+                MessageBox.Show("Se ha detectado una posible integridad comprometida en la tabla Usuario. Se recomienda revisar los registros y tomar las medidas necesarias.");
+            }
+
+
         }
 
         private void btnIngresar_Click(object sender, EventArgs e)

@@ -47,18 +47,21 @@
             // dgvUsuarios
             // 
             this.dgvUsuarios.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvUsuarios.Location = new System.Drawing.Point(87, 172);
+            this.dgvUsuarios.Location = new System.Drawing.Point(116, 212);
+            this.dgvUsuarios.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.dgvUsuarios.Name = "dgvUsuarios";
             this.dgvUsuarios.ReadOnly = true;
-            this.dgvUsuarios.Size = new System.Drawing.Size(331, 185);
+            this.dgvUsuarios.RowHeadersWidth = 51;
+            this.dgvUsuarios.Size = new System.Drawing.Size(778, 228);
             this.dgvUsuarios.TabIndex = 17;
             this.dgvUsuarios.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvUsuarios_CellClick);
             // 
             // btnlistar
             // 
-            this.btnlistar.Location = new System.Drawing.Point(306, 127);
+            this.btnlistar.Location = new System.Drawing.Point(408, 156);
+            this.btnlistar.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnlistar.Name = "btnlistar";
-            this.btnlistar.Size = new System.Drawing.Size(112, 23);
+            this.btnlistar.Size = new System.Drawing.Size(149, 28);
             this.btnlistar.TabIndex = 7;
             this.btnlistar.Text = "Listar";
             this.btnlistar.UseVisualStyleBackColor = true;
@@ -66,9 +69,10 @@
             // 
             // btnborrar
             // 
-            this.btnborrar.Location = new System.Drawing.Point(306, 98);
+            this.btnborrar.Location = new System.Drawing.Point(408, 121);
+            this.btnborrar.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnborrar.Name = "btnborrar";
-            this.btnborrar.Size = new System.Drawing.Size(112, 23);
+            this.btnborrar.Size = new System.Drawing.Size(149, 28);
             this.btnborrar.TabIndex = 6;
             this.btnborrar.Text = "Borrar";
             this.btnborrar.UseVisualStyleBackColor = true;
@@ -76,9 +80,10 @@
             // 
             // btnmodificar
             // 
-            this.btnmodificar.Location = new System.Drawing.Point(306, 69);
+            this.btnmodificar.Location = new System.Drawing.Point(408, 85);
+            this.btnmodificar.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnmodificar.Name = "btnmodificar";
-            this.btnmodificar.Size = new System.Drawing.Size(112, 23);
+            this.btnmodificar.Size = new System.Drawing.Size(149, 28);
             this.btnmodificar.TabIndex = 5;
             this.btnmodificar.Text = "Modificar";
             this.btnmodificar.UseVisualStyleBackColor = true;
@@ -86,9 +91,10 @@
             // 
             // btnInsertar
             // 
-            this.btnInsertar.Location = new System.Drawing.Point(306, 40);
+            this.btnInsertar.Location = new System.Drawing.Point(408, 49);
+            this.btnInsertar.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnInsertar.Name = "btnInsertar";
-            this.btnInsertar.Size = new System.Drawing.Size(112, 23);
+            this.btnInsertar.Size = new System.Drawing.Size(149, 28);
             this.btnInsertar.TabIndex = 4;
             this.btnInsertar.Text = "Insertar";
             this.btnInsertar.UseVisualStyleBackColor = true;
@@ -96,74 +102,82 @@
             // 
             // txtNombreUsuario
             // 
-            this.txtNombreUsuario.Location = new System.Drawing.Point(140, 77);
+            this.txtNombreUsuario.Location = new System.Drawing.Point(187, 95);
+            this.txtNombreUsuario.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.txtNombreUsuario.Name = "txtNombreUsuario";
-            this.txtNombreUsuario.Size = new System.Drawing.Size(100, 20);
+            this.txtNombreUsuario.Size = new System.Drawing.Size(132, 22);
             this.txtNombreUsuario.TabIndex = 1;
             // 
             // txtIdUsuario
             // 
-            this.txtIdUsuario.Location = new System.Drawing.Point(140, 50);
+            this.txtIdUsuario.Location = new System.Drawing.Point(187, 62);
+            this.txtIdUsuario.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.txtIdUsuario.Name = "txtIdUsuario";
-            this.txtIdUsuario.Size = new System.Drawing.Size(100, 20);
+            this.txtIdUsuario.Size = new System.Drawing.Size(132, 22);
             this.txtIdUsuario.TabIndex = 0;
             // 
             // lblNombre
             // 
             this.lblNombre.AutoSize = true;
-            this.lblNombre.Location = new System.Drawing.Point(84, 80);
+            this.lblNombre.Location = new System.Drawing.Point(112, 98);
+            this.lblNombre.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblNombre.Name = "lblNombre";
-            this.lblNombre.Size = new System.Drawing.Size(44, 13);
+            this.lblNombre.Size = new System.Drawing.Size(56, 16);
             this.lblNombre.TabIndex = 10;
             this.lblNombre.Text = "Nombre";
             // 
             // lblD
             // 
             this.lblD.AutoSize = true;
-            this.lblD.Location = new System.Drawing.Point(84, 50);
+            this.lblD.Location = new System.Drawing.Point(112, 62);
+            this.lblD.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblD.Name = "lblD";
-            this.lblD.Size = new System.Drawing.Size(18, 13);
+            this.lblD.Size = new System.Drawing.Size(20, 16);
             this.lblD.TabIndex = 9;
             this.lblD.Text = "ID";
             // 
             // txtPerfil
             // 
-            this.txtPerfil.Location = new System.Drawing.Point(140, 103);
+            this.txtPerfil.Location = new System.Drawing.Point(187, 127);
+            this.txtPerfil.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.txtPerfil.Name = "txtPerfil";
-            this.txtPerfil.Size = new System.Drawing.Size(100, 20);
+            this.txtPerfil.Size = new System.Drawing.Size(132, 22);
             this.txtPerfil.TabIndex = 2;
             // 
             // lblPerfil
             // 
             this.lblPerfil.AutoSize = true;
-            this.lblPerfil.Location = new System.Drawing.Point(84, 106);
+            this.lblPerfil.Location = new System.Drawing.Point(112, 130);
+            this.lblPerfil.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblPerfil.Name = "lblPerfil";
-            this.lblPerfil.Size = new System.Drawing.Size(30, 13);
+            this.lblPerfil.Size = new System.Drawing.Size(37, 16);
             this.lblPerfil.TabIndex = 18;
             this.lblPerfil.Text = "Perfil";
             // 
             // txtClave
             // 
-            this.txtClave.Location = new System.Drawing.Point(140, 129);
+            this.txtClave.Location = new System.Drawing.Point(187, 159);
+            this.txtClave.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.txtClave.Name = "txtClave";
-            this.txtClave.Size = new System.Drawing.Size(100, 20);
+            this.txtClave.Size = new System.Drawing.Size(132, 22);
             this.txtClave.TabIndex = 3;
             // 
             // lblClave
             // 
             this.lblClave.AutoSize = true;
-            this.lblClave.Location = new System.Drawing.Point(84, 132);
+            this.lblClave.Location = new System.Drawing.Point(112, 162);
+            this.lblClave.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblClave.Name = "lblClave";
-            this.lblClave.Size = new System.Drawing.Size(34, 13);
+            this.lblClave.Size = new System.Drawing.Size(42, 16);
             this.lblClave.TabIndex = 20;
             this.lblClave.Text = "Clave";
             // 
             // FrmABMUsuarios
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.ClientSize = new System.Drawing.Size(560, 424);
+            this.ClientSize = new System.Drawing.Size(941, 522);
             this.Controls.Add(this.txtClave);
             this.Controls.Add(this.lblClave);
             this.Controls.Add(this.txtPerfil);
@@ -177,6 +191,7 @@
             this.Controls.Add(this.txtIdUsuario);
             this.Controls.Add(this.lblNombre);
             this.Controls.Add(this.lblD);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "FrmABMUsuarios";
             this.Text = "ABM Usuarios";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;

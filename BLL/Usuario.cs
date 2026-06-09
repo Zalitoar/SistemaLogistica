@@ -13,7 +13,7 @@ namespace BLL
         {
             DAL.MP_Usuario mp_usuario = new DAL.MP_Usuario();
             List<BE.Usuario> usuarios = mp_usuario.Listar();
-            BE.Usuario uEncontrado = usuarios.FirstOrDefault(u => u.Nombre == nombre);
+            BE.Usuario uEncontrado = usuarios.FirstOrDefault(u => u.Nombre == nombre && u.Borrado == 0);
             if (uEncontrado == null || uEncontrado.Clave != Servicios.CryptoManager.Hash(clave))
             {
                 return null;

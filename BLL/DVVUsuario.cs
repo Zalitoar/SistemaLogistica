@@ -8,6 +8,14 @@ namespace BLL
 {
     public class DVVUsuario
     {
+
+        public List<BE.DVVUsuario> Listar()
+        {
+            List<BE.DVVUsuario> listadvv = new List<BE.DVVUsuario>();
+            listadvv = new DAL.MP_DVVUsuario().Listar();
+            return listadvv;
+        }
+
         public string Calcular()
         {
             List<BE.Usuario> usuarios = new DAL.MP_Usuario().Listar();

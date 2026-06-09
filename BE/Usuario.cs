@@ -47,7 +47,16 @@ namespace BE
 			get { return descripcionPerfil; }
 			set { descripcionPerfil = value; }
 		}
-		
+
+		private int borrado;
+
+		public int Borrado
+		{
+			get { return borrado; }
+			set { borrado = value; }
+		}
+
+
 		private string dvh;
 
 		public string DVH

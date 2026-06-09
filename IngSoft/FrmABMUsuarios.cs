@@ -54,6 +54,8 @@ namespace IngSoft
 
                     BLL.Usuario bllu = new BLL.Usuario();
                     bllu.Grabar(u);
+                    BLL.DVVUsuario blldvv = new BLL.DVVUsuario();
+                    blldvv.Actualizar();
                     BitacoraManager.Registrar("Se crea el usuario: " + u.Nombre);
                     Listar();
                     LimpiarCampos();
@@ -91,6 +93,8 @@ namespace IngSoft
             u.DVH = CryptoManager.Hash($"{u.Nombre}|{u.Clave}|{u.Id_Perfil}|{1}");
             BLL.Usuario bllu = new BLL.Usuario();
             bllu.Borrar(u);
+            BLL.DVVUsuario blldvv = new BLL.DVVUsuario();
+            blldvv.Actualizar();
             BitacoraManager.Registrar("Se borra el usuario: " + u.Nombre);
             Listar();
             LimpiarCampos();
@@ -115,6 +119,8 @@ namespace IngSoft
 
             BLL.Usuario bllu = new BLL.Usuario();
             bllu.Grabar(u);
+            BLL.DVVUsuario blldvv = new BLL.DVVUsuario();
+            blldvv.Actualizar();
             BitacoraManager.Registrar("Se modifica el usuario " + u.Nombre);
             Listar();
             LimpiarCampos();
