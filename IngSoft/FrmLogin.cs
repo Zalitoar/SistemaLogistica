@@ -13,9 +13,10 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace IngSoft
-{
+{   
     public partial class FrmLogin : Form
     {
+        private bool integridadok = true;
         public FrmLogin()
         {
             InitializeComponent();
@@ -36,45 +37,53 @@ namespace IngSoft
             string nuevoCalculoDvv = new BLL.DVVUsuario().Calcular();
             List<BE.DVVUsuario> listaDVV = new BLL.DVVUsuario().Listar();
             if (nuevoCalculoDvv != listaDVV[0].Valor_DVV)
-            {
-                MessageBox.Show("Se ha detectado una posible integridad comprometida en la tabla Usuario. Se recomienda revisar los registros y tomar las medidas necesarias.");
+            {                
+                integridadok = false;
             }
-
-
         }
 
         private void btnIngresar_Click(object sender, EventArgs e)
-        {
-            if (txtUsuario.Text != "" && txtClave.Text != "")
-            {
-                BLL.Usuario bllu = new BLL.Usuario();
-                BE.Usuario usuario = bllu.ValidarIngreso(txtUsuario.Text, txtClave.Text);
-
-                if (usuario != null)
-                {
-                    Servicios.SessionManager.Login(usuario);
-                    BitacoraManager.Registrar("Inicio de Sesión");
-                    MessageBox.Show("Ingreso exitoso.");
-                    FrmApp App = new FrmApp();
-                    App.Show();
-                    this.Hide();
-                }
-                else
-                {
-                    MessageBox.Show("Usuario y/o Clave incorrecta o inexistente.");
-                }
-            }else
+        {            
+            if (string.IsNullOrWhiteSpace(txtUsuario.Text) || string.IsNullOrWhiteSpace(txtClave.Text))
             {
                 MessageBox.Show("Debe completar todos los campos.");
+                return; 
+            }            
+
+            BLL.Usuario bllu = new BLL.Usuario();
+            BE.Usuario usuario = bllu.ValidarIngreso(txtUsuario.Text, txtClave.Text);
+
+            if (usuario == null)
+            {
+                MessageBox.Show("Usuario y/o Clave incorrecta o inexistente.");
+                return;
             }
+
+            if (!integridadok && usuario.Id_Perfil != 1)
+            {
+                MessageBox.Show("El sistema no esta disponible en este momento. Por favor, intente más tarde.");
+                return;
+            }
+
+            if (!integridadok)
+            {
+                Servicios.SessionManager.Login(usuario);
+                BitacoraManager.Registrar("Inicio de Sesión");
+                MessageBox.Show("Ingreso exitoso.");
+
+                frmRestore res = new frmRestore();
+                res.Show();
+                this.Hide();
+            }else
+            {
+                Servicios.SessionManager.Login(usuario);
+                BitacoraManager.Registrar("Inicio de Sesión");
+                MessageBox.Show("Ingreso exitoso.");
+
+                FrmApp App = new FrmApp();
+                App.Show();
+                this.Hide();
+            }                
         }
-
-        //public bool ClaveValida(string _c)
-        //{
-        //    if (string.IsNullOrEmpty(_c)) return false;
-        //    string patron = @"^(?=.*[A-Z])(?=.*\d).{6,}$";
-        //    return Regex.IsMatch(_c, patron);
-
-        //}
     }
 }
