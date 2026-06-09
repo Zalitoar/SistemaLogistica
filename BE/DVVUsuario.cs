@@ -10,5 +10,6 @@ namespace BE
     {
         public string Tabla_DVV { get; set; }
         public string Valor_DVV { get; set; }
+       
     }
 }

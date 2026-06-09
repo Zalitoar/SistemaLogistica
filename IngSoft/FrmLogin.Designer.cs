@@ -39,33 +39,37 @@
             // lblUsuario
             // 
             this.lblUsuario.AutoSize = true;
-            this.lblUsuario.Location = new System.Drawing.Point(132, 110);
+            this.lblUsuario.Location = new System.Drawing.Point(164, 100);
+            this.lblUsuario.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblUsuario.Name = "lblUsuario";
-            this.lblUsuario.Size = new System.Drawing.Size(43, 13);
+            this.lblUsuario.Size = new System.Drawing.Size(54, 16);
             this.lblUsuario.TabIndex = 0;
             this.lblUsuario.Text = "Usuario";
             // 
             // lblClave
             // 
             this.lblClave.AutoSize = true;
-            this.lblClave.Location = new System.Drawing.Point(132, 144);
+            this.lblClave.Location = new System.Drawing.Point(164, 142);
+            this.lblClave.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblClave.Name = "lblClave";
-            this.lblClave.Size = new System.Drawing.Size(34, 13);
+            this.lblClave.Size = new System.Drawing.Size(42, 16);
             this.lblClave.TabIndex = 1;
             this.lblClave.Text = "Clave";
             // 
             // txtUsuario
             // 
-            this.txtUsuario.Location = new System.Drawing.Point(187, 107);
+            this.txtUsuario.Location = new System.Drawing.Point(237, 97);
+            this.txtUsuario.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.txtUsuario.Name = "txtUsuario";
-            this.txtUsuario.Size = new System.Drawing.Size(174, 20);
+            this.txtUsuario.Size = new System.Drawing.Size(231, 22);
             this.txtUsuario.TabIndex = 0;
             // 
             // btnIngresar
             // 
-            this.btnIngresar.Location = new System.Drawing.Point(134, 180);
+            this.btnIngresar.Location = new System.Drawing.Point(167, 187);
+            this.btnIngresar.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnIngresar.Name = "btnIngresar";
-            this.btnIngresar.Size = new System.Drawing.Size(117, 35);
+            this.btnIngresar.Size = new System.Drawing.Size(156, 43);
             this.btnIngresar.TabIndex = 2;
             this.btnIngresar.Text = "Ingresar";
             this.btnIngresar.UseVisualStyleBackColor = true;
@@ -73,9 +77,10 @@
             // 
             // btnSalir
             // 
-            this.btnSalir.Location = new System.Drawing.Point(257, 180);
+            this.btnSalir.Location = new System.Drawing.Point(331, 187);
+            this.btnSalir.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnSalir.Name = "btnSalir";
-            this.btnSalir.Size = new System.Drawing.Size(103, 35);
+            this.btnSalir.Size = new System.Drawing.Size(137, 43);
             this.btnSalir.TabIndex = 3;
             this.btnSalir.Text = "Salir";
             this.btnSalir.UseVisualStyleBackColor = true;
@@ -83,24 +88,26 @@
             // 
             // txtClave
             // 
-            this.txtClave.Location = new System.Drawing.Point(187, 141);
+            this.txtClave.Location = new System.Drawing.Point(237, 139);
+            this.txtClave.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.txtClave.Name = "txtClave";
             this.txtClave.PasswordChar = '*';
-            this.txtClave.Size = new System.Drawing.Size(174, 20);
+            this.txtClave.Size = new System.Drawing.Size(231, 22);
             this.txtClave.TabIndex = 1;
             // 
             // FrmLogin
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.ClientSize = new System.Drawing.Size(526, 362);
+            this.ClientSize = new System.Drawing.Size(701, 446);
             this.Controls.Add(this.txtClave);
             this.Controls.Add(this.btnSalir);
             this.Controls.Add(this.btnIngresar);
             this.Controls.Add(this.txtUsuario);
             this.Controls.Add(this.lblClave);
             this.Controls.Add(this.lblUsuario);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "FrmLogin";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Login";
