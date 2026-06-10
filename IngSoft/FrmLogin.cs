@@ -33,13 +33,20 @@ namespace IngSoft
         }
 
         private void ValidarIntegridad()
-        {            
-            string nuevoCalculoDvv = new BLL.DVVUsuario().Calcular();
-            List<BE.DVVUsuario> listaDVV = new BLL.DVVUsuario().Listar();
+        {        
+            //Validación DVV
+            string nuevoCalculoDvv = GestorIntegridad.Calcular();
+            List<BE.DVVUsuario> listaDVV = GestorIntegridad.Listar();
             if (nuevoCalculoDvv != listaDVV[0].Valor_DVV)
             {                
                 integridadok = false;
             }
+            //Validación DVH
+            if(GestorIntegridad.ValidarIntegridadDVH().Count > 0)
+            {
+                //integridadok = false;
+            }
+
         }
 
         private void btnIngresar_Click(object sender, EventArgs e)

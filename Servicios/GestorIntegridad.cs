@@ -7,14 +7,75 @@ using System.Threading.Tasks;
 
 namespace Servicios
 {
-    public class GestorIntegridad
+    public static class GestorIntegridad
     {
-        //public bool ValidarDVV()
-        //{
-        //    DAL.MP_Usuario usuarios = new DAL.MP_Usuario();
-        //    List<BE.Usuario> listaUsuarios = usuarios.Listar();    
+        //Validar DVH
+        public static List<BE.Usuario> ValidarIntegridadDVH()
+        {
+            List<BE.Usuario> usuarios = new List<Usuario>();
+            DAL.MP_Usuario mP_Usuario = new DAL.MP_Usuario();
+            usuarios = mP_Usuario.Listar();
+            List<BE.Usuario> regError = new List<Usuario>();
 
-        //}
+            foreach (BE.Usuario u in usuarios)
+            {
+                string dvhCalculado = CryptoManager.Hash($"{u.Nombre}|{u.Clave}|{u.Id_Perfil}|{u.Borrado}");
+                if(u.DVH != dvhCalculado)
+                {
+                    regError.Add(u);
+                }
+            }
+            return regError;
+        }
 
+
+        //Validar DVV
+        public static bool ValidarIntegridadDVV()
+        {
+            //Validación DVV
+            string nuevoCalculoDvv = Calcular();
+            List<BE.DVVUsuario> listaDVV = Listar();
+            if (nuevoCalculoDvv != listaDVV[0].Valor_DVV)
+            {
+                return false;
+            }
+            return true;
+        }
+        
+        public static List<BE.DVVUsuario> Listar()
+        {
+            List<BE.DVVUsuario> listadvv = new List<BE.DVVUsuario>();
+            listadvv = new DAL.MP_DVVUsuario().Listar();
+            return listadvv;
+        }
+
+        public static string Calcular()
+        {
+            List<BE.Usuario> usuarios = new DAL.MP_Usuario().Listar();
+
+            var ordenados = usuarios.OrderBy(u => u.Id_Usuario);
+
+            StringBuilder sb = new StringBuilder();
+            foreach (var u in ordenados)
+                sb.Append(u.Id_Usuario).Append(u.Nombre).Append(u.Clave).Append(u.Id_Perfil);
+
+            return Servicios.CryptoManager.Hash(sb.ToString());
+        }
+        public static void Actualizar()
+        {
+            var dvv = new BE.DVVUsuario
+            {
+                Tabla_DVV = "Usuario",
+                Valor_DVV = Calcular()
+            };
+            new DAL.MP_DVVUsuario().Editar(dvv);
+        }
+        public static bool Verificar()
+        {
+            var registros = new DAL.MP_DVVUsuario().Listar();
+            if (registros.Count == 0) return false;
+
+            return registros[0].Valor_DVV == Calcular();
+        }
     }
 }

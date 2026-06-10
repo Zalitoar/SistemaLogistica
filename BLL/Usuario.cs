@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Servicios;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -31,14 +32,14 @@ namespace BLL
             {
                 mp_usuario.Editar(u);
             }
-            new DVVUsuario().Actualizar();
+            GestorIntegridad.Actualizar();
         }
 
         public void Borrar(BE.Usuario u)
         {
             DAL.MP_Usuario mp_usuario = new DAL.MP_Usuario();
             mp_usuario.Borrar(u);
-            new DVVUsuario().Actualizar();
+            GestorIntegridad.Actualizar();
         }
 
         public List<BE.Usuario> Listar()
