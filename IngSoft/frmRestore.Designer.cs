@@ -71,6 +71,7 @@
             this.btnRestore.TabIndex = 3;
             this.btnRestore.Text = "Backup Base de Datos";
             this.btnRestore.UseVisualStyleBackColor = true;
+            this.btnRestore.Click += new System.EventHandler(this.btnRestore_Click);
             // 
             // btnRecalcular
             // 

@@ -77,5 +77,17 @@ namespace Servicios
 
             return registros[0].Valor_DVV == Calcular();
         }
+
+        public static int Restore()
+        {
+            int ok = new DAL.MP_GestorIdentidad().Restore();
+             if (ok == 1)
+            {
+                //Actualizar();
+                BitacoraManager.Registrar("Se restauró la base de datos a partir del backup.");
+                return 1;
+            }
+            return 0;
+        }
     }
 }

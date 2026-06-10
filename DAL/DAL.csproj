@@ -46,6 +46,7 @@
     <Compile Include="MAPPER.cs" />
     <Compile Include="MP_Bitacora.cs" />
     <Compile Include="MP_DVVUsuario.cs" />
+    <Compile Include="MP_GestorIdentidad.cs" />
     <Compile Include="MP_Usuario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

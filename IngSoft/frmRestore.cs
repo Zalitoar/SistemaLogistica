@@ -42,5 +42,18 @@ namespace IngSoft
                 lblRegistros.Text = "Integridad correcta de registros.";
             }
         }
+
+        private void btnRestore_Click(object sender, EventArgs e)
+        {
+            int ok = GestorIntegridad.Restore();
+            if (ok == 1)
+            {
+                MessageBox.Show("Restauración completada con éxito.");
+            }
+            else
+            {
+                MessageBox.Show("Error al restaurar la base de datos.");
+            }
+        }
     }
 }
