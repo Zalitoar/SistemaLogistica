@@ -44,7 +44,7 @@ namespace IngSoft
             //Validación DVH
             if(GestorIntegridad.ValidarIntegridadDVH().Count > 0)
             {
-                //integridadok = false;
+                integridadok = false;
             }
 
         }

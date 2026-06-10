@@ -67,7 +67,8 @@ namespace IngSoft
         {
             BLL.Usuario bllu = new BLL.Usuario();
             dgvUsuarios.DataSource = null;
-            dgvUsuarios.DataSource = bllu.Listar();
+            List<BE.Usuario> usuarios = bllu.Listar();
+            dgvUsuarios.DataSource = usuarios.Where(u => u.Borrado == 0).ToList();
             dgvUsuarios.Columns["Clave"].Visible = false;
             dgvUsuarios.Columns["DescripcionPerfil"].Visible = false;
         }
@@ -88,9 +89,10 @@ namespace IngSoft
         private void btnborrar_Click(object sender, EventArgs e)
         {
             BE.Usuario u = new BE.Usuario();
-            u.Id_Usuario = int.Parse(txtIdUsuario.Text);
-            u.DVH = CryptoManager.Hash($"{u.Nombre}|{u.Clave}|{u.Id_Perfil}|{1}");
             BLL.Usuario bllu = new BLL.Usuario();
+            u = bllu.Listar().FirstOrDefault(x => x.Id_Usuario == int.Parse(txtIdUsuario.Text));
+            u.DVH = CryptoManager.Hash($"{u.Nombre}|{u.Clave}|{u.Id_Perfil}|{1}");
+            
             bllu.Borrar(u);
             GestorIntegridad.Actualizar();
             BitacoraManager.Registrar("Se borra el usuario: " + u.Nombre);
