@@ -27,6 +27,14 @@ namespace IngSoft
             if(sesion.GetUsuario() != null)
             {
                 this.Text = "Sistema de Gestión - Usuario: " + sesion.GetUsuario().Nombre;
+                clientesToolStripMenuItem.Enabled = sesion.TienePermiso("GESTION_VENTAS");
+                productosToolStripMenuItem.Enabled = sesion.TienePermiso("ABM_CLIENTES");
+                productosToolStripMenuItem1.Enabled = sesion.TienePermiso("ABM_PRODUCTOS");
+                historialToolStripMenuItem.Enabled = sesion.TienePermiso("VER_HISTORIAL");
+
+                usuariosToolStripMenuItem.Enabled = sesion.TienePermiso("ABM_USUARIOS");
+                perfilesToolStripMenuItem.Enabled = sesion.TienePermiso("ABM_ROLES");
+                bitácoraToolStripMenuItem.Enabled = sesion.TienePermiso("VER_BITACORA");
             }
         }
 

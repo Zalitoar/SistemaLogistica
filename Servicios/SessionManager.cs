@@ -12,7 +12,19 @@ namespace Servicios
 
         private BE.Usuario Usuario { set; get; }
 
-        public DateTime FechaInicio { set; get; } 
+        public DateTime FechaInicio { set; get; }
+        private List<string> PermisosEfectivos { set; get; }
+
+        public static void SetPermisos(List<string> permisos)
+        {
+            if (session != null)
+                session.PermisosEfectivos = permisos;
+        }
+
+        public bool TienePermiso(string nombrePermiso)
+        {
+            return PermisosEfectivos != null && PermisosEfectivos.Contains(nombrePermiso);
+        }
 
         public static SessionManager GetInstance()
         {

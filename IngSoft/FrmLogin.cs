@@ -76,8 +76,9 @@ namespace IngSoft
             {
                 Servicios.SessionManager.Login(usuario);
                 BitacoraManager.Registrar("Inicio de Sesión");
+                List<string> permisos = new BLL.Rol().ObtenerArbol(usuario.Id_Rol).ObtenerPermisos().Select(p => p.Nombre_Permiso).ToList();
+                Servicios.SessionManager.SetPermisos(permisos);
                 MessageBox.Show("Ingreso exitoso.");
-
                 frmRestore res = new frmRestore();
                 res.Show();
                 this.Hide();
@@ -85,8 +86,9 @@ namespace IngSoft
             {
                 Servicios.SessionManager.Login(usuario);
                 BitacoraManager.Registrar("Inicio de Sesión");
+                List<string> permisos = new BLL.Rol().ObtenerArbol(usuario.Id_Rol).ObtenerPermisos().Select(p => p.Nombre_Permiso).ToList();
+                Servicios.SessionManager.SetPermisos(permisos);
                 MessageBox.Show("Ingreso exitoso.");
-
                 FrmApp App = new FrmApp();
                 App.Show();
                 this.Hide();
