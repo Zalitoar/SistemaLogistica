@@ -74,6 +74,7 @@ namespace IngSoft
         {
             txtIdRol.Text = "";
             txtNombreRol.Text = "";
+            cmbDisponibles.DataSource = null;
             btnmodificar.Enabled = false;
             btnborrar.Enabled = false;
             btnAsignar.Enabled = false;
@@ -115,6 +116,72 @@ namespace IngSoft
             }
 
             BitacoraManager.Registrar("Se borra el rol: " + txtNombreRol.Text);
+            Listar();
+            LimpiarCampos();
+        }
+
+        private void tvRoles_AfterSelect_1(object sender, TreeViewEventArgs e)
+        {
+            ComponentePermiso seleccionado = e.Node.Tag as ComponentePermiso;
+
+            txtIdRol.Text = seleccionado.Id_Permiso.ToString();
+            txtNombreRol.Text = seleccionado.Nombre_Permiso;
+
+            bool esRol = seleccionado is BE.Rol;
+            btnmodificar.Enabled = esRol;
+            btnborrar.Enabled = esRol;
+            btnAsignar.Enabled = esRol;
+
+            btnQuitar.Enabled = e.Node.Parent != null;
+
+            if (esRol)
+            {
+                BLL.Rol bllRol = new BLL.Rol();
+                cmbDisponibles.DataSource = bllRol.ListarComponentesDisponibles(seleccionado.Id_Permiso);
+                cmbDisponibles.DisplayMember = "Nombre_Permiso";
+                cmbDisponibles.ValueMember = "Id_Permiso";
+            }
+            else
+            {
+                cmbDisponibles.DataSource = null;
+            }
+        }
+
+        private void btnAsignar_Click(object sender, EventArgs e)
+        {
+            if (cmbDisponibles.SelectedValue == null) return;
+            if (tvRoles.SelectedNode == null) return;
+
+            ComponentePermiso seleccionado = tvRoles.SelectedNode.Tag as ComponentePermiso;
+            int idRol = seleccionado.Id_Permiso;
+            int idComponente = (int)cmbDisponibles.SelectedValue;
+
+            BLL.Rol bllRol = new BLL.Rol();
+            string error = bllRol.AsignarComponente(idRol, idComponente);
+
+            if (error != null)
+            {
+                MessageBox.Show(error);
+                return;
+            }
+
+            BitacoraManager.Registrar($"Se asigna el componente '{cmbDisponibles.Text}' al rol '{txtNombreRol.Text}'");
+            Listar();
+            LimpiarCampos();
+        }
+
+        private void btnQuitar_Click(object sender, EventArgs e)
+        {
+            TreeNode nodo = tvRoles.SelectedNode;
+            if (nodo == null || nodo.Parent == null) return;
+
+            ComponentePermiso padre = nodo.Parent.Tag as ComponentePermiso;
+            ComponentePermiso componente = nodo.Tag as ComponentePermiso;
+
+            BLL.Rol bllRol = new BLL.Rol();
+            bllRol.QuitarComponente(padre.Id_Permiso, componente.Id_Permiso);
+
+            BitacoraManager.Registrar($"Se quita el componente '{componente.Nombre_Permiso}' del rol '{padre.Nombre_Permiso}'");
             Listar();
             LimpiarCampos();
         }

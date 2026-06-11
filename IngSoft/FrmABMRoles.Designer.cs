@@ -48,6 +48,7 @@
             this.tvRoles.Name = "tvRoles";
             this.tvRoles.Size = new System.Drawing.Size(258, 308);
             this.tvRoles.TabIndex = 0;
+            this.tvRoles.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvRoles_AfterSelect_1);
             // 
             // btnlistar
             // 
@@ -138,6 +139,7 @@
             this.btnQuitar.TabIndex = 11;
             this.btnQuitar.Text = "Quitar";
             this.btnQuitar.UseVisualStyleBackColor = true;
+            this.btnQuitar.Click += new System.EventHandler(this.btnQuitar_Click);
             // 
             // btnAsignar
             // 
@@ -147,6 +149,7 @@
             this.btnAsignar.TabIndex = 10;
             this.btnAsignar.Text = "Asignar";
             this.btnAsignar.UseVisualStyleBackColor = true;
+            this.btnAsignar.Click += new System.EventHandler(this.btnAsignar_Click);
             // 
             // FrmABMRoles
             // 

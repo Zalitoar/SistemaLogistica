@@ -85,5 +85,19 @@ namespace BLL
             BE.Rol rol = new BE.Rol { Id_Permiso = idRol };
             return new DAL.MP_Rol().Borrar(rol) > 0 ? null : "No se pudo eliminar el rol.";
         }
+        public List<ComponentePermiso> ListarComponentesDisponibles(int idRolActual)
+        {
+            List<ComponentePermiso> disponibles = new List<ComponentePermiso>();
+
+            disponibles.AddRange(new DAL.MP_Permiso().ListarPermisos());
+
+            foreach (BE.Rol rol in new DAL.MP_Rol().Listar())
+            {
+                if (rol.Id_Permiso != idRolActual)
+                    disponibles.Add(rol);
+            }
+
+            return disponibles;
+        }
     }
 }
