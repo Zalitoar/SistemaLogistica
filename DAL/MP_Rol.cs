@@ -66,5 +66,19 @@ namespace DAL
             }
             return roles;
         }
+        public List<ComponentePermiso> ListarComponentesDisponibles(int idRolActual)
+        {
+            List<ComponentePermiso> disponibles = new List<ComponentePermiso>();
+
+            disponibles.AddRange(new DAL.MP_Permiso().ListarPermisos());
+
+            foreach (BE.Rol rol in new DAL.MP_Rol().Listar())
+            {
+                if (rol.Id_Permiso != idRolActual)
+                    disponibles.Add(rol);
+            }
+
+            return disponibles;
+        }
     }
 }

@@ -76,5 +76,26 @@ namespace DAL
 
             return ids;
         }
+        public List<Permiso> ListarPermisos()
+        {
+            ACCESO acceso = new ACCESO();
+            acceso.Abrir();
+            DataTable tabla = acceso.Leer("LISTAR_PERMISOS");
+            acceso.Cerrar();
+
+            List<Permiso> permisos = new List<Permiso>();
+            foreach (DataRow fila in tabla.Rows)
+            {
+                if (fila["Tipo_Permiso"].ToString() != "PERMISO")
+                    continue;
+
+                permisos.Add(new Permiso
+                {
+                    Id_Permiso = int.Parse(fila["Id_Permiso"].ToString()),
+                    Nombre_Permiso = fila["Nombre_Permiso"].ToString()
+                });
+            }
+            return permisos;
+        }
     }   
 }

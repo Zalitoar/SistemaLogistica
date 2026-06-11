@@ -62,5 +62,28 @@ namespace BLL
         {
             new DAL.MP_RolComponente().Quitar(idRol, idComponente);
         }
+
+        public int Editar(int idRol, string nuevoNombre)
+        {
+            BE.Rol rol = new BE.Rol { Id_Permiso = idRol, Nombre_Permiso = nuevoNombre };
+            return new DAL.MP_Rol().Editar(rol);
+        }
+
+        public string Borrar(int idRol)
+        {
+            DAL.MP_RolComponente mp_rolComponente = new DAL.MP_RolComponente();
+
+            if (mp_rolComponente.ListarRolesQueContienen(idRol).Count > 0)
+                return "No se puede eliminar: este rol está incluido como componente de otro rol.";
+
+            if (new DAL.MP_Usuario().Listar().Any(u => u.Id_Rol == idRol))
+                return "No se puede eliminar: hay usuarios asignados a este rol.";
+
+            foreach (int idComponente in mp_rolComponente.ListarComponentes(idRol))
+                mp_rolComponente.Quitar(idRol, idComponente);
+
+            BE.Rol rol = new BE.Rol { Id_Permiso = idRol };
+            return new DAL.MP_Rol().Borrar(rol) > 0 ? null : "No se pudo eliminar el rol.";
+        }
     }
 }

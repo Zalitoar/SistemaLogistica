@@ -86,5 +86,12 @@ namespace IngSoft
             frmb.MdiParent = this;
             frmb.Show();
         }
+
+        private void perfilesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FrmABMRoles frmu = new FrmABMRoles();
+            frmu.MdiParent = this;
+            frmu.Show();
+        }
     }
 }

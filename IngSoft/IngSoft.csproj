@@ -46,6 +46,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FrmABMRoles.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmABMRoles.Designer.cs">
+      <DependentUpon>FrmABMRoles.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmABMUsuarios.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -78,6 +84,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="FrmABMRoles.resx">
+      <DependentUpon>FrmABMRoles.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmABMUsuarios.resx">
       <DependentUpon>FrmABMUsuarios.cs</DependentUpon>
     </EmbeddedResource>
