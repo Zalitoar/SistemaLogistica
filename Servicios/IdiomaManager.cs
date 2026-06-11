@@ -56,7 +56,12 @@ namespace Servicios
 				observers.Remove(obs);
 		}
 
-		private void NotificarObservers()
+		/// <summary>
+		/// Notifica a los observers registrados.
+		/// Hacía tiempo que era privado; se expone públicamente para permitir forzar la notificación
+		/// desde herramientas/administración después de recargar traducciones.
+		/// </summary>
+		public void NotificarObservers()
 		{
 			// Copiamos la lista para evitar modificación durante la notificación
 			var copia = observers.ToArray();

@@ -57,9 +57,8 @@ namespace DAL
 			return 0;
 		}
 
-		public override List<Idio­ma> Listar()
+		public override List<Idioma> Listar()
 		{
-			// Nota: el nombre de la clase BE es 'Idioma' — usarlo correctamente.
 			List<Idioma> idiomas = new List<Idioma>();
 			ACCESO acceso = new ACCESO();
 			acceso.Abrir();
@@ -70,14 +69,99 @@ namespace DAL
 			{
 				idiomas.Add(new Idioma
 				{
+					Id_Idioma = fila.Field<int>("Id_Idioma"),
+					Nombre = fila.Field<string>("Nombre_Idioma"),
+					Codigo = fila.Table.Columns.Contains("Codigo_Idioma") ? fila.Field<string>("Codigo_Idioma") : string.Empty,
+					Habilitado = ConvertHabilitado(fila, "Habilitado_Idioma")
+				});
+			}
+
+			return idiomas;
+		}
+
+		// Obtiene el idioma preferido del usuario (SP: OBTENER_IDIOMA_PREFERIDO_USUARIO)
+		public Idioma ObtenerIdiomaPreferidoUsuario(int idUsuario)
+		{
+			ACCESO acceso = new ACCESO();
+			acceso.Abrir();
+			var parametros = new List<SqlParameter> { acceso.CrearParametro("@Id_Usuario", idUsuario) };
+			DataTable tabla = acceso.Leer("OBTENER_IDIOMA_PREFERIDO_USUARIO", parametros);
+			acceso.Cerrar();
+
+			if (tabla.Rows.Count == 0) return null;
+
+			DataRow fila = tabla.Rows[0];
+			return new Idioma
+			{
+				Id_Idioma = int.Parse(fila["Id_Idioma"].ToString()),
+				Codigo = fila.Table.Columns.Contains("Codigo_Idioma") ? fila["Codigo_Idioma"].ToString() : string.Empty,
+				Nombre = fila.Table.Columns.Contains("Nombre_Idioma") ? fila["Nombre_Idioma"].ToString() : string.Empty,
+				Habilitado = fila.Table.Columns.Contains("Habilitado_Idioma") ? int.Parse(fila["Habilitado_Idioma"].ToString()) : 1
+			};
+		}
+
+		// Lista idiomas asociados a usuario (SP: LISTAR_IDIOMAS_POR_USUARIO)
+		public List<Idioma> ListarPorUsuario(int idUsuario)
+		{
+			List<Idioma> idiomas = new List<Idioma>();
+			ACCESO acceso = new ACCESO();
+			acceso.Abrir();
+			var parametros = new List<SqlParameter> { acceso.CrearParametro("@Id_Usuario", idUsuario) };
+			DataTable tabla = acceso.Leer("LISTAR_IDIOMAS_POR_USUARIO", parametros);
+			acceso.Cerrar();
+
+			foreach (DataRow fila in tabla.Rows)
+			{
+				idiomas.Add(new Idioma
+				{
 					Id_Idioma = int.Parse(fila["Id_Idioma"].ToString()),
-					Nombre = fila["Nombre_Idioma"].ToString(),
+					Nombre = fila.Table.Columns.Contains("Nombre_Idioma") ? fila["Nombre_Idioma"].ToString() : string.Empty,
 					Codigo = fila.Table.Columns.Contains("Codigo_Idioma") ? fila["Codigo_Idioma"].ToString() : string.Empty,
 					Habilitado = fila.Table.Columns.Contains("Habilitado_Idioma") ? int.Parse(fila["Habilitado_Idioma"].ToString()) : 1
 				});
 			}
 
 			return idiomas;
+		}
+
+		// Inserta relación usuario-idioma (SP: INSERTAR_USUARIO_IDIOMA)
+		public int InsertarUsuarioIdioma(int idUsuario, int idIdioma)
+		{
+			ACCESO acceso = new ACCESO();
+			acceso.Abrir();
+			var parametros = new List<SqlParameter>
+			{
+				acceso.CrearParametro("@Id_Usuario", idUsuario),
+				acceso.CrearParametro("@Id_Idioma", idIdioma)
+			};
+			int resultado = acceso.Escribir("INSERTAR_USUARIO_IDIOMA", parametros);
+			acceso.Cerrar();
+			return resultado;
+		}
+
+		// Borra relación usuario-idioma (SP: BORRAR_USUARIO_IDIOMA)
+		public int BorrarUsuarioIdioma(int idUsuario, int idIdioma)
+		{
+			ACCESO acceso = new ACCESO();
+			acceso.Abrir();
+			var parametros = new List<SqlParameter>
+			{
+				acceso.CrearParametro("@Id_Usuario", idUsuario),
+				acceso.CrearParametro("@Id_Idioma", idIdioma)
+			};
+			int resultado = acceso.Escribir("BORRAR_USUARIO_IDIOMA", parametros);
+			acceso.Cerrar();
+			return resultado;
+		}
+
+		private int ConvertHabilitado(DataRow fila, string column)
+		{
+			if (!fila.Table.Columns.Contains(column) || fila.IsNull(column)) return 1;
+			var val = fila[column];
+			if (val is bool b) return b ? 1 : 0;
+			if (val is int i) return i;
+			if (int.TryParse(val.ToString(), out int parsed)) return parsed;
+			return 1; // valor por defecto prudente
 		}
 	}
 }

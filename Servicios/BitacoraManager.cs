@@ -12,17 +12,17 @@ namespace Servicios
     {
         public static void Registrar(string actividad)
         {
-            SessionManager sesion = SessionManager.GetInstance();
-            BE.Usuario u = sesion.GetUsuario();
+            var sesion = SessionManager.GetInstance();
+            var usuario = sesion != null ? sesion.GetUsuario() : null;
+            string nombreUsuario = usuario != null ? usuario.Nombre : "Sistema";
 
             BE.Bitacora bitacora = new BE.Bitacora();
-            bitacora.Usuario = u.Nombre;
+            bitacora.Usuario = nombreUsuario;
             bitacora.Actividad = actividad;
             bitacora.FechaHora = DateTime.Now;
 
             DAL.MP_Bitacora dalBit = new DAL.MP_Bitacora();
-            dalBit.Insertar(bitacora);
-
+            try { dalBit.Insertar(bitacora); } catch { /* opcional: evitar bubblear errores al loguear errores */ }
         }
 
         public static List<string> ListarUsuariosAuditados()
