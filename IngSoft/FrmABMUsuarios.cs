@@ -180,7 +180,7 @@ namespace IngSoft
         {
             Usuario u = new Usuario();
             u.Id_Usuario = int.Parse(lblid_usu_sel.Text);
-            u.Nombre = lblususel.Text;
+            u.Nombre = lblnombre_sel.Text;
             u.Clave = lblclave_usu_sel.Text;
             u.Borrado = int.Parse(lblborr_usu_sel.Text);
             u.Id_Rol = int.Parse(lblid_rol_sel.Text);
@@ -188,7 +188,7 @@ namespace IngSoft
 
             BLL.Usuario bllu = new BLL.Usuario();
             bllu.Grabar(u);
-            GestorIntegridad.Actualizar();
+            
 
             BLL.CambioUsuario bllcu = new BLL.CambioUsuario();
             bllcu.Grabar(new CambioUsuario
