@@ -23,7 +23,7 @@ namespace IngSoft
 
         private void btnlistar_Click(object sender, EventArgs e)
         {
-            Listar();
+            Listar();            
         }
 
         private void dgvUsuarios_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -32,6 +32,28 @@ namespace IngSoft
             txtIdUsuario.Text = u.Id_Usuario.ToString();
             txtNombreUsuario.Text = u.Nombre;
             txtPerfil.Text = u.Id_Rol.ToString();
+            
+            CambioUsuario cu = new CambioUsuario
+            {
+                Id_Usuario = u.Id_Usuario,
+                Nombre = u.Nombre,
+                Clave = u.Clave,
+                Id_Rol = u.Id_Rol,                
+                Borrado = u.Borrado,                
+            };
+
+            ListarCambios(u);
+
+            lblid.Text = u.Id_Usuario.ToString();
+            lblususel.Text = u.Nombre;
+
+        }
+
+        public void ListarCambios(BE.Usuario u)
+        {            
+            dgvVerisionesAnteriores.DataSource = null;
+            BLL.CambioUsuario bllcu = new BLL.CambioUsuario();
+            dgvVerisionesAnteriores.DataSource = bllcu.Listar().Where(c => c.Id_Usuario == u.Id_Usuario).ToList();
         }
 
         private void btnInsertar_Click(object sender, EventArgs e)
@@ -56,6 +78,7 @@ namespace IngSoft
                     bllu.Grabar(u);                    
                     GestorIntegridad.Actualizar();
                     BitacoraManager.Registrar("Se crea el usuario: " + u.Nombre);
+                                      
                     Listar();
                     LimpiarCampos();
                 }                
@@ -71,11 +94,13 @@ namespace IngSoft
             dgvUsuarios.DataSource = usuarios.Where(u => u.Borrado == 0).ToList();
             dgvUsuarios.Columns["Clave"].Visible = false;
             dgvUsuarios.Columns["DescripcionPerfil"].Visible = false;
+            dgvUsuarios.Columns["DVH"].Visible = false;
         }
 
         private void FrmABMUsuarios_Load(object sender, EventArgs e)
         {
-            Listar();
+            
+            Listar();            
         }
 
         public bool ClaveValida(string _c)
@@ -96,7 +121,19 @@ namespace IngSoft
             bllu.Borrar(u);
             GestorIntegridad.Actualizar();
             BitacoraManager.Registrar("Se borra el usuario: " + u.Nombre);
+
+            BLL.CambioUsuario bllcu = new BLL.CambioUsuario();
+            bllcu.Grabar(new CambioUsuario
+            {
+                Id_Usuario = u.Id_Usuario,
+                Nombre = u.Nombre,
+                Clave = u.Clave,
+                Id_Rol = u.Id_Rol,
+                Borrado = 0
+            });
+
             Listar();
+            ListarCambios(u);
             LimpiarCampos();
         }
 
@@ -119,11 +156,66 @@ namespace IngSoft
 
             BLL.Usuario bllu = new BLL.Usuario();
             bllu.Grabar(u);
-            BLL.DVVUsuario blldvv = new BLL.DVVUsuario();
+            //BLL.DVVUsuario blldvv = new BLL.DVVUsuario();
             GestorIntegridad.Actualizar();
+
+            BLL.CambioUsuario bllcu = new BLL.CambioUsuario();
+            bllcu.Grabar(new CambioUsuario
+            {
+                Id_Usuario = u.Id_Usuario,
+                Nombre = u.Nombre,
+                Clave = u.Clave,
+                Id_Rol = u.Id_Rol,
+                Borrado = 0
+            });
+
+
             BitacoraManager.Registrar("Se modifica el usuario " + u.Nombre);
             Listar();
+            ListarCambios(u);
             LimpiarCampos();
+        }
+
+        private void btnRestaurarVersAnt_Click(object sender, EventArgs e)
+        {
+            Usuario u = new Usuario();
+            u.Id_Usuario = int.Parse(lblid_usu_sel.Text);
+            u.Nombre = lblususel.Text;
+            u.Clave = lblclave_usu_sel.Text;
+            u.Borrado = int.Parse(lblborr_usu_sel.Text);
+            u.Id_Rol = int.Parse(lblid_rol_sel.Text);
+            u.DVH = CryptoManager.Hash($"{u.Nombre}|{u.Clave}|{u.Id_Rol}|{u.Borrado}");
+
+            BLL.Usuario bllu = new BLL.Usuario();
+            bllu.Grabar(u);
+            GestorIntegridad.Actualizar();
+
+            BLL.CambioUsuario bllcu = new BLL.CambioUsuario();
+            bllcu.Grabar(new CambioUsuario
+            {
+                Id_Usuario = u.Id_Usuario,
+                Nombre = u.Nombre,
+                Clave = u.Clave,
+                Id_Rol = u.Id_Rol,
+                Borrado = u.Borrado
+            });
+
+            BitacoraManager.Registrar("Se modifica el usuario " + u.Nombre);
+            Listar();
+            ListarCambios(u);
+            LimpiarCampos();
+
+        }
+
+        private void dgvVerisionesAnteriores_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            CambioUsuario u = dgvVerisionesAnteriores.Rows[e.RowIndex].DataBoundItem as BE.CambioUsuario;
+            lblid_usu_sel.Text = u.Id_Usuario.ToString();
+            lblnombre_sel.Text = u.Nombre;
+            lblclave_usu_sel.Text = u.Clave;
+            lblborr_usu_sel.Text = u.Borrado.ToString();
+            lblid_rol_sel.Text = u.Id_Rol.ToString();           
+
         }
     }
 }
