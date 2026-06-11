@@ -44,6 +44,8 @@
     <Compile Include="BitacoraManager.cs" />
     <Compile Include="CryptoManager.cs" />
     <Compile Include="GestorIntegridad.cs" />
+    <Compile Include="IdiomaManager.cs" />
+    <Compile Include="IIdiomaObserver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SessionManager.cs" />
   </ItemGroup>
