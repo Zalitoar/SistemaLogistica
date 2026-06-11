@@ -66,7 +66,7 @@ namespace IngSoft
                 return;
             }
 
-            if (!integridadok && usuario.Id_Perfil != 1)
+            if (!integridadok && usuario.Id_Rol != 11) // 11 = Id_Permiso de "Administrador" en PERMISO (hardcodeado por ahora, revisar cuando tengamos BLL.Rol)
             {
                 MessageBox.Show("El sistema no esta disponible en este momento. Por favor, intente más tarde.");
                 return;

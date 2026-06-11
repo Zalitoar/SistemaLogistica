@@ -31,7 +31,7 @@ namespace IngSoft
             Usuario u = dgvUsuarios.Rows[e.RowIndex].DataBoundItem as BE.Usuario;
             txtIdUsuario.Text = u.Id_Usuario.ToString();
             txtNombreUsuario.Text = u.Nombre;
-            txtPerfil.Text = u.Id_Perfil.ToString();
+            txtPerfil.Text = u.Id_Rol.ToString();
         }
 
         private void btnInsertar_Click(object sender, EventArgs e)
@@ -49,8 +49,8 @@ namespace IngSoft
                     BE.Usuario u = new BE.Usuario();
                     u.Nombre = txtNombreUsuario.Text;
                     u.Clave = Servicios.CryptoManager.Hash(txtClave.Text);
-                    u.Id_Perfil = int.Parse(txtPerfil.Text);
-                    u.DVH = CryptoManager.Hash($"{u.Nombre}|{u.Clave}|{u.Id_Perfil}|{0}");
+                    u.Id_Rol = int.Parse(txtPerfil.Text);
+                    u.DVH = CryptoManager.Hash($"{u.Nombre}|{u.Clave}|{u.Id_Rol}|{0}");
 
                     BLL.Usuario bllu = new BLL.Usuario();
                     bllu.Grabar(u);                    
@@ -91,8 +91,8 @@ namespace IngSoft
             BE.Usuario u = new BE.Usuario();
             BLL.Usuario bllu = new BLL.Usuario();
             u = bllu.Listar().FirstOrDefault(x => x.Id_Usuario == int.Parse(txtIdUsuario.Text));
-            u.DVH = CryptoManager.Hash($"{u.Nombre}|{u.Clave}|{u.Id_Perfil}|{1}");
-            
+            u.DVH = CryptoManager.Hash($"{u.Nombre}|{u.Clave}|{u.Id_Rol}|{1}");
+
             bllu.Borrar(u);
             GestorIntegridad.Actualizar();
             BitacoraManager.Registrar("Se borra el usuario: " + u.Nombre);
@@ -113,9 +113,9 @@ namespace IngSoft
             BE.Usuario u = new BE.Usuario();
             u.Id_Usuario = int.Parse(txtIdUsuario.Text);
             u.Nombre = txtNombreUsuario.Text;
-            u.Id_Perfil = int.Parse(txtPerfil.Text);
+            u.Id_Rol = int.Parse(txtPerfil.Text);
             u.Clave = Servicios.CryptoManager.Hash(txtClave.Text);
-            u.DVH = CryptoManager.Hash($"{u.Nombre}|{u.Clave}|{u.Id_Perfil}|{0}");
+            u.DVH = CryptoManager.Hash($"{u.Nombre}|{u.Clave}|{u.Id_Rol}|{0}");
 
             BLL.Usuario bllu = new BLL.Usuario();
             bllu.Grabar(u);

@@ -31,7 +31,7 @@ namespace DAL
             parametros.Add(acceso.CrearParametro("@Id_Usuario", objeto.Id_Usuario));
             parametros.Add(acceso.CrearParametro("@Nombre_Usuario", objeto.Nombre));
             parametros.Add(acceso.CrearParametro("@Clave_Usuario", objeto.Clave));
-            parametros.Add(acceso.CrearParametro("@Perfil_Usuario", objeto.Id_Perfil));
+            parametros.Add(acceso.CrearParametro("@Id_Rol", objeto.Id_Rol));
             parametros.Add(acceso.CrearParametro("@dvh_Usuario", objeto.DVH));
             int resultado = acceso.Escribir("EDITAR_USUARIO", parametros);
             acceso.Cerrar();
@@ -45,7 +45,7 @@ namespace DAL
             List<SqlParameter> parametros = new List<SqlParameter>();
             parametros.Add(acceso.CrearParametro("@Nombre_Usuario", objeto.Nombre));
             parametros.Add(acceso.CrearParametro("@Clave_Usuario", objeto.Clave));
-            parametros.Add(acceso.CrearParametro("@Perfil_Usuario", objeto.Id_Perfil));
+            parametros.Add(acceso.CrearParametro("@Id_Rol", objeto.Id_Rol));
             parametros.Add(acceso.CrearParametro("@dvh_Usuario", objeto.DVH));
             int resultado = acceso.Escribir("INSERTAR_USUARIO", parametros);
             acceso.Cerrar();
@@ -65,7 +65,7 @@ namespace DAL
                 u.Id_Usuario = int.Parse(dr["Id_Usuario"].ToString());
                 u.Nombre = dr["Nombre_Usuario"].ToString();
                 u.Clave = dr["Clave_Usuario"].ToString();
-                u.Id_Perfil = int.Parse(dr["Perfil_Usuario"].ToString());
+                u.Id_Rol = int.Parse(dr["Id_Rol"].ToString());
                 u.Borrado = int.Parse(dr["Borrado_Usuario"].ToString());
                 u.DVH = dr["dvh_Usuario"].ToString();
                 usuarios.Add(u);

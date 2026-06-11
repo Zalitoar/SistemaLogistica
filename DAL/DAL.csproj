@@ -47,6 +47,9 @@
     <Compile Include="MP_Bitacora.cs" />
     <Compile Include="MP_DVVUsuario.cs" />
     <Compile Include="MP_GestorIdentidad.cs" />
+    <Compile Include="MP_Permiso.cs" />
+    <Compile Include="MP_Rol.cs" />
+    <Compile Include="MP_RolComponente.cs" />
     <Compile Include="MP_Usuario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

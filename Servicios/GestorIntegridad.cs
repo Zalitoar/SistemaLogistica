@@ -19,8 +19,8 @@ namespace Servicios
 
             foreach (BE.Usuario u in usuarios)
             {
-                string dvhCalculado = CryptoManager.Hash($"{u.Nombre}|{u.Clave}|{u.Id_Perfil}|{u.Borrado}");
-                if(u.DVH != dvhCalculado)
+                string dvhCalculado = CryptoManager.Hash($"{u.Nombre}|{u.Clave}|{u.Id_Rol}|{u.Borrado}");
+                if (u.DVH != dvhCalculado)
                 {
                     regError.Add(u);
                 }
@@ -57,7 +57,7 @@ namespace Servicios
 
             StringBuilder sb = new StringBuilder();
             foreach (var u in ordenados)
-                sb.Append(u.Id_Usuario).Append(u.Nombre).Append(u.Clave).Append(u.Id_Perfil);
+                sb.Append(u.Id_Usuario).Append(u.Nombre).Append(u.Clave).Append(u.Id_Rol);
 
             return Servicios.CryptoManager.Hash(sb.ToString());
         }

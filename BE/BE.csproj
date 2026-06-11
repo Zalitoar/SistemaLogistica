@@ -42,8 +42,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bitacora.cs" />
+    <Compile Include="ComponentePermiso.cs" />
     <Compile Include="DVVUsuario.cs" />
+    <Compile Include="Permiso.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Rol.cs" />
     <Compile Include="Usuario.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

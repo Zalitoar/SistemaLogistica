@@ -32,12 +32,12 @@ namespace BE
 			set { clave = value; }
 		}
 
-		private int id_perfil;
+		private int id_rol;
 
-		public int Id_Perfil
+		public int Id_Rol
 		{
-			get { return id_perfil; }
-			set { id_perfil = value; }
+			get { return id_rol; }
+			set { id_rol = value; }
 		}
 
 		private string descripcionPerfil;
