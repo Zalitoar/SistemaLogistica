@@ -117,12 +117,12 @@ namespace IngSoft
 			List<BE.DVVUsuario> listaDVV = GestorIntegridad.Listar();
 			if (nuevoCalculoDvv != listaDVV[0].Valor_DVV)
 			{                
-				// integridadok = false;
+				integridadok = false;
 			}
 			//Validación DVH
 			if(GestorIntegridad.ValidarIntegridadDVH().Count > 0)
 			{
-				// integridadok = false;
+				integridadok = false;
 			}
 		}
 

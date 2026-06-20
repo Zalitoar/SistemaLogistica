@@ -24,6 +24,8 @@ namespace IngSoft
         private void App_Load(object sender, EventArgs e)
         {
             Servicios.SessionManager sesion = Servicios.SessionManager.GetInstance();
+            
+
 
             if (sesion.GetUsuario() != null)
             {
@@ -217,30 +219,12 @@ namespace IngSoft
             frmu.Show();
         }
 
-        // Nuevo handler añadido para la opción "Perfiles" referenciada por el diseñador.
+        
         private void perfilesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            try
-            {
-                // Intentar abrir FrmPerfiles si existe en el ensamblado
-                Type t = Type.GetType("IngSoft.FrmPerfiles");
-                if (t != null)
-                {
-                    var instancia = Activator.CreateInstance(t) as Form;
-                    if (instancia != null)
-                    {
-                        instancia.MdiParent = this;
-                        instancia.Show();
-                        return;
-                    }
-                }
-            }
-            catch
-            {
-                // ignorar y mostrar mensaje informativo
-            }
-
-            MessageBox.Show("Funcionalidad de Perfiles no implementada.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+           FrmABMRoles frmRol = new FrmABMRoles();
+            frmRol.MdiParent = this;
+            frmRol.Show();
         }
 
         private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
