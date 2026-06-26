@@ -1,0 +1,7 @@
+﻿CREATE PROCEDURE dbo.BORRAR_TRADUCCION
+    @Id_Traduccion INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    DELETE FROM dbo.TRADUCCION WHERE Id_Traduccion = @Id_Traduccion;
+END

@@ -32,16 +32,28 @@ namespace Servicios
         //Validar DVV
         public static bool ValidarIntegridadDVV()
         {
-            //Validación DVV
-            string nuevoCalculoDvv = Calcular();
-            List<BE.DVVUsuario> listaDVV = Listar();
-            if (nuevoCalculoDvv != listaDVV[0].Valor_DVV)
+            try
+            {
+                string nuevoCalculoDvv = Calcular();
+                List<BE.DVVUsuario> listaDVV = Listar();
+
+                if (listaDVV == null || listaDVV.Count == 0)
+                    return false;
+
+                BE.DVVUsuario dvvUsuario = listaDVV
+                    .FirstOrDefault(d => string.Equals(d.Tabla_DVV, "Usuario", StringComparison.OrdinalIgnoreCase));
+
+                if (dvvUsuario == null)
+                    return false;
+
+                return nuevoCalculoDvv == dvvUsuario.Valor_DVV;
+            }
+            catch
             {
                 return false;
             }
-            return true;
         }
-        
+
         public static List<BE.DVVUsuario> Listar()
         {
             List<BE.DVVUsuario> listadvv = new List<BE.DVVUsuario>();
@@ -72,10 +84,25 @@ namespace Servicios
         }
         public static bool Verificar()
         {
-            var registros = new DAL.MP_DVVUsuario().Listar();
-            if (registros.Count == 0) return false;
+            try
+            {
+                var registros = new DAL.MP_DVVUsuario().Listar();
 
-            return registros[0].Valor_DVV == Calcular();
+                if (registros == null || registros.Count == 0)
+                    return false;
+
+                var dvvUsuario = registros
+                    .FirstOrDefault(d => string.Equals(d.Tabla_DVV, "Usuario", StringComparison.OrdinalIgnoreCase));
+
+                if (dvvUsuario == null)
+                    return false;
+
+                return dvvUsuario.Valor_DVV == Calcular();
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public static int Restore()

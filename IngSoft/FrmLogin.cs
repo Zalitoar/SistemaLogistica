@@ -110,23 +110,40 @@ namespace IngSoft
 			}
 		}
 
-		private void ValidarIntegridad()
-		{        
-			//Validación DVV
-			string nuevoCalculoDvv = GestorIntegridad.Calcular();
-			List<BE.DVVUsuario> listaDVV = GestorIntegridad.Listar();
-			if (nuevoCalculoDvv != listaDVV[0].Valor_DVV)
-			{                
-				integridadok = false;
-			}
-			//Validación DVH
-			if(GestorIntegridad.ValidarIntegridadDVH().Count > 0)
-			{
-				integridadok = false;
-			}
-		}
+        private void ValidarIntegridad()
+        {
+            try
+            {
+                // Validación DVV
+                string nuevoCalculoDvv = GestorIntegridad.Calcular();
+                List<BE.DVVUsuario> listaDVV = GestorIntegridad.Listar();
 
-		private void btnIngresar_Click(object sender, EventArgs e)
+                if (listaDVV == null || listaDVV.Count == 0)
+                {
+                    integridadok = false;
+                    return;
+                }
+
+                if (nuevoCalculoDvv != listaDVV[0].Valor_DVV)
+                {
+                    integridadok = false;
+                }
+
+                // Validación DVH
+                var registrosConError = GestorIntegridad.ValidarIntegridadDVH();
+
+                if (registrosConError != null && registrosConError.Count > 0)
+                {
+                    integridadok = false;
+                }
+            }
+            catch
+            {
+                integridadok = false;
+            }
+        }
+
+        private void btnIngresar_Click(object sender, EventArgs e)
 		{            
 			if (string.IsNullOrWhiteSpace(txtUsuario.Text) || string.IsNullOrWhiteSpace(txtClave.Text))
 			{

@@ -1,0 +1,4 @@
+﻿
+CREATE PROCEDURE [dbo].[LEER_DVVUSUARIO]
+  AS
+      SELECT Tabla_DVV, Valor_DVV FROM DVV WHERE Tabla_DVV = 'Usuario'
