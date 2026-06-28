@@ -28,25 +28,31 @@ namespace IngSoft
 
         private void dgvUsuarios_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            Usuario u = dgvUsuarios.Rows[e.RowIndex].DataBoundItem as BE.Usuario;
-            txtIdUsuario.Text = u.Id_Usuario.ToString();
-            txtNombreUsuario.Text = u.Nombre;
-            txtPerfil.Text = u.Id_Rol.ToString();
-            
-            CambioUsuario cu = new CambioUsuario
+            try
             {
-                Id_Usuario = u.Id_Usuario,
-                Nombre = u.Nombre,
-                Clave = u.Clave,
-                Id_Rol = u.Id_Rol,                
-                Borrado = u.Borrado,                
-            };
+                Usuario u = dgvUsuarios.Rows[e.RowIndex].DataBoundItem as BE.Usuario;
+                txtIdUsuario.Text = u.Id_Usuario.ToString();
+                txtNombreUsuario.Text = u.Nombre;
+                txtPerfil.Text = u.Id_Rol.ToString();
 
-            ListarCambios(u);
+                CambioUsuario cu = new CambioUsuario
+                {
+                    Id_Usuario = u.Id_Usuario,
+                    Nombre = u.Nombre,
+                    Clave = u.Clave,
+                    Id_Rol = u.Id_Rol,
+                    Borrado = u.Borrado,
+                };
 
-            lblid.Text = u.Id_Usuario.ToString();
-            lblususel.Text = u.Nombre;
+                ListarCambios(u);
 
+                lblid.Text = u.Id_Usuario.ToString();
+                lblususel.Text = u.Nombre;
+            }
+            catch (Exception)
+            {
+                
+            }
         }
 
         public void ListarCambios(BE.Usuario u)
