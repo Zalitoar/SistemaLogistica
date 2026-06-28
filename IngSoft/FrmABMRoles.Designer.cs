@@ -40,23 +40,26 @@
             this.cmbDisponibles = new System.Windows.Forms.ComboBox();
             this.btnQuitar = new System.Windows.Forms.Button();
             this.btnAsignar = new System.Windows.Forms.Button();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.lblPermiso = new System.Windows.Forms.Label();
+            this.groupBox1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // tvRoles
             // 
-            this.tvRoles.Location = new System.Drawing.Point(47, 71);
-            this.tvRoles.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tvRoles.Location = new System.Drawing.Point(35, 58);
             this.tvRoles.Name = "tvRoles";
-            this.tvRoles.Size = new System.Drawing.Size(343, 378);
+            this.tvRoles.Size = new System.Drawing.Size(258, 475);
             this.tvRoles.TabIndex = 0;
             this.tvRoles.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvRoles_AfterSelect_1);
             // 
             // btnlistar
             // 
-            this.btnlistar.Location = new System.Drawing.Point(47, 36);
-            this.btnlistar.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnlistar.Location = new System.Drawing.Point(35, 29);
             this.btnlistar.Name = "btnlistar";
-            this.btnlistar.Size = new System.Drawing.Size(343, 28);
+            this.btnlistar.Size = new System.Drawing.Size(257, 23);
             this.btnlistar.TabIndex = 1;
             this.btnlistar.Text = "Listar";
             this.btnlistar.UseVisualStyleBackColor = true;
@@ -65,45 +68,40 @@
             // lblIdRol
             // 
             this.lblIdRol.AutoSize = true;
-            this.lblIdRol.Location = new System.Drawing.Point(443, 96);
-            this.lblIdRol.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblIdRol.Location = new System.Drawing.Point(26, 54);
             this.lblIdRol.Name = "lblIdRol";
-            this.lblIdRol.Size = new System.Drawing.Size(42, 16);
+            this.lblIdRol.Size = new System.Drawing.Size(39, 15);
             this.lblIdRol.TabIndex = 2;
             this.lblIdRol.Text = "Id Rol";
             // 
             // txtIdRol
             // 
-            this.txtIdRol.Location = new System.Drawing.Point(497, 92);
-            this.txtIdRol.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtIdRol.Location = new System.Drawing.Point(111, 51);
             this.txtIdRol.Name = "txtIdRol";
-            this.txtIdRol.Size = new System.Drawing.Size(132, 22);
+            this.txtIdRol.Size = new System.Drawing.Size(100, 20);
             this.txtIdRol.TabIndex = 3;
             // 
             // txtNombreRol
             // 
-            this.txtNombreRol.Location = new System.Drawing.Point(497, 142);
-            this.txtNombreRol.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtNombreRol.Location = new System.Drawing.Point(111, 91);
             this.txtNombreRol.Name = "txtNombreRol";
-            this.txtNombreRol.Size = new System.Drawing.Size(132, 22);
+            this.txtNombreRol.Size = new System.Drawing.Size(100, 20);
             this.txtNombreRol.TabIndex = 5;
             // 
             // lblNombreRol
             // 
             this.lblNombreRol.AutoSize = true;
-            this.lblNombreRol.Location = new System.Drawing.Point(443, 145);
-            this.lblNombreRol.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblNombreRol.Location = new System.Drawing.Point(26, 94);
             this.lblNombreRol.Name = "lblNombreRol";
-            this.lblNombreRol.Size = new System.Drawing.Size(56, 16);
+            this.lblNombreRol.Size = new System.Drawing.Size(52, 15);
             this.lblNombreRol.TabIndex = 4;
             this.lblNombreRol.Text = "Nombre";
             // 
             // btnInsertar
             // 
-            this.btnInsertar.Location = new System.Drawing.Point(447, 203);
-            this.btnInsertar.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnInsertar.Location = new System.Drawing.Point(29, 134);
             this.btnInsertar.Name = "btnInsertar";
-            this.btnInsertar.Size = new System.Drawing.Size(184, 44);
+            this.btnInsertar.Size = new System.Drawing.Size(182, 36);
             this.btnInsertar.TabIndex = 6;
             this.btnInsertar.Text = "Insertar";
             this.btnInsertar.UseVisualStyleBackColor = true;
@@ -111,10 +109,9 @@
             // 
             // btnmodificar
             // 
-            this.btnmodificar.Location = new System.Drawing.Point(447, 254);
-            this.btnmodificar.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnmodificar.Location = new System.Drawing.Point(29, 175);
             this.btnmodificar.Name = "btnmodificar";
-            this.btnmodificar.Size = new System.Drawing.Size(184, 44);
+            this.btnmodificar.Size = new System.Drawing.Size(182, 36);
             this.btnmodificar.TabIndex = 7;
             this.btnmodificar.Text = "Modificar";
             this.btnmodificar.UseVisualStyleBackColor = true;
@@ -122,10 +119,9 @@
             // 
             // btnborrar
             // 
-            this.btnborrar.Location = new System.Drawing.Point(447, 305);
-            this.btnborrar.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnborrar.Location = new System.Drawing.Point(29, 217);
             this.btnborrar.Name = "btnborrar";
-            this.btnborrar.Size = new System.Drawing.Size(184, 44);
+            this.btnborrar.Size = new System.Drawing.Size(182, 36);
             this.btnborrar.TabIndex = 8;
             this.btnborrar.Text = "Borrar";
             this.btnborrar.UseVisualStyleBackColor = true;
@@ -135,18 +131,16 @@
             // 
             this.cmbDisponibles.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbDisponibles.FormattingEnabled = true;
-            this.cmbDisponibles.Location = new System.Drawing.Point(744, 96);
-            this.cmbDisponibles.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.cmbDisponibles.Location = new System.Drawing.Point(94, 51);
             this.cmbDisponibles.Name = "cmbDisponibles";
-            this.cmbDisponibles.Size = new System.Drawing.Size(160, 24);
+            this.cmbDisponibles.Size = new System.Drawing.Size(121, 21);
             this.cmbDisponibles.TabIndex = 9;
             // 
             // btnQuitar
             // 
-            this.btnQuitar.Location = new System.Drawing.Point(837, 145);
-            this.btnQuitar.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnQuitar.Location = new System.Drawing.Point(33, 146);
             this.btnQuitar.Name = "btnQuitar";
-            this.btnQuitar.Size = new System.Drawing.Size(100, 28);
+            this.btnQuitar.Size = new System.Drawing.Size(182, 36);
             this.btnQuitar.TabIndex = 11;
             this.btnQuitar.Text = "Quitar";
             this.btnQuitar.UseVisualStyleBackColor = true;
@@ -154,39 +148,70 @@
             // 
             // btnAsignar
             // 
-            this.btnAsignar.Location = new System.Drawing.Point(729, 145);
-            this.btnAsignar.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnAsignar.Location = new System.Drawing.Point(33, 104);
             this.btnAsignar.Name = "btnAsignar";
-            this.btnAsignar.Size = new System.Drawing.Size(100, 28);
+            this.btnAsignar.Size = new System.Drawing.Size(182, 36);
             this.btnAsignar.TabIndex = 10;
             this.btnAsignar.Text = "Asignar";
             this.btnAsignar.UseVisualStyleBackColor = true;
             this.btnAsignar.Click += new System.EventHandler(this.btnAsignar_Click);
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.btnborrar);
+            this.groupBox1.Controls.Add(this.lblIdRol);
+            this.groupBox1.Controls.Add(this.txtIdRol);
+            this.groupBox1.Controls.Add(this.lblNombreRol);
+            this.groupBox1.Controls.Add(this.txtNombreRol);
+            this.groupBox1.Controls.Add(this.btnmodificar);
+            this.groupBox1.Controls.Add(this.btnInsertar);
+            this.groupBox1.Location = new System.Drawing.Point(316, 29);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(242, 282);
+            this.groupBox1.TabIndex = 12;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Roles";
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.lblPermiso);
+            this.groupBox2.Controls.Add(this.cmbDisponibles);
+            this.groupBox2.Controls.Add(this.btnAsignar);
+            this.groupBox2.Controls.Add(this.btnQuitar);
+            this.groupBox2.Location = new System.Drawing.Point(316, 320);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(242, 213);
+            this.groupBox2.TabIndex = 13;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Permisos";
+            // 
+            // lblPermiso
+            // 
+            this.lblPermiso.AutoSize = true;
+            this.lblPermiso.Location = new System.Drawing.Point(35, 54);
+            this.lblPermiso.Name = "lblPermiso";
+            this.lblPermiso.Size = new System.Drawing.Size(53, 15);
+            this.lblPermiso.TabIndex = 12;
+            this.lblPermiso.Text = "Permiso";
+            // 
             // FrmABMRoles
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.ClientSize = new System.Drawing.Size(1067, 554);
-            this.Controls.Add(this.btnQuitar);
-            this.Controls.Add(this.btnAsignar);
-            this.Controls.Add(this.cmbDisponibles);
-            this.Controls.Add(this.btnborrar);
-            this.Controls.Add(this.btnmodificar);
-            this.Controls.Add(this.btnInsertar);
-            this.Controls.Add(this.txtNombreRol);
-            this.Controls.Add(this.lblNombreRol);
-            this.Controls.Add(this.txtIdRol);
-            this.Controls.Add(this.lblIdRol);
+            this.ClientSize = new System.Drawing.Size(743, 704);
+            this.Controls.Add(this.groupBox2);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btnlistar);
             this.Controls.Add(this.tvRoles);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "FrmABMRoles";
             this.Text = "FrmABMRoles";
             this.Load += new System.EventHandler(this.FrmABMRoles_Load);
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -204,5 +229,8 @@
         private System.Windows.Forms.ComboBox cmbDisponibles;
         private System.Windows.Forms.Button btnQuitar;
         private System.Windows.Forms.Button btnAsignar;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.Label lblPermiso;
     }
 }

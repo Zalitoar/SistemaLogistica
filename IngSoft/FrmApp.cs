@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Servicios;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -7,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Servicios;
+using static System.Collections.Specialized.BitVector32;
 
 namespace IngSoft
 {
@@ -25,11 +26,11 @@ namespace IngSoft
         {
             Servicios.SessionManager sesion = Servicios.SessionManager.GetInstance();
             
-
-
             if (sesion.GetUsuario() != null)
             {
                 this.Text = "Sistema de Gestión - Usuario: " + sesion.GetUsuario().Nombre;
+                ValidarPermiso();
+
             }
 
             AgregarComboIdiomas();
@@ -70,6 +71,17 @@ namespace IngSoft
                 ActualizarIdioma(Servicios.IdiomaManager.GetInstance().GetIdiomaActual());
             }
             catch { }
+        }
+
+        private void ValidarPermiso()
+        {
+            clientesToolStripMenuItem.Enabled = Servicios.SessionManager.GetInstance().TienePermiso("GESTION_VENTAS");
+            productosToolStripMenuItem.Enabled = Servicios.SessionManager.GetInstance().TienePermiso("ABM_CLIENTES");
+            productosToolStripMenuItem1.Enabled = Servicios.SessionManager.GetInstance().TienePermiso("ABM_PRODUCTOS");
+            historialToolStripMenuItem.Enabled = Servicios.SessionManager.GetInstance().TienePermiso("VER_HISTORIAL");
+            usuariosToolStripMenuItem.Enabled = Servicios.SessionManager.GetInstance().TienePermiso("ABM_USUARIOS");
+            perfilesToolStripMenuItem.Enabled = Servicios.SessionManager.GetInstance().TienePermiso("ABM_ROLES");
+            bitácoraToolStripMenuItem.Enabled = Servicios.SessionManager.GetInstance().TienePermiso("VER_BITACORA");
         }
 
         private void AgregarComboIdiomas()
