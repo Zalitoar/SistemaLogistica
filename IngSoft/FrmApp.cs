@@ -12,10 +12,10 @@ using static System.Collections.Specialized.BitVector32;
 
 namespace IngSoft
 {
-    public partial class FrmApp : Form, Servicios.IIdiomaObserver
+    public partial class FrmApp : FormularioTraducible
     {
         private bool cierreVoluntario = false;
-        private ComboBox cmbIdiomasApp;
+        private bool salirAplicacion = false;
 
         public FrmApp()
         {
@@ -33,9 +33,7 @@ namespace IngSoft
 
             }
 
-            AgregarComboIdiomas();
-
-            // Poblamos también el ToolStripComboBox (lista en la cinta) si existe
+            // Poblar el único selector de idiomas de la ventana principal.
             try
             {
                 if (this.toolStripComboBoxIdiomas != null)
@@ -65,12 +63,6 @@ namespace IngSoft
             }
             catch { }
 
-            try
-            {
-                Servicios.IdiomaManager.GetInstance().RegistrarObserver(this);
-                ActualizarIdioma(Servicios.IdiomaManager.GetInstance().GetIdiomaActual());
-            }
-            catch { }
         }
 
         private void ValidarPermiso()
@@ -84,92 +76,15 @@ namespace IngSoft
             bitácoraToolStripMenuItem.Enabled = Servicios.SessionManager.GetInstance().TienePermiso("VER_BITACORA");
         }
 
-        private void AgregarComboIdiomas()
-        {
-            if (cmbIdiomasApp != null) return;
-
-            cmbIdiomasApp = new ComboBox();
-            cmbIdiomasApp.Name = "cmbIdiomasApp";
-            cmbIdiomasApp.DropDownStyle = ComboBoxStyle.DropDownList;
-            cmbIdiomasApp.Width = 160;
-            cmbIdiomasApp.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            cmbIdiomasApp.Location = new Point(Math.Max(8, this.ClientSize.Width - cmbIdiomasApp.Width - 8), 4);
-            cmbIdiomasApp.SelectedIndexChanged += CmbIdiomasApp_SelectedIndexChanged;
-
-            this.Controls.Add(cmbIdiomasApp);
-
-            try
-            {
-                var lista = IdiomaManager.GetInstance().ListarIdiomas();
-                cmbIdiomasApp.DisplayMember = "Nombre";
-                cmbIdiomasApp.ValueMember = "Id_Idioma";
-                cmbIdiomasApp.DataSource = lista;
-
-                var activo = IdiomaManager.GetInstance().GetIdiomaActual();
-                if (activo != null)
-                {
-                    for (int i = 0; i < cmbIdiomasApp.Items.Count; i++)
-                    {
-                        var it = cmbIdiomasApp.Items[i] as BE.Idioma;
-                        if (it != null && it.Id_Idioma == activo.Id_Idioma)
-                        {
-                            cmbIdiomasApp.SelectedIndex = i;
-                            break;
-                        }
-                    }
-                }
-            }
-            catch { }
-        }
-
-        private void CmbIdiomasApp_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                var sel = cmbIdiomasApp.SelectedItem as BE.Idioma;
-                if (sel != null)
-                {
-                    IdiomaManager.GetInstance().SetIdiomaActual(sel);
-
-                    // Si hay usuario en sesión, guardar preferencia
-                    var usuario = SessionManager.GetInstance()?.GetUsuario();
-                    if (usuario != null)
-                    {
-                        try
-                        {
-                            new BLL.Idioma().SetIdiomaPreferidoUsuario(usuario.Id_Usuario, sel.Id_Idioma);
-                        }
-                        catch { }
-                    }
-                }
-            }
-            catch { }
-        }
-
         // Nuevo handler para la lista en la cinta de menú
         private void toolStripComboBoxIdiomas_SelectedIndexChanged(object sender, EventArgs e)
         {
             try
             {
-                // Usar la ComboBox interna para obtener el SelectedItem
-                var sel = this.toolStripComboBoxIdiomas.ComboBox.SelectedItem as BE.Idioma;
+                var sel = this.toolStripComboBoxIdiomas.SelectedItem as BE.Idioma;
                 if (sel != null)
                 {
                     IdiomaManager.GetInstance().SetIdiomaActual(sel);
-
-                    // Sincronizar el combo de la esquina si existe
-                    if (cmbIdiomasApp != null)
-                    {
-                        for (int i = 0; i < cmbIdiomasApp.Items.Count; i++)
-                        {
-                            var it = cmbIdiomasApp.Items[i] as BE.Idioma;
-                            if (it != null && it.Id_Idioma == sel.Id_Idioma)
-                            {
-                                cmbIdiomasApp.SelectedIndex = i;
-                                break;
-                            }
-                        }
-                    }
 
                     // Si hay usuario en sesión, guardar preferencia
                     var usuario = SessionManager.GetInstance()?.GetUsuario();
@@ -188,15 +103,19 @@ namespace IngSoft
 
         private void FrmApp_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (cierreVoluntario) return;
+            if (cierreVoluntario || salirAplicacion) return;
 
-            DialogResult respuesta = MessageBox.Show("¿Realmente desea cerrar sesión y salir?", "Confirmar Salida", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            DialogResult respuesta = MessageBox.Show(
+                ObtenerTexto("FrmApp.msgConfirmarSalir", "¿Realmente desea cerrar sesión y salir?"),
+                ObtenerTexto("FrmApp.msgTituloConfirmarSalida", "Confirmar salida"),
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
 
             if (respuesta == DialogResult.Yes)
             {
+                salirAplicacion = true;
                 BitacoraManager.Registrar("Cierre de sesión");
                 SessionManager.Logout();
-                Environment.Exit(0);
             }
             else
             {
@@ -206,21 +125,33 @@ namespace IngSoft
 
         private void salirToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Application.Exit();
+            Close();
         }
 
         private void cerrarSesiónToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DialogResult respuesta = MessageBox.Show("¿Realmente desea cerrar sesión?", "Confirmar Salida", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            DialogResult respuesta = MessageBox.Show(
+                ObtenerTexto("FrmApp.msgConfirmarCerrarSesion", "¿Realmente desea cerrar sesión?"),
+                ObtenerTexto("FrmApp.msgTituloConfirmarSalida", "Confirmar salida"),
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
 
             if (respuesta == DialogResult.Yes)
             {
                 cierreVoluntario = true;
                 BitacoraManager.Registrar("Cierre de sesión");
                 SessionManager.Logout();
+
+                FrmLogin login = Application.OpenForms
+                    .OfType<FrmLogin>()
+                    .FirstOrDefault();
+
                 this.Close();
-                FrmLogin login = new FrmLogin();
-                login.ShowDialog();
+
+                if (login != null)
+                    login.PrepararNuevoIngreso();
+                else
+                    new FrmLogin().Show();
             }
         }
 
@@ -252,125 +183,35 @@ namespace IngSoft
         }
 
         // IIdiomaObserver
-        public void ActualizarIdioma(BE.Idioma nuevoIdioma)
+        public override void ActualizarIdioma(BE.Idioma nuevoIdioma)
         {
-            var mgr = IdiomaManager.GetInstance();
-            if (mgr == null) return;
+            base.ActualizarIdioma(nuevoIdioma);
 
-            try
+            if (nuevoIdioma == null)
+                return;
+
+            if (toolStripComboBoxIdiomas == null || IsDisposed || Disposing)
+                return;
+
+            for (int i = 0; i < toolStripComboBoxIdiomas.Items.Count; i++)
             {
-                // Actualizar título con convención
-                string baseName = string.IsNullOrWhiteSpace(this.Name) ? this.GetType().Name : this.Name;
-                string titulo = mgr.Traducir(baseName + ".Title");
-                if (!string.IsNullOrEmpty(titulo) && !string.Equals(titulo, baseName + ".Title", StringComparison.OrdinalIgnoreCase))
-                    this.Text = titulo;
-
-                // Traducir controles
-                foreach (Control c in this.Controls)
+                BE.Idioma item = toolStripComboBoxIdiomas.Items[i] as BE.Idioma;
+                if (item != null && item.Id_Idioma == nuevoIdioma.Id_Idioma)
                 {
-                    // Recursivo
-                    TraducirControlRecursivo(c, baseName, mgr);
-
-                    if (c is MenuStrip menu)
-                        TraducirToolStripItemsRecursivo(menu.Items, baseName, mgr);
-                    else if (c is ToolStrip ts)
-                        TraducirToolStripItemsRecursivo(ts.Items, baseName, mgr);
-                }
-
-                // Actualizar lista de idiomas del combo
-                if (cmbIdiomasApp != null)
-                {
-                    var lista = mgr.ListarIdiomas();
-                    cmbIdiomasApp.DataSource = null;
-                    cmbIdiomasApp.DataSource = lista;
-                    cmbIdiomasApp.DisplayMember = "Nombre";
-                    cmbIdiomasApp.ValueMember = "Id_Idioma";
-                    if (nuevoIdioma != null)
-                    {
-                        for (int i = 0; i < cmbIdiomasApp.Items.Count; i++)
-                        {
-                            var it = cmbIdiomasApp.Items[i] as BE.Idioma;
-                            if (it != null && it.Id_Idioma == nuevoIdioma.Id_Idioma)
-                            {
-                                cmbIdiomasApp.SelectedIndex = i;
-                                break;
-                            }
-                        }
-                    }
-                }
-
-                // Actualizar lista de idiomas del ToolStripComboBox (usar ComboBox interna)
-                if (this.toolStripComboBoxIdiomas != null)
-                {
-                    var listaMenu = mgr.ListarIdiomas();
-                    var inner = this.toolStripComboBoxIdiomas.ComboBox;
-                    inner.DataSource = null;
-                    inner.DisplayMember = "Nombre";
-                    inner.ValueMember = "Id_Idioma";
-                    inner.DataSource = listaMenu;
-
-                    if (nuevoIdioma != null)
-                    {
-                        for (int i = 0; i < inner.Items.Count; i++)
-                        {
-                            var it = inner.Items[i] as BE.Idioma;
-                            if (it != null && it.Id_Idioma == nuevoIdioma.Id_Idioma)
-                            {
-                                inner.SelectedIndex = i;
-                                break;
-                            }
-                        }
-                    }
+                    toolStripComboBoxIdiomas.SelectedIndex = i;
+                    break;
                 }
             }
-            catch { }
         }
 
-        private void TraducirControlRecursivo(Control c, string baseName, IdiomaManager mgr)
+        protected override void OnFormClosed(FormClosedEventArgs e)
         {
-            try
-            {
-                if (!string.IsNullOrWhiteSpace(c.Name))
-                {
-                    string clave = baseName + "." + c.Name + ".Text";
-                    string tradu = mgr.Traducir(clave);
-                    if (!string.IsNullOrEmpty(tradu) && !string.Equals(tradu, clave, StringComparison.OrdinalIgnoreCase))
-                        c.Text = tradu;
-                }
+            base.OnFormClosed(e);
 
-                if (c.HasChildren)
-                {
-                    foreach (Control child in c.Controls)
-                        TraducirControlRecursivo(child, baseName, mgr);
-                }
-
-                if (c is ToolStrip ts)
-                    TraducirToolStripItemsRecursivo(ts.Items, baseName, mgr);
-            }
-            catch { }
-        }
-
-        private void TraducirToolStripItemsRecursivo(ToolStripItemCollection items, string baseName, IdiomaManager mgr)
-        {
-            foreach (ToolStripItem item in items)
-            {
-                try
-                {
-                    if (!string.IsNullOrWhiteSpace(item.Name))
-                    {
-                        string clave = baseName + "." + item.Name + ".Text";
-                        string tradu = mgr.Traducir(clave);
-                        if (!string.IsNullOrEmpty(tradu) && !string.Equals(tradu, clave, StringComparison.OrdinalIgnoreCase))
-                        {
-                            item.Text = tradu;
-                        }
-                    }
-
-                    if (item is ToolStripMenuItem menuItem && menuItem.DropDownItems.Count > 0)
-                        TraducirToolStripItemsRecursivo(menuItem.DropDownItems, baseName, mgr);
-                }
-                catch { }
-            }
+            // Salir después de que FrmApp terminó de destruir sus controles.
+            // Esto evita abortar el WndProc activo del ToolStripComboBox.
+            if (salirAplicacion)
+                Application.Exit();
         }
 
         // Modificado: abre FrmIdioma como ventana MDI
@@ -384,7 +225,11 @@ namespace IngSoft
             }
             catch (Exception ex)
             {
-                MessageBox.Show("No se pudo abrir el formulario de Idiomas: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(
+                    ObtenerTexto("FrmApp.msgErrorAbrirIdiomas", "No se pudo abrir el formulario de idiomas.") + " " + ex.Message,
+                    ObtenerTexto("Common.msgError", "Error"),
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
 

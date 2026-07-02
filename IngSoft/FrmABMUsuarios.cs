@@ -14,7 +14,7 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace IngSoft
 {
-    public partial class FrmABMUsuarios : Form
+    public partial class FrmABMUsuarios : FormularioTraducible
     {
         public FrmABMUsuarios()
         {
@@ -68,8 +68,9 @@ namespace IngSoft
             {
                 if (!ClaveValida(txtClave.Text))
                 {
-                    MessageBox.Show("La clave no cumple con los requisitos." +
-                                    "\nDebe tener al menos 6 caracteres, una letra mayúscula y un número.");
+                    MessageBox.Show(ObtenerTexto(
+                        "FrmABMUsuarios.msgClaveNoCumple",
+                        "La clave no cumple con los requisitos.\nDebe tener al menos 6 caracteres, una letra mayúscula y un número."));
                     return;
                 }
                 else

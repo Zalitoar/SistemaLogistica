@@ -9,7 +9,7 @@ using Servicios;
 
 namespace IngSoft
 {
-	public partial class FrmIdioma : Form
+	public partial class FrmIdioma : FormularioTraducible
 	{
 		private DataGridView dgvIdiomas;
 		private DataGridView dgvTraducciones;
@@ -21,11 +21,11 @@ namespace IngSoft
 		{
 			InitializeComponent();
 
-			// Seguridad: s髄o admin (Id_Rol == 11) puede abrir
+			// Seguridad: s贸lo admin (Id_Rol == 11) puede abrir
 			var u = SessionManager.GetInstance()?.GetUsuario();
 			if (u == null || u.Id_Rol != 11)
 			{
-				MessageBox.Show("Acceso denegado. Requiere rol administrador.");
+				MessageBox.Show(ObtenerTexto("FrmIdioma.msgAccesoDenegado", "Acceso denegado. Requiere rol administrador."));
 				this.Load += (s, e) => this.BeginInvoke(new Action(() => this.Close()));
 			}
 		}
@@ -38,7 +38,6 @@ namespace IngSoft
 		private void CargarIdiomas()
 		{
 			var lista = bllIdioma.Listar();
-			// Marcar EsDefault en objetos BE.Idioma si no existe la propiedad en BE, adaptado seg鷑 BD
 			dgvIdiomas.DataSource = lista;
 		}
 
@@ -80,7 +79,10 @@ namespace IngSoft
 			if (dgvIdiomas.SelectedRows.Count == 0) return;
 			var fila = dgvIdiomas.SelectedRows[0].DataBoundItem as BE.Idioma;
 			if (fila == null) return;
-			if (MessageBox.Show("緽orrar idioma?", "Confirmar", MessageBoxButtons.YesNo) == DialogResult.Yes)
+			if (MessageBox.Show(
+				ObtenerTexto("FrmIdioma.msgBorrarIdioma", "驴Borrar idioma?"),
+				ObtenerTexto("FrmIdioma.msgConfirmar", "Confirmar"),
+				MessageBoxButtons.YesNo) == DialogResult.Yes)
 			{
 				bllIdioma.Borrar(fila);
 				CargarIdiomas();
@@ -112,14 +114,11 @@ namespace IngSoft
 			if (dgvIdiomas.SelectedRows.Count == 0) return;
 			var fila = dgvIdiomas.SelectedRows[0].DataBoundItem as BE.Idioma;
 			if (fila == null) return;
-			// Para marcar default, actualizar registro (SP EDITAR_IDIOMA maneja EsDefault)
-			// Asumimos que BE.Idioma tiene propiedad EsDefault; si no, se puede extender la clase BE.
-			try
-			{
-				fila.GetType().GetProperty("EsDefault")?.SetValue(fila, 1);
-				bllIdioma.Grabar(fila);
-			}
-			catch { }
+
+			// Un idioma predeterminado debe estar disponible para poder cargarlo.
+			fila.Habilitado = 1;
+			fila.EsDefault = true;
+			bllIdioma.Grabar(fila);
 			CargarIdiomas();
 		}
 
@@ -143,7 +142,7 @@ namespace IngSoft
 				t.Id_Idioma = idiomaSeleccionadoId;
 				bllIdioma.GrabarTraduccion(t);
 			}
-			MessageBox.Show("Traducciones guardadas.");
+			MessageBox.Show(ObtenerTexto("FrmIdioma.msgTraduccionesGuardadas", "Traducciones guardadas."));
 			// Recargar traducciones globales en manager
 			var todas = bllIdioma.ListarTraducciones();
 			Servicios.IdiomaManager.GetInstance().CargarTraducciones(todas);
@@ -166,43 +165,53 @@ namespace IngSoft
 
 			this.SuspendLayout();
 
-			// Configuraci髇 b醩ica de controles (puede ajustarse seg鷑 dise駉)
+			// Configuraci贸n b谩sica de controles (puede ajustarse seg煤n dise帽o)
+			this.dgvIdiomas.Name = "dgvIdiomas";
 			this.dgvIdiomas.Location = new Point(12, 12);
 			this.dgvIdiomas.Size = new Size(400, 200);
 			this.dgvIdiomas.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
 			this.dgvIdiomas.MultiSelect = false;
 
+			this.dgvTraducciones.Name = "dgvTraducciones";
 			this.dgvTraducciones.Location = new Point(12, 220);
 			this.dgvTraducciones.Size = new Size(400, 200);
 
+			this.btnNuevo.Name = "btnNuevo";
 			this.btnNuevo.Text = "Nuevo";
 			this.btnNuevo.Location = new Point(420, 12);
 			this.btnNuevo.Click += BtnNuevo_Click;
 
+			this.btnEditar.Name = "btnEditar";
 			this.btnEditar.Text = "Editar";
 			this.btnEditar.Location = new Point(420, 42);
 			this.btnEditar.Click += BtnEditar_Click;
 
+			this.btnBorrar.Name = "btnBorrar";
 			this.btnBorrar.Text = "Borrar";
 			this.btnBorrar.Location = new Point(420, 72);
 			this.btnBorrar.Click += BtnBorrar_Click;
 
+			this.btnActivar.Name = "btnActivar";
 			this.btnActivar.Text = "Activar";
 			this.btnActivar.Location = new Point(420, 102);
 			this.btnActivar.Click += BtnActivar_Click;
 
+			this.btnDesactivar.Name = "btnDesactivar";
 			this.btnDesactivar.Text = "Desactivar";
 			this.btnDesactivar.Location = new Point(420, 132);
 			this.btnDesactivar.Click += BtnDesactivar_Click;
 
+			this.btnSetDefault.Name = "btnSetDefault";
 			this.btnSetDefault.Text = "Set Default";
 			this.btnSetDefault.Location = new Point(420, 162);
 			this.btnSetDefault.Click += BtnSetDefault_Click;
 
+			this.btnCargarTraducciones.Name = "btnCargarTraducciones";
 			this.btnCargarTraducciones.Text = "Cargar Traducciones";
 			this.btnCargarTraducciones.Location = new Point(420, 220);
 			this.btnCargarTraducciones.Click += BtnCargarTraducciones_Click;
 
+			this.btnGuardarTraducciones.Name = "btnGuardarTraducciones";
 			this.btnGuardarTraducciones.Text = "Guardar Traducciones";
 			this.btnGuardarTraducciones.Location = new Point(420, 250);
 			this.btnGuardarTraducciones.Click += BtnGuardarTraducciones_Click;
@@ -219,14 +228,15 @@ namespace IngSoft
 			this.Controls.Add(this.btnGuardarTraducciones);
 
 			this.ClientSize = new Size(600, 450);
+			this.Name = "FrmIdioma";
 			this.Load += FrmIdioma_Load;
-			this.Text = "Gesti髇 de Idiomas";
+			this.Text = "Gesti贸n de Idiomas";
 			this.ResumeLayout(false);
 		}
 	}
 
 	// Form auxiliar para crear/editar idioma
-	public class FrmIdiomaEditor : Form
+	public class FrmIdiomaEditor : FormularioTraducible
 	{
 		public string Nombre { get; set; }
 		public string Codigo { get; set; }
@@ -239,21 +249,22 @@ namespace IngSoft
 
 		public FrmIdiomaEditor()
 		{
+			this.Name = "FrmIdiomaEditor";
 			this.Text = "Idioma";
 			this.Size = new Size(320, 180);
 
-			txtNombre = new TextBox { Location = new Point(100, 12), Width = 180 };
-			txtCodigo = new TextBox { Location = new Point(100, 44), Width = 180 };
-			chkHabilitado = new CheckBox { Location = new Point(100, 76), Text = "Habilitado" };
+			txtNombre = new TextBox { Name = "txtNombre", Location = new Point(100, 12), Width = 180 };
+			txtCodigo = new TextBox { Name = "txtCodigo", Location = new Point(100, 44), Width = 180 };
+			chkHabilitado = new CheckBox { Name = "chkHabilitado", Location = new Point(100, 76), Text = "Habilitado" };
 
-			this.Controls.Add(new Label { Text = "Nombre:", Location = new Point(12, 12) });
-			this.Controls.Add(new Label { Text = "C骴igo:", Location = new Point(12, 44) });
+			this.Controls.Add(new Label { Name = "lblNombre", Text = "Nombre:", Location = new Point(12, 12) });
+			this.Controls.Add(new Label { Name = "lblCodigo", Text = "C贸digo:", Location = new Point(12, 44) });
 			this.Controls.Add(txtNombre);
 			this.Controls.Add(txtCodigo);
 			this.Controls.Add(chkHabilitado);
 
-			btnOk = new Button { Text = "OK", Location = new Point(100, 108) };
-			btnCancel = new Button { Text = "Cancelar", Location = new Point(188, 108) };
+			btnOk = new Button { Name = "btnOk", Text = "OK", Location = new Point(100, 108) };
+			btnCancel = new Button { Name = "btnCancel", Text = "Cancelar", Location = new Point(188, 108) };
 			btnOk.Click += (s, e) => { Nombre = txtNombre.Text; Codigo = txtCodigo.Text; Habilitado = chkHabilitado.Checked; this.DialogResult = DialogResult.OK; this.Close(); };
 			btnCancel.Click += (s, e) => { this.DialogResult = DialogResult.Cancel; this.Close(); };
 

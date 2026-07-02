@@ -139,6 +139,15 @@ namespace Servicios
 		/// <param name="idioma"></param>
 		public void SetIdiomaActual(BE.Idioma idioma)
 		{
+			// Un enlace de datos de WinForms puede volver a disparar el evento de
+			// selección. No notificar si el idioma no cambió evita ciclos de eventos.
+			if ((idiomaActual == null && idioma == null) ||
+				(idiomaActual != null && idioma != null &&
+				 idiomaActual.Id_Idioma == idioma.Id_Idioma))
+			{
+				return;
+			}
+
 			idiomaActual = idioma;
 			NotificarObservers();
 		}

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -11,9 +12,16 @@ namespace DAL
     {
         public int Restore()
         {
+            var builder = new SqlConnectionStringBuilder(
+                ConfigurationManager.ConnectionStrings["SQL"].ConnectionString);
+
             ACCESO acceso = new ACCESO();
             acceso.AbrirMaster();
-            var parametros = new List<SqlParameter> { acceso.CrearParametro("@Ruta", @"C:\Program Files\Microsoft SQL Server\MSSQL16.SQLEXPRESS\MSSQL\Backup\Backup IngSoftDB.bak") };
+            var parametros = new List<SqlParameter>
+            {
+                acceso.CrearParametro("@Ruta", @"C:\Program Files\Microsoft SQL Server\MSSQL16.SQLEXPRESS\MSSQL\Backup\Backup IngSoftDB.bak"),
+                acceso.CrearParametro("@BaseDatos", builder.InitialCatalog)
+            };
             SqlCommand com = acceso.CrearComando("BACKUP_BD", parametros);
 
             int ok;
