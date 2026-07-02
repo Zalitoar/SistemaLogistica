@@ -31,6 +31,7 @@ namespace DAL
 			parametros.Add(acceso.CrearParametro("@Nombre_Idioma", objeto.Nombre));
 			parametros.Add(acceso.CrearParametro("@Codigo_Idioma", objeto.Codigo));
 			parametros.Add(acceso.CrearParametro("@Habilitado_Idioma", objeto.Habilitado));
+			parametros.Add(acceso.CrearParametro("@EsDefault", objeto.EsDefault ? 1 : 0));
 			int resultado = acceso.Escribir("EDITAR_IDIOMA", parametros);
 			acceso.Cerrar();
 			return resultado;
@@ -44,6 +45,7 @@ namespace DAL
 			parametros.Add(acceso.CrearParametro("@Nombre_Idioma", objeto.Nombre));
 			parametros.Add(acceso.CrearParametro("@Codigo_Idioma", objeto.Codigo));
 			parametros.Add(acceso.CrearParametro("@Habilitado_Idioma", objeto.Habilitado));
+			parametros.Add(acceso.CrearParametro("@EsDefault", objeto.EsDefault ? 1 : 0));
 			DataTable tabla = acceso.Leer("INSERTAR_IDIOMA", parametros);
 			acceso.Cerrar();
 
@@ -72,7 +74,8 @@ namespace DAL
 					Id_Idioma = fila.Field<int>("Id_Idioma"),
 					Nombre = fila.Field<string>("Nombre_Idioma"),
 					Codigo = fila.Table.Columns.Contains("Codigo_Idioma") ? fila.Field<string>("Codigo_Idioma") : string.Empty,
-					Habilitado = ConvertHabilitado(fila, "Habilitado_Idioma")
+					Habilitado = ConvertHabilitado(fila, "Habilitado_Idioma"),
+					EsDefault = ConvertBooleano(fila, "EsDefault")
 				});
 			}
 
@@ -96,7 +99,8 @@ namespace DAL
 				Id_Idioma = int.Parse(fila["Id_Idioma"].ToString()),
 				Codigo = fila.Table.Columns.Contains("Codigo_Idioma") ? fila["Codigo_Idioma"].ToString() : string.Empty,
 				Nombre = fila.Table.Columns.Contains("Nombre_Idioma") ? fila["Nombre_Idioma"].ToString() : string.Empty,
-				Habilitado = fila.Table.Columns.Contains("Habilitado_Idioma") ? int.Parse(fila["Habilitado_Idioma"].ToString()) : 1
+				Habilitado = fila.Table.Columns.Contains("Habilitado_Idioma") ? int.Parse(fila["Habilitado_Idioma"].ToString()) : 1,
+				EsDefault = ConvertBooleano(fila, "EsDefault")
 			};
 		}
 
@@ -117,7 +121,8 @@ namespace DAL
 					Id_Idioma = int.Parse(fila["Id_Idioma"].ToString()),
 					Nombre = fila.Table.Columns.Contains("Nombre_Idioma") ? fila["Nombre_Idioma"].ToString() : string.Empty,
 					Codigo = fila.Table.Columns.Contains("Codigo_Idioma") ? fila["Codigo_Idioma"].ToString() : string.Empty,
-					Habilitado = fila.Table.Columns.Contains("Habilitado_Idioma") ? int.Parse(fila["Habilitado_Idioma"].ToString()) : 1
+					Habilitado = fila.Table.Columns.Contains("Habilitado_Idioma") ? int.Parse(fila["Habilitado_Idioma"].ToString()) : 1,
+					EsDefault = ConvertBooleano(fila, "EsDefault")
 				});
 			}
 
@@ -162,6 +167,18 @@ namespace DAL
 			if (val is int i) return i;
 			if (int.TryParse(val.ToString(), out int parsed)) return parsed;
 			return 1; // valor por defecto prudente
+		}
+
+		private bool ConvertBooleano(DataRow fila, string columna)
+		{
+			if (!fila.Table.Columns.Contains(columna) || fila.IsNull(columna)) return false;
+			object valor = fila[columna];
+			if (valor is bool) return (bool)valor;
+			if (valor is int) return (int)valor != 0;
+			bool resultadoBooleano;
+			if (bool.TryParse(valor.ToString(), out resultadoBooleano)) return resultadoBooleano;
+			int resultadoEntero;
+			return int.TryParse(valor.ToString(), out resultadoEntero) && resultadoEntero != 0;
 		}
 	}
 }

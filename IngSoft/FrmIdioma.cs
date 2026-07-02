@@ -38,7 +38,6 @@ namespace IngSoft
 		private void CargarIdiomas()
 		{
 			var lista = bllIdioma.Listar();
-			// Marcar EsDefault en objetos BE.Idioma si no existe la propiedad en BE, adaptado según BD
 			dgvIdiomas.DataSource = lista;
 		}
 
@@ -115,14 +114,11 @@ namespace IngSoft
 			if (dgvIdiomas.SelectedRows.Count == 0) return;
 			var fila = dgvIdiomas.SelectedRows[0].DataBoundItem as BE.Idioma;
 			if (fila == null) return;
-			// Para marcar default, actualizar registro (SP EDITAR_IDIOMA maneja EsDefault)
-			// Asumimos que BE.Idioma tiene propiedad EsDefault; si no, se puede extender la clase BE.
-			try
-			{
-				fila.GetType().GetProperty("EsDefault")?.SetValue(fila, 1);
-				bllIdioma.Grabar(fila);
-			}
-			catch { }
+
+			// Un idioma predeterminado debe estar disponible para poder cargarlo.
+			fila.Habilitado = 1;
+			fila.EsDefault = true;
+			bllIdioma.Grabar(fila);
 			CargarIdiomas();
 		}
 

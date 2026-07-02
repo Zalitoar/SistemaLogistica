@@ -30,9 +30,9 @@ namespace IngSoft
                 var listaTraducciones = bllIdioma.ListarTraducciones() ?? new List<BE.Traduccion>();
                 IdiomaManager.GetInstance().CargarTraducciones(listaTraducciones);
 
-                // Seleccionar idioma por defecto:
+                // Seleccionar el idioma predeterminado configurado en la base.
                 BE.Idioma seleccionado = listaIdiomas
-                    .FirstOrDefault(i => string.Equals(i.Codigo, "es", StringComparison.OrdinalIgnoreCase) && i.Habilitado == 1)
+                    .FirstOrDefault(i => i.EsDefault && i.Habilitado == 1)
                     ?? listaIdiomas.FirstOrDefault(i => i.Habilitado == 1)
                     ?? listaIdiomas.FirstOrDefault();
 

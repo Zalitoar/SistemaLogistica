@@ -95,6 +95,7 @@ VALUES
     (N'FrmIdioma.btnSetDefault.Text', N'Predeterminado'),
     (N'FrmIdioma.dgvIdiomas.Codigo.HeaderText', N'Código'),
     (N'FrmIdioma.dgvIdiomas.Habilitado.HeaderText', N'Habilitado'),
+    (N'FrmIdioma.dgvIdiomas.EsDefault.HeaderText', N'Predeterminado'),
     (N'FrmIdioma.dgvIdiomas.Id_Idioma.HeaderText', N'Id'),
     (N'FrmIdioma.dgvIdiomas.Nombre.HeaderText', N'Nombre'),
     (N'FrmIdioma.dgvTraducciones.Clave.HeaderText', N'Clave'),

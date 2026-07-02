@@ -45,5 +45,16 @@ namespace BE
 			get { return habilitado; }
 			set { habilitado = value; }
 		}
+
+		private bool esDefault;
+
+		/// <summary>
+		/// Indica si es el idioma predeterminado del sistema.
+		/// </summary>
+		public bool EsDefault
+		{
+			get { return esDefault; }
+			set { esDefault = value; }
+		}
 	}
 }
