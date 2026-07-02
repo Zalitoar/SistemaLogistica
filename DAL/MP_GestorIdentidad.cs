@@ -19,7 +19,7 @@ namespace DAL
             acceso.AbrirMaster();
             var parametros = new List<SqlParameter>
             {
-                acceso.CrearParametro("@Ruta", @"C:\Program Files\Microsoft SQL Server\MSSQL16.SQLEXPRESS\MSSQL\Backup\Backup IngSoftDB.bak"),
+                acceso.CrearParametro("@Ruta", @"C:\Program Files\Microsoft SQL Server\MSSQL16.SQLEXPRESS\MSSQL\Backup\NUEVAIngSoftv3.bak"),
                 acceso.CrearParametro("@BaseDatos", builder.InitialCatalog)
             };
             SqlCommand com = acceso.CrearComando("BACKUP_BD", parametros);

@@ -46,7 +46,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FormularioTraducible.cs" />
+    <Compile Include="FormularioTraducible.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FrmABMRoles.cs">
       <SubType>Form</SubType>
     </Compile>
