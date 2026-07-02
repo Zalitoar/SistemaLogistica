@@ -14,7 +14,7 @@ using System.Windows.Forms;
 
 namespace IngSoft
 {   
-	public partial class FrmLogin : Form, Servicios.IIdiomaObserver
+	public partial class FrmLogin : FormularioTraducible
 	{
 		private bool integridadok = true;
 		private ComboBox cmbIdiomasLogin;
@@ -37,16 +37,6 @@ namespace IngSoft
 			// Añadir selector de idiomas dinámicamente (si no existe en el diseñador)
 			AgregarComboIdiomas();
 
-			// Registrarse en IdiomaManager y aplicar idioma actual
-			try
-			{
-				Servicios.IdiomaManager.GetInstance().RegistrarObserver(this);
-				ActualizarIdioma(Servicios.IdiomaManager.GetInstance().GetIdiomaActual());
-			}
-			catch
-			{
-				// No bloquear la carga si el manager falla
-			}
 		}
 
 		private void AgregarComboIdiomas()
@@ -61,7 +51,9 @@ namespace IngSoft
 			cmbIdiomasLogin.Location = new Point(Math.Max(8, this.ClientSize.Width - cmbIdiomasLogin.Width - 8), 8);
 			cmbIdiomasLogin.Anchor = AnchorStyles.Top | AnchorStyles.Right;
 
-			cmbIdiomasLogin.SelectedIndexChanged += CmbIdiomasLogin_SelectedIndexChanged;
+			// Sólo responde a elecciones del usuario; los cambios programáticos al
+			// sincronizar el selector no deben volver a cambiar el idioma.
+			cmbIdiomasLogin.SelectionChangeCommitted += CmbIdiomasLogin_SelectedIndexChanged;
 
 			this.Controls.Add(cmbIdiomasLogin);
 
@@ -202,133 +194,14 @@ namespace IngSoft
 		}
 
 		/// <summary>
-		/// Obtiene traducción por clave con fallback a textoPorDefecto.
-		/// </summary>
-		private string ObtenerTexto(string clave, string textoPorDefecto)
-		{
-			try
-			{
-				var mgr = Servicios.IdiomaManager.GetInstance();
-				if (mgr != null)
-				{
-					string t = mgr.Traducir(clave);
-					if (!string.IsNullOrEmpty(t) && !string.Equals(t, clave, StringComparison.OrdinalIgnoreCase))
-						return t;
-				}
-			}
-			catch
-			{
-				// ignorar y retornar por defecto
-			}
-			return textoPorDefecto;
-		}
-
-		/// <summary>
 		/// IIdiomaObserver: actualiza UI usando la convención.
 		/// </summary>
-		public void ActualizarIdioma(BE.Idioma nuevoIdioma)
+		public override void ActualizarIdioma(BE.Idioma nuevoIdioma)
 		{
-			var mgr = Servicios.IdiomaManager.GetInstance();
-			if (mgr == null) return;
+			base.ActualizarIdioma(nuevoIdioma);
 
-			try
-			{
-				string baseName = string.IsNullOrWhiteSpace(this.Name) ? this.GetType().Name : this.Name;
-
-				// Título
-				string titulo = mgr.Traducir(baseName + ".Title");
-				if (!string.IsNullOrEmpty(titulo) && !string.Equals(titulo, baseName + ".Title", StringComparison.OrdinalIgnoreCase))
-					this.Text = titulo;
-
-				// Traducir controles
-				TraducirControlesRecursivo(this, baseName, mgr);
-
-				// Actualizar combo de idiomas (si existe) para reflejar cambios en nombres si corresponde
-				if (cmbIdiomasLogin != null)
-				{
-					var lista = mgr.ListarIdiomas();
-					cmbIdiomasLogin.DataSource = null;
-					cmbIdiomasLogin.DataSource = lista;
-					cmbIdiomasLogin.DisplayMember = "Nombre";
-					cmbIdiomasLogin.ValueMember = "Id_Idioma";
-
-					if (nuevoIdioma != null)
-					{
-						for (int i = 0; i < cmbIdiomasLogin.Items.Count; i++)
-						{
-							var it = cmbIdiomasLogin.Items[i] as BE.Idioma;
-							if (it != null && it.Id_Idioma == nuevoIdioma.Id_Idioma)
-							{
-								cmbIdiomasLogin.SelectedIndex = i;
-								break;
-							}
-						}
-					}
-				}
-			}
-			catch
-			{
-				// No propagar errores
-			}
-		}
-
-		private void TraducirControlesRecursivo(Control padre, string baseName, Servicios.IdiomaManager mgr)
-		{
-			foreach (Control c in padre.Controls)
-			{
-				try
-				{
-					if (!string.IsNullOrWhiteSpace(c.Name))
-					{
-						string clave = baseName + "." + c.Name + ".Text";
-						string tradu = mgr.Traducir(clave);
-						if (!string.IsNullOrEmpty(tradu) && !string.Equals(tradu, clave, StringComparison.OrdinalIgnoreCase))
-						{
-							c.Text = tradu;
-						}
-					}
-
-					if (c.HasChildren)
-						TraducirControlesRecursivo(c, baseName, mgr);
-
-					if (c is ToolStrip ts)
-						TraducirToolStripItemsRecursivo(ts.Items, baseName, mgr);
-				}
-				catch { }
-			}
-		}
-
-		private void TraducirToolStripItemsRecursivo(ToolStripItemCollection items, string baseName, Servicios.IdiomaManager mgr)
-		{
-			foreach (ToolStripItem item in items)
-			{
-				try
-				{
-					if (!string.IsNullOrWhiteSpace(item.Name))
-					{
-						string clave = baseName + "." + item.Name + ".Text";
-						string tradu = mgr.Traducir(clave);
-						if (!string.IsNullOrEmpty(tradu) && !string.Equals(tradu, clave, StringComparison.OrdinalIgnoreCase))
-						{
-							item.Text = tradu;
-						}
-					}
-
-					if (item is ToolStripMenuItem menuItem && menuItem.DropDownItems.Count > 0)
-						TraducirToolStripItemsRecursivo(menuItem.DropDownItems, baseName, mgr);
-				}
-				catch { }
-			}
-		}
-
-		protected override void OnFormClosed(FormClosedEventArgs e)
-		{
-			try
-			{
-				Servicios.IdiomaManager.GetInstance().QuitarObserver(this);
-			}
-			catch { }
-			base.OnFormClosed(e);
+			if (cmbIdiomasLogin != null && nuevoIdioma != null)
+				cmbIdiomasLogin.SelectedValue = nuevoIdioma.Id_Idioma;
 		}
 
 		public bool ClaveValida(string _c)

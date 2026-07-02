@@ -12,7 +12,7 @@ using System.Windows.Forms;
 
 namespace IngSoft
 {
-    public partial class FrmBitacora : Form
+    public partial class FrmBitacora : FormularioTraducible
     {
         public FrmBitacora()
         {

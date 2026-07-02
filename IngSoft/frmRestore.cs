@@ -11,8 +11,11 @@ using System.Windows.Forms;
 
 namespace IngSoft
 {
-    public partial class frmRestore : Form
+    public partial class frmRestore : FormularioTraducible
     {
+        private bool? integridadDvvCorrecta;
+        private bool? integridadRegistrosCorrecta;
+
         public frmRestore()
         {
             InitializeComponent();
@@ -23,23 +26,45 @@ namespace IngSoft
             bool integridadDVV = GestorIntegridad.ValidarIntegridadDVV();
             List<BE.Usuario> registrosDVH = GestorIntegridad.ValidarIntegridadDVH();
 
+            integridadDvvCorrecta = integridadDVV;
+            integridadRegistrosCorrecta = registrosDVH.Count == 0;
+
             if (!integridadDVV)
             {
-                lblIntegridadDVV.Text = "Integridad fallida de tabla.";
+                lblIntegridadDVV.Text = ObtenerTexto("frmRestore.msgIntegridadDVVFallida", "Integridad fallida de tabla.");
             }
             else
             {
-                lblIntegridadDVV.Text = "Integridad correcta de tabla.";
+                lblIntegridadDVV.Text = ObtenerTexto("frmRestore.msgIntegridadDVVCorrecta", "Integridad correcta de tabla.");
             }
 
             if (registrosDVH.Count > 0)
             {
-                lblRegistros.Text = "Integridad fallida de registros.";
+                lblRegistros.Text = ObtenerTexto("frmRestore.msgIntegridadRegistrosFallida", "Integridad fallida de registros.");
                 dgvRegistros.DataSource = registrosDVH;
             }
             else
             {
-                lblRegistros.Text = "Integridad correcta de registros.";
+                lblRegistros.Text = ObtenerTexto("frmRestore.msgIntegridadRegistrosCorrecta", "Integridad correcta de registros.");
+            }
+        }
+
+        public override void ActualizarIdioma(BE.Idioma nuevoIdioma)
+        {
+            base.ActualizarIdioma(nuevoIdioma);
+
+            if (integridadDvvCorrecta.HasValue)
+            {
+                lblIntegridadDVV.Text = integridadDvvCorrecta.Value
+                    ? ObtenerTexto("frmRestore.msgIntegridadDVVCorrecta", "Integridad correcta de tabla.")
+                    : ObtenerTexto("frmRestore.msgIntegridadDVVFallida", "Integridad fallida de tabla.");
+            }
+
+            if (integridadRegistrosCorrecta.HasValue)
+            {
+                lblRegistros.Text = integridadRegistrosCorrecta.Value
+                    ? ObtenerTexto("frmRestore.msgIntegridadRegistrosCorrecta", "Integridad correcta de registros.")
+                    : ObtenerTexto("frmRestore.msgIntegridadRegistrosFallida", "Integridad fallida de registros.");
             }
         }
 
@@ -48,11 +73,11 @@ namespace IngSoft
             int ok = GestorIntegridad.Restore();
             if (ok == 1)
             {
-                MessageBox.Show("Restauración completada con éxito.");
+                MessageBox.Show(ObtenerTexto("frmRestore.msgRestauracionExitosa", "Restauración completada con éxito."));
             }
             else
             {
-                MessageBox.Show("Error al restaurar la base de datos.");
+                MessageBox.Show(ObtenerTexto("frmRestore.msgRestauracionError", "Error al restaurar la base de datos."));
             }
         }
     }

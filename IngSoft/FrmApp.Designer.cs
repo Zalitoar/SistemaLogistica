@@ -164,7 +164,7 @@
             this.toolStripComboBoxIdiomas.Name = "toolStripComboBoxIdiomas";
             this.toolStripComboBoxIdiomas.Size = new System.Drawing.Size(160, 23);
             this.toolStripComboBoxIdiomas.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.toolStripComboBoxIdiomas.SelectedIndexChanged += new System.EventHandler(this.toolStripComboBoxIdiomas_SelectedIndexChanged);
+            this.toolStripComboBoxIdiomas.ComboBox.SelectionChangeCommitted += new System.EventHandler(this.toolStripComboBoxIdiomas_SelectedIndexChanged);
             // 
             // FrmApp
             // 

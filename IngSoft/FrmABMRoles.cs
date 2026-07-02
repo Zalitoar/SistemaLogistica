@@ -12,7 +12,7 @@ using System.Windows.Forms;
 
 namespace IngSoft
 {
-    public partial class FrmABMRoles : Form
+    public partial class FrmABMRoles : FormularioTraducible
     {
         public FrmABMRoles()
         {
