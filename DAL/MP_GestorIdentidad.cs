@@ -12,11 +12,23 @@ namespace DAL
         public int Restore()
         {
             ACCESO acceso = new ACCESO();
-            acceso.Abrir();
+            acceso.AbrirMaster();
             var parametros = new List<SqlParameter> { acceso.CrearParametro("@Ruta", @"C:\Program Files\Microsoft SQL Server\MSSQL16.SQLEXPRESS\MSSQL\Backup\Backup IngSoftDB.bak") };
-            int ok = acceso.Escribir("BACKUP_BD", parametros);
+            SqlCommand com = acceso.CrearComando("BACKUP_BD", parametros);
+
+            int ok;
+            try
+            {
+                com.ExecuteNonQuery();
+                ok = 1;
+            }
+            catch (Exception)
+            {
+                ok = -1;
+            }
+
             acceso.Cerrar();
-            return ok;
+            return ok;            
         }
     }
 }

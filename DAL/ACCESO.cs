@@ -20,6 +20,17 @@ namespace DAL
             conexion.Open();
         }
 
+        public void AbrirMaster()
+        {
+            var builder = new SqlConnectionStringBuilder(
+                ConfigurationManager.ConnectionStrings["SQL"].ConnectionString)
+            {
+                InitialCatalog = "master"
+            };
+            conexion = new SqlConnection(builder.ConnectionString);
+            conexion.Open();
+        }
+
         public void Cerrar()
         {
             conexion.Close();
@@ -80,11 +91,10 @@ namespace DAL
             try
             {
                 filas = com.ExecuteNonQuery();
-
             }
             catch (Exception)
             {
-                filas = -1;
+                filas = -1;                
             }
 
             com.Parameters.Clear();

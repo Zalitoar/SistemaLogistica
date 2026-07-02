@@ -109,8 +109,7 @@ namespace Servicios
         {
             int ok = new DAL.MP_GestorIdentidad().Restore();
              if (ok == 1)
-            {
-                //Actualizar();
+            {                
                 BitacoraManager.Registrar("Se restauró la base de datos a partir del backup.");
                 return 1;
             }

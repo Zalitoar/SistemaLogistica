@@ -49,11 +49,43 @@ namespace IngSoft
             if (ok == 1)
             {
                 MessageBox.Show("Restauración completada con éxito.");
+                BitacoraManager.Registrar("Se restauró la base de datos desde el backup.");
+                SessionManager.Logout();
+                this.Close();
+                FrmLogin login = new FrmLogin();
+                login.ShowDialog();
             }
             else
             {
                 MessageBox.Show("Error al restaurar la base de datos.");
             }
+        }
+
+        private void btnCancelar_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void btnRecalcular_Click(object sender, EventArgs e)
+        {
+            List<BE.Usuario> conError = GestorIntegridad.ValidarIntegridadDVH();
+            BLL.Usuario bllUsuario = new BLL.Usuario();
+
+            foreach (var u in conError)
+            {
+                u.DVH = CryptoManager.Hash($"{u.Nombre}|{u.Clave}|{u.Id_Rol}|{u.Borrado}");
+                bllUsuario.Grabar(u); // ya recalcula y persiste el DVV adentro
+            }
+
+            BitacoraManager.Registrar("Se recalcularon los dígitos verificadores de Usuario.");
+            MessageBox.Show("Dígitos verificadores recalculados.");
+
+            SessionManager.Logout();
+            this.Close();
+            FrmLogin login = new FrmLogin();
+            login.ShowDialog();
+
+
         }
     }
 }
