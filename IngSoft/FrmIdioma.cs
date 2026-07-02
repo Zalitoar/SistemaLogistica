@@ -152,6 +152,14 @@ namespace IngSoft
 
 		private void InitializeComponent()
 		{
+			var layoutPrincipal = new TableLayoutPanel();
+			var gbIdiomas = new GroupBox();
+			var gbTraducciones = new GroupBox();
+			var layoutIdiomas = new TableLayoutPanel();
+			var layoutTraducciones = new TableLayoutPanel();
+			var accionesIdiomas = new FlowLayoutPanel();
+			var accionesTraducciones = new FlowLayoutPanel();
+
 			this.dgvIdiomas = new DataGridView();
 			this.dgvTraducciones = new DataGridView();
 			this.btnNuevo = new Button();
@@ -165,73 +173,126 @@ namespace IngSoft
 
 			this.SuspendLayout();
 
-			// Configuración básica de controles (puede ajustarse según diseño)
+			layoutPrincipal.Dock = DockStyle.Fill;
+			layoutPrincipal.Padding = new Padding(12);
+			layoutPrincipal.ColumnCount = 1;
+			layoutPrincipal.RowCount = 2;
+			layoutPrincipal.RowStyles.Add(new RowStyle(SizeType.Percent, 45F));
+			layoutPrincipal.RowStyles.Add(new RowStyle(SizeType.Percent, 55F));
+
+			gbIdiomas.Name = "gbIdiomas";
+			gbIdiomas.Text = "Idiomas disponibles";
+			gbIdiomas.Dock = DockStyle.Fill;
+			gbIdiomas.Padding = new Padding(10);
+
+			gbTraducciones.Name = "gbTraducciones";
+			gbTraducciones.Text = "Traducciones del idioma seleccionado";
+			gbTraducciones.Dock = DockStyle.Fill;
+			gbTraducciones.Padding = new Padding(10);
+
+			ConfigurarLayoutConAcciones(layoutIdiomas, accionesIdiomas);
+			ConfigurarLayoutConAcciones(layoutTraducciones, accionesTraducciones);
+
 			this.dgvIdiomas.Name = "dgvIdiomas";
-			this.dgvIdiomas.Location = new Point(12, 12);
-			this.dgvIdiomas.Size = new Size(400, 200);
+			this.dgvIdiomas.Dock = DockStyle.Fill;
+			this.dgvIdiomas.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 			this.dgvIdiomas.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
 			this.dgvIdiomas.MultiSelect = false;
+			this.dgvIdiomas.ReadOnly = true;
 
 			this.dgvTraducciones.Name = "dgvTraducciones";
-			this.dgvTraducciones.Location = new Point(12, 220);
-			this.dgvTraducciones.Size = new Size(400, 200);
+			this.dgvTraducciones.Dock = DockStyle.Fill;
+			this.dgvTraducciones.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+			this.dgvTraducciones.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+			this.dgvTraducciones.MultiSelect = false;
 
 			this.btnNuevo.Name = "btnNuevo";
 			this.btnNuevo.Text = "Nuevo";
-			this.btnNuevo.Location = new Point(420, 12);
+			ConfigurarBotonAccion(this.btnNuevo);
 			this.btnNuevo.Click += BtnNuevo_Click;
 
 			this.btnEditar.Name = "btnEditar";
 			this.btnEditar.Text = "Editar";
-			this.btnEditar.Location = new Point(420, 42);
+			ConfigurarBotonAccion(this.btnEditar);
 			this.btnEditar.Click += BtnEditar_Click;
 
 			this.btnBorrar.Name = "btnBorrar";
 			this.btnBorrar.Text = "Borrar";
-			this.btnBorrar.Location = new Point(420, 72);
+			ConfigurarBotonAccion(this.btnBorrar);
 			this.btnBorrar.Click += BtnBorrar_Click;
 
 			this.btnActivar.Name = "btnActivar";
 			this.btnActivar.Text = "Activar";
-			this.btnActivar.Location = new Point(420, 102);
+			ConfigurarBotonAccion(this.btnActivar);
 			this.btnActivar.Click += BtnActivar_Click;
 
 			this.btnDesactivar.Name = "btnDesactivar";
 			this.btnDesactivar.Text = "Desactivar";
-			this.btnDesactivar.Location = new Point(420, 132);
+			ConfigurarBotonAccion(this.btnDesactivar);
 			this.btnDesactivar.Click += BtnDesactivar_Click;
 
 			this.btnSetDefault.Name = "btnSetDefault";
 			this.btnSetDefault.Text = "Set Default";
-			this.btnSetDefault.Location = new Point(420, 162);
+			ConfigurarBotonAccion(this.btnSetDefault);
 			this.btnSetDefault.Click += BtnSetDefault_Click;
 
 			this.btnCargarTraducciones.Name = "btnCargarTraducciones";
 			this.btnCargarTraducciones.Text = "Cargar Traducciones";
-			this.btnCargarTraducciones.Location = new Point(420, 220);
+			ConfigurarBotonAccion(this.btnCargarTraducciones);
 			this.btnCargarTraducciones.Click += BtnCargarTraducciones_Click;
 
 			this.btnGuardarTraducciones.Name = "btnGuardarTraducciones";
 			this.btnGuardarTraducciones.Text = "Guardar Traducciones";
-			this.btnGuardarTraducciones.Location = new Point(420, 250);
+			ConfigurarBotonAccion(this.btnGuardarTraducciones);
 			this.btnGuardarTraducciones.Click += BtnGuardarTraducciones_Click;
 
-			this.Controls.Add(this.dgvIdiomas);
-			this.Controls.Add(this.dgvTraducciones);
-			this.Controls.Add(this.btnNuevo);
-			this.Controls.Add(this.btnEditar);
-			this.Controls.Add(this.btnBorrar);
-			this.Controls.Add(this.btnActivar);
-			this.Controls.Add(this.btnDesactivar);
-			this.Controls.Add(this.btnSetDefault);
-			this.Controls.Add(this.btnCargarTraducciones);
-			this.Controls.Add(this.btnGuardarTraducciones);
+			accionesIdiomas.Controls.AddRange(new Control[] {
+				this.btnNuevo, this.btnEditar, this.btnBorrar,
+				this.btnActivar, this.btnDesactivar, this.btnSetDefault
+			});
+			accionesTraducciones.Controls.AddRange(new Control[] {
+				this.btnCargarTraducciones, this.btnGuardarTraducciones
+			});
 
-			this.ClientSize = new Size(600, 450);
+			layoutIdiomas.Controls.Add(this.dgvIdiomas, 0, 0);
+			layoutIdiomas.Controls.Add(accionesIdiomas, 1, 0);
+			layoutTraducciones.Controls.Add(this.dgvTraducciones, 0, 0);
+			layoutTraducciones.Controls.Add(accionesTraducciones, 1, 0);
+			gbIdiomas.Controls.Add(layoutIdiomas);
+			gbTraducciones.Controls.Add(layoutTraducciones);
+			layoutPrincipal.Controls.Add(gbIdiomas, 0, 0);
+			layoutPrincipal.Controls.Add(gbTraducciones, 0, 1);
+			this.Controls.Add(layoutPrincipal);
+
+			this.BackColor = Color.FromArgb(245, 247, 250);
+			this.ClientSize = new Size(1000, 650);
+			this.MinimumSize = new Size(800, 520);
 			this.Name = "FrmIdioma";
+			this.StartPosition = FormStartPosition.CenterParent;
 			this.Load += FrmIdioma_Load;
 			this.Text = "Gestión de Idiomas";
 			this.ResumeLayout(false);
+		}
+
+		private static void ConfigurarLayoutConAcciones(TableLayoutPanel layout, FlowLayoutPanel acciones)
+		{
+			layout.Dock = DockStyle.Fill;
+			layout.ColumnCount = 2;
+			layout.RowCount = 1;
+			layout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
+			layout.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 185F));
+
+			acciones.Dock = DockStyle.Fill;
+			acciones.FlowDirection = FlowDirection.TopDown;
+			acciones.WrapContents = false;
+			acciones.Padding = new Padding(8, 0, 0, 0);
+			acciones.AutoScroll = true;
+		}
+
+		private static void ConfigurarBotonAccion(Button boton)
+		{
+			boton.Size = new Size(160, 34);
+			boton.Margin = new Padding(4, 0, 4, 8);
 		}
 	}
 
@@ -251,7 +312,11 @@ namespace IngSoft
 		{
 			this.Name = "FrmIdiomaEditor";
 			this.Text = "Idioma";
-			this.Size = new Size(320, 180);
+			this.ClientSize = new Size(310, 150);
+			this.FormBorderStyle = FormBorderStyle.FixedDialog;
+			this.MaximizeBox = false;
+			this.MinimizeBox = false;
+			this.StartPosition = FormStartPosition.CenterParent;
 
 			txtNombre = new TextBox { Name = "txtNombre", Location = new Point(100, 12), Width = 180 };
 			txtCodigo = new TextBox { Name = "txtCodigo", Location = new Point(100, 44), Width = 180 };
@@ -264,7 +329,9 @@ namespace IngSoft
 			this.Controls.Add(chkHabilitado);
 
 			btnOk = new Button { Name = "btnOk", Text = "OK", Location = new Point(100, 108) };
-			btnCancel = new Button { Name = "btnCancel", Text = "Cancelar", Location = new Point(188, 108) };
+			btnCancel = new Button { Name = "btnCancel", Text = "Cancelar", Location = new Point(188, 108), DialogResult = DialogResult.Cancel };
+			this.AcceptButton = btnOk;
+			this.CancelButton = btnCancel;
 			btnOk.Click += (s, e) => { Nombre = txtNombre.Text; Codigo = txtCodigo.Text; Habilitado = chkHabilitado.Checked; this.DialogResult = DialogResult.OK; this.Close(); };
 			btnCancel.Click += (s, e) => { this.DialogResult = DialogResult.Cancel; this.Close(); };
 

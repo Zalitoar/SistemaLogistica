@@ -12,3 +12,4 @@ Desde acá se incluyen los scripts de datos iniciales obligatorios.
 :r .\Scripts\Seed\004_traducciones_es_ar.sql
 :r .\Scripts\Seed\005_traducciones_en_us.sql
 :r .\Scripts\Seed\006_traducciones_pt_br.sql
+:r .\Scripts\Seed\008_ajustes_interfaz.sql

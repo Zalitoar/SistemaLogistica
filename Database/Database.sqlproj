@@ -123,5 +123,6 @@
     <None Include="Scripts\Seed\004_traducciones_es_ar.sql" />
     <None Include="Scripts\Seed\005_traducciones_en_us.sql" />
     <None Include="Scripts\Seed\006_traducciones_pt_br.sql" />
+    <None Include="Scripts\Seed\008_ajustes_interfaz.sql" />
   </ItemGroup>
 </Project>

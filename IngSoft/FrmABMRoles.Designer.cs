@@ -49,17 +49,19 @@
             // 
             // tvRoles
             // 
-            this.tvRoles.Location = new System.Drawing.Point(35, 58);
+            this.tvRoles.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            this.tvRoles.Location = new System.Drawing.Point(20, 58);
             this.tvRoles.Name = "tvRoles";
-            this.tvRoles.Size = new System.Drawing.Size(258, 475);
+            this.tvRoles.Size = new System.Drawing.Size(280, 482);
             this.tvRoles.TabIndex = 0;
             this.tvRoles.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvRoles_AfterSelect_1);
             // 
             // btnlistar
             // 
-            this.btnlistar.Location = new System.Drawing.Point(35, 29);
+            this.btnlistar.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            this.btnlistar.Location = new System.Drawing.Point(20, 20);
             this.btnlistar.Name = "btnlistar";
-            this.btnlistar.Size = new System.Drawing.Size(257, 23);
+            this.btnlistar.Size = new System.Drawing.Size(280, 32);
             this.btnlistar.TabIndex = 1;
             this.btnlistar.Text = "Listar";
             this.btnlistar.UseVisualStyleBackColor = true;
@@ -78,14 +80,14 @@
             // 
             this.txtIdRol.Location = new System.Drawing.Point(111, 51);
             this.txtIdRol.Name = "txtIdRol";
-            this.txtIdRol.Size = new System.Drawing.Size(100, 20);
+            this.txtIdRol.Size = new System.Drawing.Size(145, 20);
             this.txtIdRol.TabIndex = 3;
             // 
             // txtNombreRol
             // 
             this.txtNombreRol.Location = new System.Drawing.Point(111, 91);
             this.txtNombreRol.Name = "txtNombreRol";
-            this.txtNombreRol.Size = new System.Drawing.Size(100, 20);
+            this.txtNombreRol.Size = new System.Drawing.Size(145, 20);
             this.txtNombreRol.TabIndex = 5;
             // 
             // lblNombreRol
@@ -101,7 +103,7 @@
             // 
             this.btnInsertar.Location = new System.Drawing.Point(29, 134);
             this.btnInsertar.Name = "btnInsertar";
-            this.btnInsertar.Size = new System.Drawing.Size(182, 36);
+            this.btnInsertar.Size = new System.Drawing.Size(230, 36);
             this.btnInsertar.TabIndex = 6;
             this.btnInsertar.Text = "Insertar";
             this.btnInsertar.UseVisualStyleBackColor = true;
@@ -111,7 +113,7 @@
             // 
             this.btnmodificar.Location = new System.Drawing.Point(29, 175);
             this.btnmodificar.Name = "btnmodificar";
-            this.btnmodificar.Size = new System.Drawing.Size(182, 36);
+            this.btnmodificar.Size = new System.Drawing.Size(230, 36);
             this.btnmodificar.TabIndex = 7;
             this.btnmodificar.Text = "Modificar";
             this.btnmodificar.UseVisualStyleBackColor = true;
@@ -121,7 +123,7 @@
             // 
             this.btnborrar.Location = new System.Drawing.Point(29, 217);
             this.btnborrar.Name = "btnborrar";
-            this.btnborrar.Size = new System.Drawing.Size(182, 36);
+            this.btnborrar.Size = new System.Drawing.Size(230, 36);
             this.btnborrar.TabIndex = 8;
             this.btnborrar.Text = "Borrar";
             this.btnborrar.UseVisualStyleBackColor = true;
@@ -133,14 +135,14 @@
             this.cmbDisponibles.FormattingEnabled = true;
             this.cmbDisponibles.Location = new System.Drawing.Point(94, 51);
             this.cmbDisponibles.Name = "cmbDisponibles";
-            this.cmbDisponibles.Size = new System.Drawing.Size(121, 21);
+            this.cmbDisponibles.Size = new System.Drawing.Size(165, 21);
             this.cmbDisponibles.TabIndex = 9;
             // 
             // btnQuitar
             // 
             this.btnQuitar.Location = new System.Drawing.Point(33, 146);
             this.btnQuitar.Name = "btnQuitar";
-            this.btnQuitar.Size = new System.Drawing.Size(182, 36);
+            this.btnQuitar.Size = new System.Drawing.Size(230, 36);
             this.btnQuitar.TabIndex = 11;
             this.btnQuitar.Text = "Quitar";
             this.btnQuitar.UseVisualStyleBackColor = true;
@@ -150,7 +152,7 @@
             // 
             this.btnAsignar.Location = new System.Drawing.Point(33, 104);
             this.btnAsignar.Name = "btnAsignar";
-            this.btnAsignar.Size = new System.Drawing.Size(182, 36);
+            this.btnAsignar.Size = new System.Drawing.Size(230, 36);
             this.btnAsignar.TabIndex = 10;
             this.btnAsignar.Text = "Asignar";
             this.btnAsignar.UseVisualStyleBackColor = true;
@@ -158,6 +160,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.Controls.Add(this.btnborrar);
             this.groupBox1.Controls.Add(this.lblIdRol);
             this.groupBox1.Controls.Add(this.txtIdRol);
@@ -165,22 +168,23 @@
             this.groupBox1.Controls.Add(this.txtNombreRol);
             this.groupBox1.Controls.Add(this.btnmodificar);
             this.groupBox1.Controls.Add(this.btnInsertar);
-            this.groupBox1.Location = new System.Drawing.Point(316, 29);
+            this.groupBox1.Location = new System.Drawing.Point(320, 20);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(242, 282);
+            this.groupBox1.Size = new System.Drawing.Size(280, 282);
             this.groupBox1.TabIndex = 12;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Roles";
             // 
             // groupBox2
             // 
+            this.groupBox2.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
             this.groupBox2.Controls.Add(this.lblPermiso);
             this.groupBox2.Controls.Add(this.cmbDisponibles);
             this.groupBox2.Controls.Add(this.btnAsignar);
             this.groupBox2.Controls.Add(this.btnQuitar);
-            this.groupBox2.Location = new System.Drawing.Point(316, 320);
+            this.groupBox2.Location = new System.Drawing.Point(320, 312);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(242, 213);
+            this.groupBox2.Size = new System.Drawing.Size(280, 228);
             this.groupBox2.TabIndex = 13;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Permisos";
@@ -198,13 +202,15 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.ClientSize = new System.Drawing.Size(743, 704);
+            this.BackColor = System.Drawing.Color.FromArgb(245, 247, 250);
+            this.ClientSize = new System.Drawing.Size(620, 560);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btnlistar);
             this.Controls.Add(this.tvRoles);
             this.Name = "FrmABMRoles";
+            this.MinimumSize = new System.Drawing.Size(620, 560);
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "FrmABMRoles";
             this.Load += new System.EventHandler(this.FrmABMRoles_Load);
             this.groupBox1.ResumeLayout(false);

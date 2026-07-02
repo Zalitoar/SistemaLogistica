@@ -1,5 +1,6 @@
 using Servicios;
 using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace IngSoft
@@ -11,13 +12,45 @@ namespace IngSoft
     /// </summary>
     public class FormularioTraducible : Form, IIdiomaObserver
     {
+        protected FormularioTraducible()
+        {
+            Font = SystemFonts.MessageBoxFont;
+            BackColor = Color.FromArgb(245, 247, 250);
+        }
+
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
 
+            AplicarEstiloVisual(Controls);
+
             IdiomaManager manager = IdiomaManager.GetInstance();
             manager.RegistrarObserver(this);
             ActualizarIdioma(manager.GetIdiomaActual());
+        }
+
+        private static void AplicarEstiloVisual(Control.ControlCollection controles)
+        {
+            foreach (Control control in controles)
+            {
+                DataGridView grilla = control as DataGridView;
+                if (grilla != null)
+                {
+                    grilla.BackgroundColor = Color.White;
+                    grilla.BorderStyle = BorderStyle.FixedSingle;
+                    grilla.GridColor = Color.FromArgb(225, 228, 232);
+                    grilla.RowHeadersVisible = false;
+                    grilla.EnableHeadersVisualStyles = false;
+                    grilla.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(230, 235, 241);
+                    grilla.ColumnHeadersDefaultCellStyle.ForeColor = Color.FromArgb(35, 45, 55);
+                    grilla.ColumnHeadersDefaultCellStyle.Font = new Font(grilla.Font, FontStyle.Bold);
+                    grilla.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(248, 250, 252);
+                    grilla.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+                }
+
+                if (control.HasChildren)
+                    AplicarEstiloVisual(control.Controls);
+            }
         }
 
         protected override void OnFormClosed(FormClosedEventArgs e)

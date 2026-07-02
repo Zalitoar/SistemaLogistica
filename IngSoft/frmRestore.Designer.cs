@@ -39,17 +39,20 @@
             // 
             // dgvRegistros
             // 
+            this.dgvRegistros.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            this.dgvRegistros.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvRegistros.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvRegistros.Location = new System.Drawing.Point(67, 138);
+            this.dgvRegistros.Location = new System.Drawing.Point(30, 112);
             this.dgvRegistros.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.dgvRegistros.Name = "dgvRegistros";
-            this.dgvRegistros.Size = new System.Drawing.Size(1209, 185);
+            this.dgvRegistros.ReadOnly = true;
+            this.dgvRegistros.Size = new System.Drawing.Size(840, 246);
             this.dgvRegistros.TabIndex = 0;
             // 
             // lblIntegridadDVV
             // 
             this.lblIntegridadDVV.AutoSize = true;
-            this.lblIntegridadDVV.Location = new System.Drawing.Point(63, 71);
+            this.lblIntegridadDVV.Location = new System.Drawing.Point(30, 32);
             this.lblIntegridadDVV.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblIntegridadDVV.Name = "lblIntegridadDVV";
             this.lblIntegridadDVV.Size = new System.Drawing.Size(44, 16);
@@ -59,7 +62,7 @@
             // lblRegistros
             // 
             this.lblRegistros.AutoSize = true;
-            this.lblRegistros.Location = new System.Drawing.Point(63, 118);
+            this.lblRegistros.Location = new System.Drawing.Point(30, 78);
             this.lblRegistros.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblRegistros.Name = "lblRegistros";
             this.lblRegistros.Size = new System.Drawing.Size(44, 16);
@@ -68,21 +71,23 @@
             // 
             // btnRestore
             // 
-            this.btnRestore.Location = new System.Drawing.Point(300, 366);
+            this.btnRestore.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnRestore.Location = new System.Drawing.Point(396, 390);
             this.btnRestore.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnRestore.Name = "btnRestore";
-            this.btnRestore.Size = new System.Drawing.Size(232, 74);
+            this.btnRestore.Size = new System.Drawing.Size(150, 44);
             this.btnRestore.TabIndex = 3;
-            this.btnRestore.Text = "Backup Base de Datos";
+            this.btnRestore.Text = "Restaurar base de datos";
             this.btnRestore.UseVisualStyleBackColor = true;
             this.btnRestore.Click += new System.EventHandler(this.btnRestore_Click);
             // 
             // btnRecalcular
             // 
-            this.btnRecalcular.Location = new System.Drawing.Point(552, 366);
+            this.btnRecalcular.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnRecalcular.Location = new System.Drawing.Point(558, 390);
             this.btnRecalcular.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnRecalcular.Name = "btnRecalcular";
-            this.btnRecalcular.Size = new System.Drawing.Size(232, 74);
+            this.btnRecalcular.Size = new System.Drawing.Size(150, 44);
             this.btnRecalcular.TabIndex = 4;
             this.btnRecalcular.Text = "Recalcular";
             this.btnRecalcular.UseVisualStyleBackColor = true;
@@ -90,10 +95,11 @@
             // 
             // btnCancelar
             // 
-            this.btnCancelar.Location = new System.Drawing.Point(808, 366);
+            this.btnCancelar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCancelar.Location = new System.Drawing.Point(720, 390);
             this.btnCancelar.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.btnCancelar.Name = "btnCancelar";
-            this.btnCancelar.Size = new System.Drawing.Size(232, 74);
+            this.btnCancelar.Size = new System.Drawing.Size(150, 44);
             this.btnCancelar.TabIndex = 5;
             this.btnCancelar.Text = "Cancelar";
             this.btnCancelar.UseVisualStyleBackColor = true;
@@ -103,8 +109,8 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.ClientSize = new System.Drawing.Size(1392, 554);
+            this.BackColor = System.Drawing.Color.FromArgb(245, 247, 250);
+            this.ClientSize = new System.Drawing.Size(900, 470);
             this.Controls.Add(this.btnCancelar);
             this.Controls.Add(this.btnRecalcular);
             this.Controls.Add(this.btnRestore);
@@ -113,6 +119,8 @@
             this.Controls.Add(this.dgvRegistros);
             this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "frmRestore";
+            this.MinimumSize = new System.Drawing.Size(760, 420);
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "frmRestore";
             this.Load += new System.EventHandler(this.frmRestore_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvRegistros)).EndInit();

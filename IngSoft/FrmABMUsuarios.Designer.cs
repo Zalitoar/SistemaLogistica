@@ -60,20 +60,23 @@
             // 
             // dgvUsuarios
             // 
+            this.dgvUsuarios.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            this.dgvUsuarios.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvUsuarios.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvUsuarios.Location = new System.Drawing.Point(26, 124);
+            this.dgvUsuarios.Location = new System.Drawing.Point(26, 136);
             this.dgvUsuarios.Name = "dgvUsuarios";
             this.dgvUsuarios.ReadOnly = true;
             this.dgvUsuarios.RowHeadersWidth = 51;
-            this.dgvUsuarios.Size = new System.Drawing.Size(644, 185);
+            this.dgvUsuarios.Size = new System.Drawing.Size(848, 198);
             this.dgvUsuarios.TabIndex = 17;
             this.dgvUsuarios.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvUsuarios_CellClick);
             // 
             // btnlistar
             // 
-            this.btnlistar.Location = new System.Drawing.Point(245, 96);
+            this.btnlistar.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
+            this.btnlistar.Location = new System.Drawing.Point(764, 24);
             this.btnlistar.Name = "btnlistar";
-            this.btnlistar.Size = new System.Drawing.Size(112, 23);
+            this.btnlistar.Size = new System.Drawing.Size(110, 34);
             this.btnlistar.TabIndex = 7;
             this.btnlistar.Text = "Listar";
             this.btnlistar.UseVisualStyleBackColor = true;
@@ -81,9 +84,10 @@
             // 
             // btnborrar
             // 
-            this.btnborrar.Location = new System.Drawing.Point(245, 67);
+            this.btnborrar.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
+            this.btnborrar.Location = new System.Drawing.Point(644, 24);
             this.btnborrar.Name = "btnborrar";
-            this.btnborrar.Size = new System.Drawing.Size(112, 23);
+            this.btnborrar.Size = new System.Drawing.Size(110, 34);
             this.btnborrar.TabIndex = 6;
             this.btnborrar.Text = "Borrar";
             this.btnborrar.UseVisualStyleBackColor = true;
@@ -91,9 +95,10 @@
             // 
             // btnmodificar
             // 
-            this.btnmodificar.Location = new System.Drawing.Point(245, 38);
+            this.btnmodificar.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
+            this.btnmodificar.Location = new System.Drawing.Point(524, 24);
             this.btnmodificar.Name = "btnmodificar";
-            this.btnmodificar.Size = new System.Drawing.Size(112, 23);
+            this.btnmodificar.Size = new System.Drawing.Size(110, 34);
             this.btnmodificar.TabIndex = 5;
             this.btnmodificar.Text = "Modificar";
             this.btnmodificar.UseVisualStyleBackColor = true;
@@ -101,9 +106,10 @@
             // 
             // btnInsertar
             // 
-            this.btnInsertar.Location = new System.Drawing.Point(245, 9);
+            this.btnInsertar.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
+            this.btnInsertar.Location = new System.Drawing.Point(404, 24);
             this.btnInsertar.Name = "btnInsertar";
-            this.btnInsertar.Size = new System.Drawing.Size(112, 23);
+            this.btnInsertar.Size = new System.Drawing.Size(110, 34);
             this.btnInsertar.TabIndex = 4;
             this.btnInsertar.Text = "Insertar";
             this.btnInsertar.UseVisualStyleBackColor = true;
@@ -175,6 +181,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             this.groupBox1.Controls.Add(this.lblid_rol_sel);
             this.groupBox1.Controls.Add(this.lblborr_usu_sel);
             this.groupBox1.Controls.Add(this.lblclave_usu_sel);
@@ -186,9 +193,9 @@
             this.groupBox1.Controls.Add(this.btnRestaurarVersAnt);
             this.groupBox1.Controls.Add(this.dgvVerisionesAnteriores);
             this.groupBox1.Controls.Add(this.lblUsuarioSeleccionado);
-            this.groupBox1.Location = new System.Drawing.Point(26, 330);
+            this.groupBox1.Location = new System.Drawing.Point(26, 350);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(644, 292);
+            this.groupBox1.Size = new System.Drawing.Size(848, 324);
             this.groupBox1.TabIndex = 21;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Recuperar Estados Previos";
@@ -204,18 +211,21 @@
             // 
             // dgvVerisionesAnteriores
             // 
+            this.dgvVerisionesAnteriores.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            this.dgvVerisionesAnteriores.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvVerisionesAnteriores.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvVerisionesAnteriores.Location = new System.Drawing.Point(9, 63);
             this.dgvVerisionesAnteriores.Name = "dgvVerisionesAnteriores";
-            this.dgvVerisionesAnteriores.Size = new System.Drawing.Size(629, 123);
+            this.dgvVerisionesAnteriores.Size = new System.Drawing.Size(830, 145);
             this.dgvVerisionesAnteriores.TabIndex = 1;
             this.dgvVerisionesAnteriores.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvVerisionesAnteriores_CellClick);
             // 
             // btnRestaurarVersAnt
             // 
-            this.btnRestaurarVersAnt.Location = new System.Drawing.Point(508, 192);
+            this.btnRestaurarVersAnt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnRestaurarVersAnt.Location = new System.Drawing.Point(690, 265);
             this.btnRestaurarVersAnt.Name = "btnRestaurarVersAnt";
-            this.btnRestaurarVersAnt.Size = new System.Drawing.Size(130, 38);
+            this.btnRestaurarVersAnt.Size = new System.Drawing.Size(140, 38);
             this.btnRestaurarVersAnt.TabIndex = 22;
             this.btnRestaurarVersAnt.Text = "Restaurar Versión";
             this.btnRestaurarVersAnt.UseVisualStyleBackColor = true;
@@ -297,8 +307,8 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.ClientSize = new System.Drawing.Size(824, 667);
+            this.BackColor = System.Drawing.Color.FromArgb(245, 247, 250);
+            this.ClientSize = new System.Drawing.Size(900, 700);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.txtClave);
             this.Controls.Add(this.lblClave);
@@ -314,8 +324,9 @@
             this.Controls.Add(this.lblNombre);
             this.Controls.Add(this.lblD);
             this.Name = "FrmABMUsuarios";
+            this.MinimumSize = new System.Drawing.Size(760, 700);
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "ABM Usuarios";
-            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.FrmABMUsuarios_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvUsuarios)).EndInit();
             this.groupBox1.ResumeLayout(false);

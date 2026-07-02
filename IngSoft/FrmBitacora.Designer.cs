@@ -43,15 +43,18 @@
             // 
             // dgvBitacora
             // 
-            this.dgvBitacora.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.dgvBitacora.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+            this.dgvBitacora.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvBitacora.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvBitacora.Location = new System.Drawing.Point(66, 161);
+            this.dgvBitacora.Location = new System.Drawing.Point(20, 166);
             this.dgvBitacora.Name = "dgvBitacora";
-            this.dgvBitacora.Size = new System.Drawing.Size(497, 256);
+            this.dgvBitacora.ReadOnly = true;
+            this.dgvBitacora.Size = new System.Drawing.Size(860, 414);
             this.dgvBitacora.TabIndex = 0;
             // 
             // gbFiltros
             // 
+            this.gbFiltros.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             this.gbFiltros.Controls.Add(this.dtpHasta);
             this.gbFiltros.Controls.Add(this.lblFechaHasta);
             this.gbFiltros.Controls.Add(this.btnBuscar);
@@ -59,9 +62,9 @@
             this.gbFiltros.Controls.Add(this.dtpDesde);
             this.gbFiltros.Controls.Add(this.lblFechaDesde);
             this.gbFiltros.Controls.Add(this.lblUsuario);
-            this.gbFiltros.Location = new System.Drawing.Point(66, 37);
+            this.gbFiltros.Location = new System.Drawing.Point(20, 20);
             this.gbFiltros.Name = "gbFiltros";
-            this.gbFiltros.Size = new System.Drawing.Size(497, 118);
+            this.gbFiltros.Size = new System.Drawing.Size(860, 130);
             this.gbFiltros.TabIndex = 1;
             this.gbFiltros.TabStop = false;
             this.gbFiltros.Text = "Filtros";
@@ -85,9 +88,10 @@
             // 
             // btnBuscar
             // 
-            this.btnBuscar.Location = new System.Drawing.Point(354, 42);
+            this.btnBuscar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnBuscar.Location = new System.Drawing.Point(726, 42);
             this.btnBuscar.Name = "btnBuscar";
-            this.btnBuscar.Size = new System.Drawing.Size(99, 44);
+            this.btnBuscar.Size = new System.Drawing.Size(110, 44);
             this.btnBuscar.TabIndex = 2;
             this.btnBuscar.Text = "Buscar";
             this.btnBuscar.UseVisualStyleBackColor = true;
@@ -98,7 +102,7 @@
             this.cbUsuarios.FormattingEnabled = true;
             this.cbUsuarios.Location = new System.Drawing.Point(92, 24);
             this.cbUsuarios.Name = "cbUsuarios";
-            this.cbUsuarios.Size = new System.Drawing.Size(121, 21);
+            this.cbUsuarios.Size = new System.Drawing.Size(200, 21);
             this.cbUsuarios.TabIndex = 6;
             // 
             // dtpDesde
@@ -130,13 +134,14 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.BackColor = System.Drawing.Color.FromArgb(245, 247, 250);
+            this.ClientSize = new System.Drawing.Size(900, 600);
             this.Controls.Add(this.gbFiltros);
             this.Controls.Add(this.dgvBitacora);
             this.Name = "FrmBitacora";
+            this.MinimumSize = new System.Drawing.Size(700, 500);
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "FrmBitacora";
-            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.FrmBitacora_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvBitacora)).EndInit();
             this.gbFiltros.ResumeLayout(false);
