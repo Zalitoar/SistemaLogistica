@@ -204,6 +204,15 @@ namespace IngSoft
 				cmbIdiomasLogin.SelectedValue = nuevoIdioma.Id_Idioma;
 		}
 
+		public void PrepararNuevoIngreso()
+		{
+			txtUsuario.Clear();
+			txtClave.Clear();
+			Show();
+			Activate();
+			txtUsuario.Focus();
+		}
+
 		public bool ClaveValida(string _c)
 		{
 			if (string.IsNullOrEmpty(_c)) return false;
