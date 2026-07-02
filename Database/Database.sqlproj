@@ -110,6 +110,7 @@
     <Build Include="dbo\Stored Procedures\LISTAR_USUARIO.sql" />
     <Build Include="dbo\Stored Procedures\OBTENER_PERMISO.sql" />
     <Build Include="dbo\Stored Procedures\QUITAR_COMPONENTE_ROL.sql" />
+    <None Include="Scripts\Seed\007_permisos_roles.sql" />
     <None Include="Scripts\Seed\001_idiomas.sql" />
     <None Include="Scripts\Seed\002_seguridad_basica.sql" />
     <None Include="Scripts\Seed\003_integridad_inicial.sql" />
