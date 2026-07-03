@@ -74,6 +74,7 @@ namespace IngSoft
             usuariosToolStripMenuItem.Enabled = Servicios.SessionManager.GetInstance().TienePermiso("ABM_USUARIOS");
             perfilesToolStripMenuItem.Enabled = Servicios.SessionManager.GetInstance().TienePermiso("ABM_ROLES");
             bitácoraToolStripMenuItem.Enabled = Servicios.SessionManager.GetInstance().TienePermiso("VER_BITACORA");
+            
         }
 
         // Nuevo handler para la lista en la cinta de menú

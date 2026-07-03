@@ -31,6 +31,7 @@ namespace IngSoft
 
 		private void Login_Load(object sender, EventArgs e)
 		{
+			integridadok = true;
 			// Mantener la validación de integridad existente
 			ValidarIntegridad();
 
