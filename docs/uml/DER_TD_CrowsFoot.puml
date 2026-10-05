@@ -1,4 +1,4 @@
-@startuml
+﻿@startuml
 title TD — Modelo relacional (Crow's Foot / IE)
 hide methods
 hide stereotypes
@@ -46,6 +46,7 @@ entity DOCUMENTO_DESPACHO {
   Numero : varchar
   Fecha : datetime
   Estado : varchar
+  Observaciones : varchar?
 }
 entity MERCADERIA {
   * Id_Mercaderia : int <<PK>>
@@ -76,4 +77,17 @@ VIAJE ||--o| DOCUMENTO_DESPACHO
 DOCUMENTO_DESPACHO ||--|{ DETALLE_DESPACHO
 MERCADERIA ||--o{ DETALLE_DESPACHO
 ENTREGA ||--o| COMPROBANTE_ENTREGA
+entity DETALLE_CARGA_PLANIFICADA {
+  * Id_DetalleCargaPlanificada : int <<PK>>
+  --
+  Id_Viaje : int <<FK>>
+  Id_Mercaderia : int <<FK>>
+  CantidadPrevista : decimal
+}
+VIAJE ||--|{ DETALLE_CARGA_PLANIFICADA
+MERCADERIA ||--o{ DETALLE_CARGA_PLANIFICADA
+note right of DETALLE_CARGA_PLANIFICADA
+UNIQUE (Id_Viaje, Id_Mercaderia)
+CantidadPrevista > 0
+end note
 @enduml

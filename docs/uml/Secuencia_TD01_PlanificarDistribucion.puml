@@ -1,4 +1,4 @@
-@startuml
+﻿@startuml
 title ECU-TD-01 — Planificar distribución
 actor "Planificador de Tráfico" as actor
 boundary "ui:VistaPlanificacion" as ui
@@ -7,6 +7,7 @@ entity "req:RequerimientoDistribucion" as req
 entity "plan:PlanDistribucion" as plan
 entity "viaje:Viaje" as viaje
 entity "entrega:Entrega" as entrega
+entity "carga:DetalleCargaPlanificada" as carga
 
 actor -> ui : iniciarPlanificacion()
 ui -> gestor : obtenerRequerimientosPendientes()
@@ -20,13 +21,16 @@ gestor -> req : obtenerDatos()
 req --> gestor : datos
 gestor --> ui : datos
 
-actor -> ui : definirViajesYEntregas()
+actor -> ui : definirViajesEntregasYCargaPrevista()
 actor -> ui : confirmarPlanificacion()
 ui -> gestor : confirmarPlanificacion(datos)
 
 gestor -> plan : crear()
 loop por cada viaje
   gestor -> viaje : crear()
+  loop por cada mercadería del viaje
+    gestor -> carga : crear(mercaderia, cantidadPrevista)
+  end
   loop por cada entrega
     gestor -> entrega : crear()
   end

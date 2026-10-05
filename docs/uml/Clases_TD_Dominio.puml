@@ -1,4 +1,4 @@
-@startuml
+﻿@startuml
 skinparam classAttributeIconSize 0
 class RequerimientoDistribucion <<entity>> { -IdRequerimiento:int
 -Numero:string
@@ -38,6 +38,7 @@ class DocumentoDespacho <<entity>> { -IdDespacho:int
 -Numero:string
 -Fecha:DateTime
 -Estado:string
+-Observaciones:string
 +Confirmar():void }
 class DetalleDespacho <<entity>> { -IdDetalle:int
 -Cantidad:decimal }
@@ -57,4 +58,17 @@ Viaje "1" *-- "0..1" DocumentoDespacho
 DocumentoDespacho "1" *-- "1..*" DetalleDespacho
 DetalleDespacho "0..*" --> "1" Mercaderia
 Entrega "1" *-- "0..1" ComprobanteEntrega
+class DetalleCargaPlanificada <<entity>> {
+-IdDetalleCargaPlanificada:int
+-IdViaje:int
+-IdMercaderia:int
+-CantidadPrevista:decimal
+}
+Viaje "1" *-- "1..*" DetalleCargaPlanificada
+DetalleCargaPlanificada "0..*" --> "1" Mercaderia
+note right of DetalleCargaPlanificada
+La carga prevista se define en TD-01.
+DetalleDespacho.Cantidad registra la carga real en TD-02.
+Una diferencia deja el despacho Pendiente y bloquea el inicio.
+end note
 @enduml

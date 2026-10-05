@@ -1,29 +1,31 @@
-@startuml
+﻿@startuml
 title ECU-TD-02 — Preparar despacho
 actor "Responsable de Expedición" as actor
 boundary "ui:VistaDespacho" as ui
 control "gestor:GestorDespacho" as gestor
 entity "viaje:Viaje" as viaje
+entity "carga:DetalleCargaPlanificada" as carga
 entity "despacho:DocumentoDespacho" as despacho
 entity "detalle:DetalleDespacho" as detalle
-entity "mercaderia:Mercaderia" as mercaderia
-
 actor -> ui : seleccionarViaje()
 ui -> gestor : consultarCarga(viaje)
-gestor -> viaje : obtenerDetalle()
-viaje --> gestor : datos del viaje
-
-gestor -> mercaderia : consultarMercaderiaPrevista()
-mercaderia --> gestor : mercadería
-gestor --> ui : detalle de carga
-
-actor -> ui : confirmarCargaPreparada()
-ui -> gestor : registrarDespacho(datos)
-gestor -> despacho : crear()
-loop por cada producto
-  gestor -> detalle : crear(cantidad)
-  detalle -> mercaderia : asociar()
+gestor -> carga : consultarCargaPrevista(viaje)
+carga --> gestor : mercadería y cantidades previstas
+gestor --> ui : carga prevista y preparación registrada
+actor -> ui : registrarCantidadesPreparadas()
+ui -> gestor : registrarDespacho(cantidades, observaciones)
+gestor -> despacho : crearOActualizarPendiente()
+loop por cada producto previsto
+  gestor -> detalle : guardar(cantidadPreparada)
 end
-gestor -> viaje : marcarPreparado()
-gestor --> ui : despacho preparado
+gestor -> gestor : compararPrevistoYPreparado()
+alt todas las cantidades coinciden
+  gestor -> despacho : confirmar()
+  gestor -> viaje : marcarPreparado()
+  gestor --> ui : despacho confirmado
+else existen diferencias
+  gestor -> despacho : dejarPendiente(observaciones)
+  note right: Las cantidades previstas y reales conservan la diferencia.\nNo se habilita el inicio del viaje.
+  gestor --> ui : informar diferencias
+end
 @enduml

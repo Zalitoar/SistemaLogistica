@@ -125,4 +125,36 @@
     <None Include="Scripts\Seed\006_traducciones_pt_br.sql" />
     <None Include="Scripts\Seed\008_ajustes_interfaz.sql" />
   </ItemGroup>
+  <ItemGroup>
+    <Build Include="dbo\Stored Procedures\TD_CONFIRMAR_PLAN.sql" />
+    <Build Include="dbo\Stored Procedures\TD_CREAR_MERCADERIA.sql" />
+    <Build Include="dbo\Stored Procedures\TD_LISTAR_MERCADERIA.sql" />
+    <Build Include="dbo\Stored Procedures\TD_LISTAR_REQUERIMIENTOS.sql" />
+    <Build Include="dbo\Stored Procedures\TD_RECIBIR_REQUERIMIENTO.sql" />
+    <Build Include="dbo\Tables\COMPROBANTE_ENTREGA.sql" />
+    <Build Include="dbo\Tables\DETALLE_CARGA_PLANIFICADA.sql" />
+    <Build Include="dbo\Tables\DETALLE_DESPACHO.sql" />
+    <Build Include="dbo\Tables\DOCUMENTO_DESPACHO.sql" />
+    <Build Include="dbo\Tables\ENTREGA.sql" />
+    <Build Include="dbo\Tables\MERCADERIA.sql" />
+    <Build Include="dbo\Tables\PLAN_DISTRIBUCION.sql" />
+    <Build Include="dbo\Tables\REQUERIMIENTO_DISTRIBUCION.sql" />
+    <Build Include="dbo\Tables\VIAJE.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="dbo\Stored Procedures\TD_GUARDAR_DESPACHO.sql" />
+    <Build Include="dbo\Stored Procedures\TD_LISTAR_VIAJES.sql" />
+    <Build Include="dbo\Stored Procedures\TD_OBTENER_CARGA.sql" />
+    <Build Include="dbo\Stored Procedures\TD_OBTENER_DESPACHO.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="dbo\Stored Procedures\TD_INICIAR_VIAJE.sql" />
+    <Build Include="dbo\Stored Procedures\TD_OBTENER_ENTREGAS.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="dbo\Stored Procedures\TD_REGISTRAR_ENTREGA.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="dbo\Stored Procedures\TD_CERRAR_VIAJE.sql" />
+  </ItemGroup>
 </Project>

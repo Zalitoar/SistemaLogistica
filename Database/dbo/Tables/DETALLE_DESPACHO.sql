@@ -1,0 +1,8 @@
+﻿CREATE TABLE dbo.DETALLE_DESPACHO
+(
+    Id_Detalle INT IDENTITY PRIMARY KEY,
+    Id_Despacho INT NOT NULL REFERENCES dbo.DOCUMENTO_DESPACHO(Id_Despacho),
+    Id_Mercaderia INT NOT NULL REFERENCES dbo.MERCADERIA(Id_Mercaderia),
+    Cantidad DECIMAL(18,3) NOT NULL CHECK (Cantidad >= 0),
+    CONSTRAINT UQ_DESPACHO_MERCADERIA UNIQUE(Id_Despacho,Id_Mercaderia)
+);

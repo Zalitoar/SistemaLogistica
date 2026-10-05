@@ -1,14 +1,22 @@
-@startuml
+﻿@startuml
 title TD — Transporte y distribución de mercadería
 |Planificación y Tráfico|
 start
 :Recibir requerimiento de distribución;
 :Planificar cargas y recorridos;
+note left: Por viaje: mercadería y CantidadPrevista\nen DetalleCargaPlanificada.
 note right: «documento»\nPlan de distribución
 |Depósito y Expedición|
 :Revisar plan de distribución;
 :Preparar mercadería;
 :Verificar carga a despachar;
+while (¿Difiere de la carga prevista?) is (Sí)
+  :Registrar cantidades reales y motivo;
+  :Dejar despacho pendiente y bloquear inicio;
+  :Corregir preparación;
+  :Verificar carga a despachar;
+endwhile (No)
+:Confirmar despacho;
 note right: «documento»\nDocumento de despacho
 |Operaciones de Transporte|
 :Revisar documentación de despacho;

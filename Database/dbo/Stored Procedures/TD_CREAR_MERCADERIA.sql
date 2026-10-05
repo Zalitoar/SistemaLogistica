@@ -1,0 +1,8 @@
+﻿CREATE PROCEDURE dbo.TD_CREAR_MERCADERIA @Codigo NVARCHAR(50), @Descripcion NVARCHAR(200)
+AS
+BEGIN
+    SET NOCOUNT ON;
+    IF NULLIF(LTRIM(RTRIM(@Codigo)), '') IS NULL OR NULLIF(LTRIM(RTRIM(@Descripcion)), '') IS NULL THROW 50002, 'TD.DatosInvalidos', 1;
+    INSERT dbo.MERCADERIA(Codigo,Descripcion) VALUES (@Codigo,@Descripcion);
+    SELECT CAST(SCOPE_IDENTITY() AS INT) AS Id;
+END;

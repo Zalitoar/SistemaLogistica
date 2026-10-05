@@ -1,0 +1,2 @@
+﻿CREATE PROCEDURE dbo.TD_LISTAR_MERCADERIA AS
+SELECT Id_Mercaderia, Codigo, Descripcion FROM dbo.MERCADERIA ORDER BY Codigo;
