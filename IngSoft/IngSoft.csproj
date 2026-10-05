@@ -166,6 +166,7 @@
   <ItemGroup>
     <Compile Include="FrmApp.TD.cs">
       <DependentUpon>FrmApp.cs</DependentUpon>
+      <SubType>Code</SubType>
     </Compile>
     <Compile Include="FrmPlanificacionDistribucion.cs">
       <SubType>Form</SubType>
@@ -231,7 +232,10 @@
     <Compile Include="FrmConfiguracionBD.Designer.cs">
       <DependentUpon>FrmConfiguracionBD.cs</DependentUpon>
     </Compile>
-    <Compile Include="FrmApp.ConfiguracionBD.cs" />
+    <Compile Include="FrmApp.ConfiguracionBD.cs">
+      <DependentUpon>FrmApp.cs</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
     <EmbeddedResource Include="FrmConfiguracionBD.resx">
       <DependentUpon>FrmConfiguracionBD.cs</DependentUpon>
     </EmbeddedResource>

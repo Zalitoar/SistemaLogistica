@@ -220,5 +220,6 @@ namespace IngSoft
 			string patron = @"^(?=.*[A-Z])(?=.*\d).{6,}$";
 			return Regex.IsMatch(_c, patron);
 		}
-	}
+
+    }
 }

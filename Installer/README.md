@@ -72,6 +72,18 @@ SQL Server continúa excluido.
 
 ## Prueba recomendada
 
+### Error MSB3577: `IngSoft.FrmApp.resources` duplicado
+
+El diseñador principal se abre desde `FrmApp.cs`. Los archivos
+`FrmApp.TD.cs` y `FrmApp.ConfiguracionBD.cs` son partes de esa misma clase;
+deben figurar como `SubType=Code`, dependientes de `FrmApp.cs`, y editarse
+como código. No deben tener otro `InitializeComponent` ni un `.resx` propio:
+los recursos del formulario, incluido el ícono, pertenecen a `FrmApp.resx`.
+Un recurso asociado a cualquiera de esas partes puede producir el mismo nombre
+de salida y provocar MSB3577 durante la compilación previa a Inno Setup.
+
+### Instalación
+
 Probar el instalador en una máquina Windows limpia o snapshot limpio:
 
 1. preparar SQL Server y una cuenta con permisos de inicialización;
