@@ -71,4 +71,7 @@
   <ItemGroup>
     <Compile Include="CumplimientoViaje.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ConfiguracionBaseDatos.cs" />
+  </ItemGroup>
 </Project>

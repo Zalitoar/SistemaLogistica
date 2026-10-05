@@ -93,15 +93,27 @@ Write-Host ""
 
 Write-Host "[1/4] Compilando IngSoft en Release..." -ForegroundColor Yellow
 
-& $msbuild `
-    $projectPath `
-    /t:Rebuild `
-    /p:Configuration=$Configuration `
-    /p:Platform=AnyCPU `
-    /m `
-    /nologo
-
-if ($LASTEXITCODE -ne 0) {
+# Algunos hosts exponen Path/PATH duplicados; normalizar sólo el proceso hijo.
+$buildStart = New-Object Diagnostics.ProcessStartInfo
+$buildStart.FileName = $msbuild
+$buildStart.UseShellExecute = $false
+$buildStart.CreateNoWindow = $true
+$buildStart.RedirectStandardOutput = $true
+$buildStart.RedirectStandardError = $true
+$buildStart.EnvironmentVariables.Clear()
+foreach ($entry in [Environment]::GetEnvironmentVariables().GetEnumerator()) {
+    $buildStart.EnvironmentVariables[$entry.Key] = $entry.Value
+}
+$buildStart.Arguments = "`"$projectPath`" /t:Rebuild /p:Configuration=$Configuration /p:Platform=AnyCPU /m:1 /nr:false /p:UseSharedCompilation=false /v:minimal /nologo"
+$buildProcess = [Diagnostics.Process]::Start($buildStart)
+$buildOutput = $buildProcess.StandardOutput.ReadToEndAsync()
+$buildErrors = $buildProcess.StandardError.ReadToEndAsync()
+$buildProcess.WaitForExit()
+Write-Output $buildOutput.Result
+Write-Output $buildErrors.Result
+$buildExitCode = $buildProcess.ExitCode
+$buildProcess.Dispose()
+if ($buildExitCode -ne 0) {
     throw "Falló la compilación de IngSoft."
 }
 
@@ -113,7 +125,9 @@ $requiredFiles = @(
     "BE.dll",
     "BLL.dll",
     "DAL.dll",
-    "Servicios.dll"
+    "Servicios.dll",
+    "DatabaseSetup\manifest.xml",
+    "DatabaseSetup\TD_DatosPrueba.sql"
 )
 
 foreach ($name in $requiredFiles) {
@@ -170,4 +184,4 @@ Write-Host ""
 Write-Host "Archivo : $setup" -ForegroundColor Green
 Write-Host "SHA256  : $hash"
 Write-Host ""
-Write-Host "IMPORTANTE: este instalador NO instala SQL Server ni crea/publica la base de datos." -ForegroundColor Cyan
+Write-Host "El instalador incluye los scripts DatabaseSetup. El asistente de la aplicación permite configurar e inicializar una base vacía. SQL Server se instala por separado." -ForegroundColor Cyan

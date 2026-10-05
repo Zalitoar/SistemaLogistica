@@ -7,6 +7,13 @@ namespace IngSoft
 {
     internal static class TDPresentacion
     {
+        // GroupBox no incorpora siempre la altura del FlowLayoutPanel al envolver.
+        internal static void AjustarAltura(GroupBox grupo, FlowLayoutPanel panel)
+        {
+            Action ajustar = () => grupo.MinimumSize = new System.Drawing.Size(0, panel.Bottom + grupo.Padding.Bottom);
+            panel.SizeChanged += (s, e) => ajustar();
+            ajustar();
+        }
         internal static CultureInfo Cultura(Idioma idioma)
         {
             try { return CultureInfo.GetCultureInfo(idioma?.Codigo ?? "es-AR"); }

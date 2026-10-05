@@ -17,16 +17,14 @@ namespace IngSoft
             AgregarTD("menuTD04", "Registrar entrega", BLL.GestorEntrega.Permiso, () => new FrmRegistroEntrega());
             AgregarTD("menuTD05", "Controlar cumplimiento de viaje", BLL.GestorCumplimiento.Permiso, () => new FrmCumplimientoViaje());
         }
-        private void AgregarTD(string nombre, string titulo, string permiso, Func<FormularioTraducible> crear)
+        private void AgregarTD<T>(string nombre, string titulo, string permiso, Func<T> crear) where T : FormularioTraducible
         {
             var item = new ToolStripMenuItem { Name = nombre, Text = titulo, Tag = permiso, Enabled = false };
             item.Click += (s, e) => TDPresentacion.Ejecutar(this, () =>
             {
                 if (SessionManager.GetInstance()?.TienePermiso(permiso) != true)
                     throw new BE.ReglaTDException("TD.SinPermiso");
-                var formulario = crear();
-                formulario.MdiParent = this;
-                formulario.Show();
+                AbrirMdi(crear);
             }, ObtenerTexto);
             menuTD.DropDownItems.Add(item);
         }

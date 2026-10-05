@@ -12,6 +12,21 @@
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -31,6 +46,9 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>package.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -146,32 +164,94 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <Compile Include="FrmApp.TD.cs"><DependentUpon>FrmApp.cs</DependentUpon></Compile>
-    <Compile Include="FrmPlanificacionDistribucion.cs"><SubType>Form</SubType></Compile>
-    <Compile Include="FrmPlanificacionDistribucion.Designer.cs"><DependentUpon>FrmPlanificacionDistribucion.cs</DependentUpon></Compile>
+    <Compile Include="FrmApp.TD.cs">
+      <DependentUpon>FrmApp.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmPlanificacionDistribucion.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmPlanificacionDistribucion.Designer.cs">
+      <DependentUpon>FrmPlanificacionDistribucion.cs</DependentUpon>
+    </Compile>
     <Compile Include="TDPresentacion.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FrmPrepararDespacho.cs"><SubType>Form</SubType></Compile>
-    <Compile Include="FrmPrepararDespacho.Designer.cs"><DependentUpon>FrmPrepararDespacho.cs</DependentUpon></Compile>
+    <Compile Include="FrmPrepararDespacho.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmPrepararDespacho.Designer.cs">
+      <DependentUpon>FrmPrepararDespacho.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FrmEjecucionViaje.cs"><SubType>Form</SubType></Compile>
-    <Compile Include="FrmEjecucionViaje.Designer.cs"><DependentUpon>FrmEjecucionViaje.cs</DependentUpon></Compile>
+    <Compile Include="FrmEjecucionViaje.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmEjecucionViaje.Designer.cs">
+      <DependentUpon>FrmEjecucionViaje.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FrmRegistroEntrega.cs"><SubType>Form</SubType></Compile>
-    <Compile Include="FrmRegistroEntrega.Designer.cs"><DependentUpon>FrmRegistroEntrega.cs</DependentUpon></Compile>
+    <Compile Include="FrmRegistroEntrega.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmRegistroEntrega.Designer.cs">
+      <DependentUpon>FrmRegistroEntrega.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FrmCumplimientoViaje.cs"><SubType>Form</SubType></Compile>
-    <Compile Include="FrmCumplimientoViaje.Designer.cs"><DependentUpon>FrmCumplimientoViaje.cs</DependentUpon></Compile>
+    <Compile Include="FrmCumplimientoViaje.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmCumplimientoViaje.Designer.cs">
+      <DependentUpon>FrmCumplimientoViaje.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="FrmPlanificacionDistribucion.resx"><DependentUpon>FrmPlanificacionDistribucion.cs</DependentUpon></EmbeddedResource>
-    <EmbeddedResource Include="FrmPrepararDespacho.resx"><DependentUpon>FrmPrepararDespacho.cs</DependentUpon></EmbeddedResource>
-    <EmbeddedResource Include="FrmEjecucionViaje.resx"><DependentUpon>FrmEjecucionViaje.cs</DependentUpon></EmbeddedResource>
-    <EmbeddedResource Include="FrmRegistroEntrega.resx"><DependentUpon>FrmRegistroEntrega.cs</DependentUpon></EmbeddedResource>
-    <EmbeddedResource Include="FrmCumplimientoViaje.resx"><DependentUpon>FrmCumplimientoViaje.cs</DependentUpon></EmbeddedResource>
+    <EmbeddedResource Include="FrmPlanificacionDistribucion.resx">
+      <DependentUpon>FrmPlanificacionDistribucion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmPrepararDespacho.resx">
+      <DependentUpon>FrmPrepararDespacho.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmEjecucionViaje.resx">
+      <DependentUpon>FrmEjecucionViaje.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmRegistroEntrega.resx">
+      <DependentUpon>FrmRegistroEntrega.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmCumplimientoViaje.resx">
+      <DependentUpon>FrmCumplimientoViaje.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="FrmConfiguracionBD.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmConfiguracionBD.Designer.cs">
+      <DependentUpon>FrmConfiguracionBD.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmApp.ConfiguracionBD.cs" />
+    <EmbeddedResource Include="FrmConfiguracionBD.resx">
+      <DependentUpon>FrmConfiguracionBD.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="package.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.7.2 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Target Name="GenerarPaqueteBD" AfterTargets="Build">
+    <Exec Command="powershell.exe -NoProfile -ExecutionPolicy Bypass -File &quot;$(MSBuildProjectDirectory)\..\scripts\Generar-PaqueteBD.ps1&quot; -Destino &quot;$(TargetDir)DatabaseSetup&quot;" />
+  </Target>
 </Project>

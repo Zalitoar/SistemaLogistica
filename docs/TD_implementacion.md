@@ -4,6 +4,10 @@ Implementado sobre develop, conservando los seis proyectos y sus referencias.
 No se ejecutaron commits ni push. SQL Server se accede mediante DAL.ACCESO y
 procedimientos almacenados; BLL valida permisos y reglas, y WinForms presenta los datos.
 
+La configuración inicial de conexión y la creación del esquema desde el asistente
+se documentan en [Configuración de base de datos](Configuracion_base_de_datos.md).
+El instalador actual incluye los scripts necesarios para inicializar una base vacía.
+
 ## Brecha y corrección del modelo
 
 El repositorio tenía seguridad, idiomas y bitácora, pero no implementaba TD.

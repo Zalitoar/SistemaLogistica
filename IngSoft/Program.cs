@@ -20,6 +20,12 @@ namespace IngSoft
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
+            Application.ThreadException += (s, e) => MessageBox.Show(
+                FrmConfiguracionBD.DescribirError(e.Exception),
+                "SistemaLogistica", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+            if (!ConfigurarAntesDelLogin()) return;
+
             // Inicializar idiomas y traducciones en IdiomaManager
             try
             {
@@ -40,10 +46,35 @@ namespace IngSoft
             }
             catch (Exception ex)
             {
-                try { BitacoraManager.Registrar("Error inicializando idiomas: " + ex.Message); } catch { }
+                MessageBox.Show(FrmConfiguracionBD.DescribirError(ex),
+                    "SistemaLogistica", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
             }
 
             Application.Run(new FrmLogin());
+        }
+
+        private static bool ConfigurarAntesDelLogin()
+        {
+            var gestor = new ConfiguracionBDManager();
+            while (true)
+            {
+                string error;
+                try
+                {
+                    if (gestor.VerificarInicio().Compatible) return true;
+                    error = "BD.Incompatible";
+                }
+                catch (Exception ex) { error = ConfiguracionBDManager.ClaveError(ex); }
+                using (var formulario = new FrmConfiguracionBD(true, error))
+                    if (formulario.ShowDialog() != DialogResult.OK) return false;
+                try { gestor.ActivarAlInicio(); }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(FrmConfiguracionBD.DescribirError(ex));
+                    return false;
+                }
+            }
         }
     }
 }

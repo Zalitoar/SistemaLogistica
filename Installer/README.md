@@ -5,29 +5,28 @@ Esta carpeta permite generar de forma repetible un único instalador `.exe` para
 ## Qué incluye
 
 El instalador empaqueta la salida de `IngSoft\bin\Release\`, incluyendo el ejecutable,
-su `.config` y las DLL que MSBuild copie como dependencias.
+su `.config`, las DLL que MSBuild copie como dependencias y `DatabaseSetup` con
+los scripts SQL y su manifiesto, generados desde el proyecto Database en cada compilación.
+También incluye el script opcional `TD_DatosPrueba.sql`, ejecutable desde el botón
+**Inicializar datos de prueba** del asistente; no se carga automáticamente.
 
 No incluye archivos `.pdb`.
 
 ## Qué NO incluye
 
 - SQL Server / SQL Server Express.
-- El proyecto `Database`.
-- Instalación o publicación del esquema.
-- Creación de la base `SistemaLogistica`.
+- Las herramientas SSDT o el código fuente del proyecto `Database`.
+- Migraciones automáticas sobre bases que ya contienen objetos.
 
-La base se prepara por separado.
+SQL Server debe estar disponible. La aplicación permite crear e inicializar una
+base vacía desde su asistente previo al login; el instalador no se conecta al servidor.
 
 ## Conexión actual
 
-La aplicación usa actualmente en `IngSoft/App.config`:
-
-`Data Source=.\SQLEXPRESS;Initial Catalog=SistemaLogistica;Integrated Security=True`
-
-Ese valor termina en `IngSoft.exe.config`, que sí se distribuye.
-
-Por lo tanto, el equipo destino debe tener una instancia/base compatible con esa cadena
-o debe ajustarse la configuración para apuntar al servidor SQL correcto.
+`IngSoft/App.config` se distribuye sin servidor ni base configurados. El asistente
+guarda la conexión protegida con DPAPI para el usuario actual de Windows en
+`%LOCALAPPDATA%\SistemaLogistica\conexion.dat`. El instalador no sobrescribe ese archivo.
+Consulte [la guía de configuración](../docs/Configuracion_base_de_datos.md).
 
 ## Requisitos para generar el instalador
 
@@ -75,9 +74,9 @@ SQL Server continúa excluido.
 
 Probar el instalador en una máquina Windows limpia o snapshot limpio:
 
-1. preparar SQL Server y la base por el mecanismo separado;
+1. preparar SQL Server y una cuenta con permisos de inicialización;
 2. ejecutar el Setup;
-3. comprobar inicio y login;
+3. crear e inicializar una base vacía desde el asistente y comprobar el login con la clave elegida;
 4. probar cambio de idioma;
 5. probar permisos con distintos perfiles;
 6. probar los cinco casos de uso TD;
