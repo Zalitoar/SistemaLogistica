@@ -20,6 +20,7 @@ namespace IngSoft
         public FrmApp()
         {
             InitializeComponent();
+            InicializarTD();
         }
 
         private void App_Load(object sender, EventArgs e)
@@ -67,6 +68,7 @@ namespace IngSoft
 
         private void ValidarPermiso()
         {
+            ValidarPermisosTD();
             clientesToolStripMenuItem.Enabled = Servicios.SessionManager.GetInstance().TienePermiso("GESTION_VENTAS");
             productosToolStripMenuItem.Enabled = Servicios.SessionManager.GetInstance().TienePermiso("ABM_CLIENTES");
             productosToolStripMenuItem1.Enabled = Servicios.SessionManager.GetInstance().TienePermiso("ABM_PRODUCTOS");

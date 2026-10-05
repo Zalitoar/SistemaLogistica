@@ -1,4 +1,4 @@
-/*
+﻿/*
 Seed del catálogo base de permisos y composición de roles.
 
 Es idempotente y resuelve las relaciones por nombre para no depender de IDs
@@ -83,3 +83,15 @@ WHERE NOT EXISTS (
     WHERE destino.Id_Rol = origen.Id_Rol
       AND destino.Id_Componente = origen.Id_Componente
 );
+
+-- Permisos de Transporte y Distribución. No altera la composición previa.
+DECLARE @PermisosTD TABLE (Nombre VARCHAR(100) PRIMARY KEY);
+INSERT @PermisosTD VALUES ('TD_PLANIFICAR_DISTRIBUCION'), ('TD_PREPARAR_DESPACHO'), ('TD_EJECUTAR_VIAJE'), ('TD_REGISTRAR_ENTREGA'), ('TD_CONTROLAR_CUMPLIMIENTO');
+INSERT dbo.PERMISO(Nombre_Permiso,Tipo_Permiso)
+SELECT Nombre,'PERMISO' FROM @PermisosTD T
+WHERE NOT EXISTS (SELECT 1 FROM dbo.PERMISO P WHERE P.Nombre_Permiso=T.Nombre);
+DECLARE @AdministradorTD INT = (SELECT MIN(Id_Permiso) FROM dbo.PERMISO WHERE Nombre_Permiso='Administrador' AND Tipo_Permiso='ROL');
+IF @AdministradorTD IS NULL THROW 50002, 'No existe el rol Administrador.', 1;
+INSERT dbo.ROL_COMPONENTE(Id_Rol,Id_Componente)
+SELECT @AdministradorTD,P.Id_Permiso FROM dbo.PERMISO P JOIN @PermisosTD T ON T.Nombre=P.Nombre_Permiso
+WHERE NOT EXISTS (SELECT 1 FROM dbo.ROL_COMPONENTE R WHERE R.Id_Rol=@AdministradorTD AND R.Id_Componente=P.Id_Permiso);

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -145,4 +145,33 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Compile Include="FrmApp.TD.cs"><DependentUpon>FrmApp.cs</DependentUpon></Compile>
+    <Compile Include="FrmPlanificacionDistribucion.cs"><SubType>Form</SubType></Compile>
+    <Compile Include="FrmPlanificacionDistribucion.Designer.cs"><DependentUpon>FrmPlanificacionDistribucion.cs</DependentUpon></Compile>
+    <Compile Include="TDPresentacion.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="FrmPrepararDespacho.cs"><SubType>Form</SubType></Compile>
+    <Compile Include="FrmPrepararDespacho.Designer.cs"><DependentUpon>FrmPrepararDespacho.cs</DependentUpon></Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="FrmEjecucionViaje.cs"><SubType>Form</SubType></Compile>
+    <Compile Include="FrmEjecucionViaje.Designer.cs"><DependentUpon>FrmEjecucionViaje.cs</DependentUpon></Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="FrmRegistroEntrega.cs"><SubType>Form</SubType></Compile>
+    <Compile Include="FrmRegistroEntrega.Designer.cs"><DependentUpon>FrmRegistroEntrega.cs</DependentUpon></Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="FrmCumplimientoViaje.cs"><SubType>Form</SubType></Compile>
+    <Compile Include="FrmCumplimientoViaje.Designer.cs"><DependentUpon>FrmCumplimientoViaje.cs</DependentUpon></Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="FrmPlanificacionDistribucion.resx"><DependentUpon>FrmPlanificacionDistribucion.cs</DependentUpon></EmbeddedResource>
+    <EmbeddedResource Include="FrmPrepararDespacho.resx"><DependentUpon>FrmPrepararDespacho.cs</DependentUpon></EmbeddedResource>
+    <EmbeddedResource Include="FrmEjecucionViaje.resx"><DependentUpon>FrmEjecucionViaje.cs</DependentUpon></EmbeddedResource>
+    <EmbeddedResource Include="FrmRegistroEntrega.resx"><DependentUpon>FrmRegistroEntrega.cs</DependentUpon></EmbeddedResource>
+    <EmbeddedResource Include="FrmCumplimientoViaje.resx"><DependentUpon>FrmCumplimientoViaje.cs</DependentUpon></EmbeddedResource>
+  </ItemGroup>
 </Project>
