@@ -132,7 +132,17 @@ namespace DAL
 
         public bool InicializarDatosPrueba(ConfiguracionBaseDatos datos, string hash)
         {
-            var archivo=Manifesto().Root.Element("DemoScript");
+            return CargarDatosPrueba(datos, hash, "DemoScript");
+        }
+
+        public bool InicializarDatosPruebaMF(ConfiguracionBaseDatos datos, string hash)
+        {
+            return CargarDatosPrueba(datos, hash, "DemoMFScript");
+        }
+
+        private bool CargarDatosPrueba(ConfiguracionBaseDatos datos, string hash, string elemento)
+        {
+            var archivo=Manifesto().Root.Element(elemento);
             string ruta=archivo==null ? "" : Path.Combine(paquete,(string)archivo.Attribute("File"));
             if (!File.Exists(ruta)) throw new ConfiguracionBDException("BD.PaqueteAusente");
             using (var c=new SqlConnection(Cadena(datos)))

@@ -120,9 +120,10 @@ programación, inicio y finalización de intervención, habilitación y asignaci
 
 ## Instalación y actualización
 
-El instalador 1.5.0 incluye el paquete SQL actualizado. En una base nueva,
-«Inicializar base» del asistente crea TD y MF conjuntamente. El botón de datos
-de prueba existente conserva su conjunto TD; las unidades se crean desde MF-01.
+El instalador incluye el paquete SQL actualizado. En una base nueva,
+«Inicializar base» del asistente crea TD y MF conjuntamente. Desde la versión
+1.5.1, «Inicializar datos de prueba MF» carga ejemplos independientes del conjunto
+TD; ver [datos de prueba MF](Datos_prueba_MF.md).
 
 Una base TD anterior requiere actualización del esquema antes de usar esta versión.
 El asistente detectará que faltan objetos MF y no intentará recrear una base con datos.

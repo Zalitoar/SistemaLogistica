@@ -546,3 +546,12 @@ INSERT @MF VALUES
 (N'FrmDisponibilidadFlota.grpasignacion.Text',N'Asignación de unidad al viaje seleccionado');
 INSERT dbo.TRADUCCION(Id_Idioma,Clave_Traduccion,Valor_Traduccion)
 SELECT @IdIdioma_es_AR,Clave,Valor FROM @MF M WHERE NOT EXISTS(SELECT 1 FROM dbo.TRADUCCION T WHERE T.Id_Idioma=@IdIdioma_es_AR AND T.Clave_Traduccion=M.Clave);
+
+-- Carga opcional e independiente de ejemplos MF.
+DECLARE @DemoMF TABLE(Clave NVARCHAR(200),Valor NVARCHAR(1000));
+INSERT @DemoMF VALUES
+(N'FrmConfiguracionBD.btnDatosPruebaMF.Text',N'Inicializar datos de prueba MF'),
+(N'BD.ConfirmarDemoMF',N'¿Agregar usuarios y operaciones ficticias MF? Use una base de pruebas. No se restablecerán datos existentes. Se generará una contraseña para los tres usuarios MF.'),
+(N'BD.DemoMFCargado',N'Datos MF cargados. Usuarios: demo_flota, demo_mantenimiento y demo_trafico_mf. Contraseña común: {0}. Anótela antes de cerrar; no se mostrará nuevamente. Las contraseñas anteriores no cambian.');
+INSERT dbo.TRADUCCION(Id_Idioma,Clave_Traduccion,Valor_Traduccion)
+SELECT @IdIdioma_es_AR,Clave,Valor FROM @DemoMF M WHERE NOT EXISTS(SELECT 1 FROM dbo.TRADUCCION T WHERE T.Id_Idioma=@IdIdioma_es_AR AND T.Clave_Traduccion=M.Clave);

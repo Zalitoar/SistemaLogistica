@@ -127,7 +127,8 @@ $requiredFiles = @(
     "DAL.dll",
     "Servicios.dll",
     "DatabaseSetup\manifest.xml",
-    "DatabaseSetup\TD_DatosPrueba.sql"
+    "DatabaseSetup\TD_DatosPrueba.sql",
+    "DatabaseSetup\MF_DatosPrueba.sql"
 )
 
 foreach ($name in $requiredFiles) {

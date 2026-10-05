@@ -44,6 +44,13 @@ namespace Servicios
             string clave="Demo-"+Guid.NewGuid().ToString("N").Substring(0,16);
             return mapper.InicializarDatosPrueba(d,CryptoManager.Hash(clave)) ? clave : null;
         }
+        public string InicializarDatosPruebaMF(ConfiguracionBaseDatos d)
+        {
+            Autorizar();
+            if (!Verificar(d).Compatible) throw new ConfiguracionBDException("BD.Incompatible");
+            string clave="Demo-"+Guid.NewGuid().ToString("N").Substring(0,16);
+            return mapper.InicializarDatosPruebaMF(d,CryptoManager.Hash(clave)) ? clave : null;
+        }
         public void Guardar(ConfiguracionBaseDatos d)
         {
             Autorizar();

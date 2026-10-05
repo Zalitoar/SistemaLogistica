@@ -14,7 +14,7 @@ BEGIN TRY
   COMMIT; SELECT CAST(0 AS INT); RETURN;
  END;
  -- No apropiarse de registros existentes ni restablecer sus credenciales.
- IF EXISTS(SELECT 1 FROM dbo.USUARIO WHERE Nombre_Usuario LIKE 'demo[_]%')
+ IF EXISTS(SELECT 1 FROM dbo.USUARIO WHERE Nombre_Usuario IN ('demo_planificador','demo_expedicion','demo_transporte','demo_consulta'))
  OR EXISTS(SELECT 1 FROM dbo.PERMISO WHERE Nombre_Permiso LIKE 'DEMO TD %')
  OR EXISTS(SELECT 1 FROM dbo.REQUERIMIENTO_DISTRIBUCION WHERE Numero LIKE 'DEMO-TD-%')
  OR EXISTS(SELECT 1 FROM dbo.PLAN_DISTRIBUCION WHERE Numero LIKE 'DEMO-TD-%')

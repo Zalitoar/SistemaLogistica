@@ -60,6 +60,9 @@ foreach ($inc in [regex]::Matches($post, '(?m)^:r\s+(.+?)\s*$')) {
 $demo='TD_DatosPrueba.sql'
 Copy-Item (Join-Path $base "Scripts/DevData/$demo") (Join-Path $Destino $demo) -Force
 $opcional=$manifest.CreateElement('DemoScript'); $opcional.SetAttribute('File',$demo); $raiz.AppendChild($opcional) | Out-Null
+$demoMF='MF_DatosPrueba.sql'
+Copy-Item (Join-Path $base "Scripts/DevData/$demoMF") (Join-Path $Destino $demoMF) -Force
+$opcionalMF=$manifest.CreateElement('DemoMFScript'); $opcionalMF.SetAttribute('File',$demoMF); $raiz.AppendChild($opcionalMF) | Out-Null
 Copy-Item (Join-Path $PSScriptRoot 'Actualizar-MF.ps1') (Join-Path $Destino 'Actualizar-MF.ps1') -Force
 $manifest.Save((Join-Path $Destino 'manifest.xml'))
 Write-Output "Paquete BD generado: $indice scripts en $Destino"

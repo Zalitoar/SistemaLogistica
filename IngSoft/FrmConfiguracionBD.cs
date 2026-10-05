@@ -69,6 +69,16 @@ namespace IngSoft
                     if(o!=null) MessageBox.Show(this,txtEstado.Text,Text,MessageBoxButtons.OK,MessageBoxIcon.Information);
                 });
             };
+            btnDatosPruebaMF.Click += (s,e) =>
+            {
+                var d=Datos();
+                if (!Confirmar("BD.ConfirmarDemoMF")) return;
+                Trabajo(() => gestor.InicializarDatosPruebaMF(d), o =>
+                {
+                    txtEstado.Text=o==null ? T("BD.DemoExistente") : string.Format(T("BD.DemoMFCargado"),(string)o);
+                    if(o!=null) MessageBox.Show(this,txtEstado.Text,Text,MessageBoxButtons.OK,MessageBoxIcon.Information);
+                });
+            };
             Habilitar();
         }
         private ConfiguracionBaseDatos Datos() { return new ConfiguracionBaseDatos { Servidor=cmbServidor.Text,Puerto=(int)nudPuerto.Value,BaseDatos=cmbBase.Text,AutenticacionWindows=chkWindows.Checked,Usuario=txtUsuario.Text,Clave=txtClave.Text,ConfiarCertificado=chkCertificado.Checked }; }
@@ -81,6 +91,7 @@ namespace IngSoft
             foreach (var b in new[] { btnBuscar,btnConectar,btnCrear,btnVerificar,btnCancelar }) b.Enabled=!ocupado;
             btnGuardar.Enabled=!ocupado && diagnostico?.Compatible==true;
             btnDatosPrueba.Enabled=!ocupado && diagnostico?.Compatible==true;
+            btnDatosPruebaMF.Enabled=!ocupado && diagnostico?.Compatible==true;
             btnInicializar.Enabled=!ocupado && diagnostico?.Vacia==true;
         }
         private async void Trabajo(Func<object> operacion, Action<object> resultado)
@@ -138,6 +149,8 @@ namespace IngSoft
                 case "BD.SinPermiso": return "No tiene permiso para configurar la base de datos.";
                 case "BD.Instrucciones": return "Conecte al servidor, seleccione una base y pulse Verificar estructura de la base. Esta opción comprueba tablas, procedimientos y datos iniciales. Guarde sólo después de una verificación correcta.";
                 case "BD.Busqueda": return "Búsqueda finalizada. La lista puede estar incompleta; escriba manualmente el servidor si no aparece.";
+                case "BD.ConfirmarDemoMF": return "¿Agregar usuarios y operaciones ficticias MF? Use una base de pruebas. Los registros existentes no se restablecen.";
+                case "BD.DemoMFCargado": return "Datos MF cargados. Usuarios: demo_flota, demo_mantenimiento y demo_trafico_mf. Contraseña común: {0}. Anótela antes de cerrar; no se mostrará nuevamente. Las contraseñas anteriores no cambian.";
                 case "BD.Conectado": return "Conexión al servidor correcta. Seleccione una base de la lista, o escriba un nombre nuevo y pulse Crear base vacía.";
                 case "BD.Trabajando": return "Operación en curso. Espere a que finalice.";
                 case "BD.Compatible": return "Conexión correcta. Los objetos y datos iniciales requeridos están presentes. Puede guardar la conexión.";

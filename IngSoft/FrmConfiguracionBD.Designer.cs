@@ -13,6 +13,7 @@ namespace IngSoft
         private TableLayoutPanel campos;
         private GroupBox grpAdmin;
         private Button btnDatosPrueba;
+        private Button btnDatosPruebaMF;
         private void InitializeComponent()
         {
             Name = "FrmConfiguracionBD"; Text = "Configurar base de datos";
@@ -54,6 +55,7 @@ namespace IngSoft
             btnInicializar = Boton("btnInicializar", "Inicializar base", botones); btnInicializar.Enabled=false;
             btnGuardar = Boton("btnGuardar", "Guardar conexión", botones); btnGuardar.Enabled=false;
             btnDatosPrueba = Boton("btnDatosPrueba", "Inicializar datos de prueba", botones); btnDatosPrueba.Enabled=false;
+            btnDatosPruebaMF = Boton("btnDatosPruebaMF", "Inicializar datos de prueba MF", botones); btnDatosPruebaMF.Enabled=false;
             btnCancelar = Boton("btnCancelar", "Cancelar", botones);
             txtEstado = new TextBox { Name="txtEstado", Dock=DockStyle.Fill, Multiline=true, ReadOnly=true, TabStop=false, ScrollBars=ScrollBars.Vertical, BackColor=Color.White };
             Controls.Add(txtEstado); Controls.Add(botones); Controls.Add(grpAdmin); Controls.Add(ayuda); Controls.Add(campos);
