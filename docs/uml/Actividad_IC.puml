@@ -1,0 +1,49 @@
+@startuml
+title IC — Gestión de incidencias y cumplimiento de entregas
+|Operaciones de Transporte|
+start
+:Controlar desarrollo de las entregas;
+if (¿Se detecta un desvío?) then (Sí)
+  :Detectar desvío;
+  :Describir incidencia;
+  note right: «documento»\nReporte de incidencia
+  |Control de Tráfico|
+  :Revisar reporte de incidencia;
+  :Clasificar incidencia;
+  :Evaluar impacto sobre las entregas;
+  if (¿Puede resolverse durante la operación?) then (Sí)
+    :Definir acción de respuesta;
+    note right: «documento»\nInstrucción operativa
+    |Operaciones de Transporte|
+    :Revisar instrucción operativa;
+    :Aplicar acción definida;
+    :Evaluar posibilidad de entrega;
+    if (¿Puede realizarse la entrega?) then (Sí)
+      :Realizar entrega;
+      note right: «documento»\nComprobante de entrega
+    else (No)
+      :Informar incumplimiento;
+      note right: «documento»\nConstancia de incumplimiento
+    endif
+  else (No)
+    |Operaciones de Transporte|
+    :Informar imposibilidad de cumplimiento;
+    note right: «documento»\nConstancia de incumplimiento
+  endif
+  |Control de Tráfico|
+  :Verificar resultado de la incidencia;
+  :Cerrar incidencia;
+  note right: «documento»\nInforme de cierre de incidencia
+  |Calidad y Mejora Continua|
+  :Revisar incidencias cerradas;
+  :Analizar causas;
+  :Identificar problemas recurrentes;
+  if (¿Requiere acción de mejora?) then (Sí)
+    :Proponer acción de mejora;
+    note right: «documento»\nInforme de mejora operativa
+  endif
+else (No)
+  :Continuar distribución;
+endif
+stop
+@enduml

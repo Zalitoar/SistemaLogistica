@@ -102,3 +102,12 @@ IF NOT EXISTS (SELECT 1 FROM dbo.PERMISO WHERE Nombre_Permiso='CONFIGURAR_BD')
 INSERT dbo.ROL_COMPONENTE(Id_Rol,Id_Componente)
 SELECT @AdministradorTD,Id_Permiso FROM dbo.PERMISO P WHERE Nombre_Permiso='CONFIGURAR_BD'
 AND NOT EXISTS (SELECT 1 FROM dbo.ROL_COMPONENTE R WHERE R.Id_Rol=@AdministradorTD AND R.Id_Componente=P.Id_Permiso);
+
+-- MF: permisos específicos, asignados sin cambiar roles existentes.
+DECLARE @PermisosMF TABLE(Nombre VARCHAR(100) PRIMARY KEY);
+INSERT @PermisosMF VALUES ('MF_REGISTRAR_ESTADO'),('MF_PROGRAMAR_MANTENIMIENTO'),('MF_REGISTRAR_INTERVENCION'),('MF_HABILITAR_UNIDAD'),('MF_ASIGNAR_UNIDAD');
+INSERT dbo.PERMISO(Nombre_Permiso,Tipo_Permiso)
+SELECT Nombre,'PERMISO' FROM @PermisosMF M WHERE NOT EXISTS(SELECT 1 FROM dbo.PERMISO P WHERE P.Nombre_Permiso=M.Nombre);
+INSERT dbo.ROL_COMPONENTE(Id_Rol,Id_Componente)
+SELECT @AdministradorTD,P.Id_Permiso FROM dbo.PERMISO P JOIN @PermisosMF M ON M.Nombre=P.Nombre_Permiso
+WHERE NOT EXISTS(SELECT 1 FROM dbo.ROL_COMPONENTE R WHERE R.Id_Rol=@AdministradorTD AND R.Id_Componente=P.Id_Permiso);

@@ -79,4 +79,7 @@
     <Compile Include="MP_ConfiguracionBD.cs" />
     <Reference Include="System.Security" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="MP_MF.cs" />
+  </ItemGroup>
 </Project>

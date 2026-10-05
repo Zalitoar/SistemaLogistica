@@ -1,0 +1,25 @@
+@startuml
+title MF — Casos de uso de Mantenimiento y Disponibilidad de Flota
+left to right direction
+skinparam packageStyle rectangle
+
+actor "Responsable de Flota" as Flota
+actor "Responsable/Técnico\nde Mantenimiento" as Tecnico
+actor "Planificador de Tráfico" as Planificador
+
+rectangle "Sistema de Gestión Logística\n[Mantenimiento y Disponibilidad de Flota]" {
+  usecase "ECU-MF-01\nRegistrar estado y necesidad\nde mantenimiento" as MF01
+  usecase "ECU-MF-02\nProgramar mantenimiento" as MF02
+  usecase "ECU-MF-03\nRegistrar intervención\nde mantenimiento" as MF03
+  usecase "ECU-MF-04\nHabilitar unidad para operar" as MF04
+  usecase "ECU-MF-05\nConsultar disponibilidad\ny asignar unidad" as MF05
+}
+
+Flota -- MF01
+Tecnico -- MF02
+Tecnico -- MF04
+Planificador -- MF05
+
+MF02 .> MF01 : <<include>>\nconsultar parte de estado
+MF04 ..> MF03 : <<include>>\nverificar intervención
+@enduml

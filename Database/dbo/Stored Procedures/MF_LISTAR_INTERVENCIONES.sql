@@ -1,0 +1,6 @@
+﻿CREATE PROCEDURE dbo.MF_LISTAR_INTERVENCIONES @IdOrdenMantenimiento INT AS
+BEGIN
+    SET NOCOUNT ON;
+    SET XACT_ABORT ON;
+SELECT * FROM dbo.INTERVENCION_MANTENIMIENTO WHERE IdOrdenMantenimiento=@IdOrdenMantenimiento ORDER BY IdIntervencionMantenimiento DESC;
+END;

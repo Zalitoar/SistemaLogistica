@@ -1,0 +1,22 @@
+@startuml
+title ECU-MF-05 — Consultar disponibilidad y asignar unidad
+actor "Planificador de Tráfico" as actor
+boundary "ui:VistaDisponibilidadFlota" as ui
+control "gestor:GestorDisponibilidad" as gestor
+entity "informe:InformeDisponibilidad" as informe
+entity "unidad:UnidadFlota" as unidad
+entity "viaje:Viaje" as viaje
+
+actor -> ui : consultarDisponibles()
+ui -> gestor : listarDisponibles()
+gestor -> informe : consultarVigentes()
+informe --> gestor : informes
+gestor -> unidad : filtrarDisponibles()
+unidad --> gestor : unidades
+gestor --> ui : unidades disponibles
+
+actor -> ui : seleccionarUnidadYViaje()
+ui -> gestor : asignarUnidad(unidad, viaje)
+gestor -> viaje : asignarUnidad(unidad)
+gestor --> ui : asignación confirmada
+@enduml

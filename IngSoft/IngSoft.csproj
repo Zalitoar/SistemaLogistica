@@ -258,4 +258,23 @@
   <Target Name="GenerarPaqueteBD" AfterTargets="Build">
     <Exec Command="powershell.exe -NoProfile -ExecutionPolicy Bypass -File &quot;$(MSBuildProjectDirectory)\..\scripts\Generar-PaqueteBD.ps1&quot; -Destino &quot;$(TargetDir)DatabaseSetup&quot;" />
   </Target>
+  <ItemGroup>
+    <Compile Include="MFPresentacion.cs" />
+    <Compile Include="FrmApp.MF.cs"><DependentUpon>FrmApp.cs</DependentUpon><SubType>Code</SubType></Compile>
+    <Compile Include="FrmEstadoFlota.cs"><SubType>Form</SubType></Compile>
+    <Compile Include="FrmEstadoFlota.Designer.cs"><DependentUpon>FrmEstadoFlota.cs</DependentUpon></Compile>
+    <EmbeddedResource Include="FrmEstadoFlota.resx"><DependentUpon>FrmEstadoFlota.cs</DependentUpon></EmbeddedResource>
+    <Compile Include="FrmProgramarMantenimiento.cs"><SubType>Form</SubType></Compile>
+    <Compile Include="FrmProgramarMantenimiento.Designer.cs"><DependentUpon>FrmProgramarMantenimiento.cs</DependentUpon></Compile>
+    <EmbeddedResource Include="FrmProgramarMantenimiento.resx"><DependentUpon>FrmProgramarMantenimiento.cs</DependentUpon></EmbeddedResource>
+    <Compile Include="FrmIntervencionMantenimiento.cs"><SubType>Form</SubType></Compile>
+    <Compile Include="FrmIntervencionMantenimiento.Designer.cs"><DependentUpon>FrmIntervencionMantenimiento.cs</DependentUpon></Compile>
+    <EmbeddedResource Include="FrmIntervencionMantenimiento.resx"><DependentUpon>FrmIntervencionMantenimiento.cs</DependentUpon></EmbeddedResource>
+    <Compile Include="FrmHabilitarUnidad.cs"><SubType>Form</SubType></Compile>
+    <Compile Include="FrmHabilitarUnidad.Designer.cs"><DependentUpon>FrmHabilitarUnidad.cs</DependentUpon></Compile>
+    <EmbeddedResource Include="FrmHabilitarUnidad.resx"><DependentUpon>FrmHabilitarUnidad.cs</DependentUpon></EmbeddedResource>
+    <Compile Include="FrmDisponibilidadFlota.cs"><SubType>Form</SubType></Compile>
+    <Compile Include="FrmDisponibilidadFlota.Designer.cs"><DependentUpon>FrmDisponibilidadFlota.cs</DependentUpon></Compile>
+    <EmbeddedResource Include="FrmDisponibilidadFlota.resx"><DependentUpon>FrmDisponibilidadFlota.cs</DependentUpon></EmbeddedResource>
+  </ItemGroup>
 </Project>

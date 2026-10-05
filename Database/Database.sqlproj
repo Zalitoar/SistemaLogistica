@@ -158,4 +158,23 @@
   <ItemGroup>
     <Build Include="dbo\Stored Procedures\TD_CERRAR_VIAJE.sql" />
   </ItemGroup>
+  <ItemGroup>
+    <Build Include="dbo\Tables\UNIDAD_FLOTA.sql" />
+    <Build Include="dbo\Tables\PARTE_ESTADO_UNIDAD.sql" />
+    <Build Include="dbo\Tables\ORDEN_MANTENIMIENTO.sql" />
+    <Build Include="dbo\Tables\INTERVENCION_MANTENIMIENTO.sql" />
+    <Build Include="dbo\Tables\INFORME_DISPONIBILIDAD.sql" />
+    <Build Include="dbo\Stored Procedures\MF_LISTAR_UNIDADES.sql" />
+    <Build Include="dbo\Stored Procedures\MF_LISTAR_PARTES.sql" />
+    <Build Include="dbo\Stored Procedures\MF_LISTAR_ORDENES.sql" />
+    <Build Include="dbo\Stored Procedures\MF_LISTAR_INTERVENCIONES.sql" />
+    <Build Include="dbo\Stored Procedures\MF_LISTAR_INFORMES.sql" />
+    <Build Include="dbo\Stored Procedures\MF_CREAR_UNIDAD.sql" />
+    <Build Include="dbo\Stored Procedures\MF_REGISTRAR_ESTADO.sql" />
+    <Build Include="dbo\Stored Procedures\MF_PROGRAMAR.sql" />
+    <Build Include="dbo\Stored Procedures\MF_INICIAR_INTERVENCION.sql" />
+    <Build Include="dbo\Stored Procedures\MF_FINALIZAR_INTERVENCION.sql" />
+    <Build Include="dbo\Stored Procedures\MF_HABILITAR.sql" />
+    <Build Include="dbo\Stored Procedures\MF_ASIGNAR.sql" />
+  </ItemGroup>
 </Project>

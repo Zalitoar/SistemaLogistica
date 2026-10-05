@@ -72,6 +72,11 @@ SQL Server continúa excluido.
 
 ## Prueba recomendada
 
+La versión 1.5.0 incorpora Mantenimiento y Flota. Para una base TD existente,
+aplicar `scripts/Actualizar-MF.ps1` antes de utilizar la nueva versión; también
+se incluye en la carpeta instalada `DatabaseSetup`. Las bases nuevas incluyen
+MF al inicializarse desde el asistente. Ver [implementación y actualización MF](../docs/MF_implementacion.md).
+
 ### Error MSB3577: `IngSoft.FrmApp.resources` duplicado
 
 El diseñador principal se abre desde `FrmApp.cs`. Los archivos

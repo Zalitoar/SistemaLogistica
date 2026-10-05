@@ -1,0 +1,20 @@
+@startuml
+title ECU-MF-04 — Habilitar unidad para operar
+actor "Responsable/Técnico de Mantenimiento" as actor
+boundary "ui:VistaHabilitacion" as ui
+control "gestor:GestorDisponibilidad" as gestor
+entity "unidad:UnidadFlota" as unidad
+entity "informe:InformeDisponibilidad" as informe
+
+actor -> ui : seleccionarUnidad()
+ui -> gestor : verificarCondiciones(unidad)
+gestor -> unidad : requiereMantenimiento()
+unidad --> gestor : no
+gestor --> ui : apta para habilitar
+
+actor -> ui : confirmarHabilitacion()
+ui -> gestor : habilitarUnidad(unidad)
+gestor -> unidad : marcarDisponible()
+gestor -> informe : crear(condicion="Disponible")
+gestor --> ui : unidad habilitada
+@enduml

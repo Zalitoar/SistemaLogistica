@@ -1,5 +1,9 @@
 # Transporte y distribución
 
+La integración posterior con Mantenimiento y Flota se describe en
+[MF_implementacion.md](MF_implementacion.md). Un viaje puede tener unidad e
+informe de disponibilidad asociados; su vigencia se vuelve a verificar al iniciar.
+
 Implementado sobre develop, conservando los seis proyectos y sus referencias.
 No se ejecutaron commits ni push. SQL Server se accede mediante DAL.ACCESO y
 procedimientos almacenados; BLL valida permisos y reglas, y WinForms presenta los datos.

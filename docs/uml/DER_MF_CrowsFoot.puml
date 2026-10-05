@@ -1,0 +1,154 @@
+@startuml
+
+title MF - Diagrama Entidad-Relación\nGestión de Mantenimiento y Disponibilidad de Flota
+
+left to right direction
+
+hide methods
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+
+' ============================================================
+' ENTIDADES
+' ============================================================
+
+class UnidadFlota <<entity>> {
+    + IdUnidadFlota : int <<PK>>
+    --
+    Dominio : varchar(10)
+    Marca : varchar(50)
+    Modelo : varchar(50)
+    Anio : int
+    KilometrajeActual : decimal
+    EstadoOperativo : varchar(30)
+    Activa : boolean
+}
+
+class ParteEstadoUnidad <<entity>> {
+    + IdParteEstadoUnidad : int <<PK>>
+    --
+    # IdUnidadFlota : int <<FK>>
+    FechaHora : datetime
+    Kilometraje : decimal
+    TipoNovedad : varchar(30)
+    Descripcion : varchar(500)
+    RequiereMantenimiento : boolean
+    EstadoParte : varchar(30)
+}
+
+class OrdenMantenimiento <<entity>> {
+    + IdOrdenMantenimiento : int <<PK>>
+    --
+    # IdUnidadFlota : int <<FK>>
+    # IdParteEstadoUnidad : int <<FK>>
+    FechaEmision : datetime
+    FechaProgramada : datetime
+    TipoMantenimiento : varchar(30)
+    Prioridad : varchar(20)
+    DescripcionTrabajo : varchar(500)
+    EstadoOrden : varchar(30)
+}
+
+class IntervencionMantenimiento <<entity>> {
+    + IdIntervencionMantenimiento : int <<PK>>
+    --
+    # IdOrdenMantenimiento : int <<FK>>
+    FechaInicio : datetime
+    FechaFin : datetime
+    Kilometraje : decimal
+    TrabajoRealizado : varchar(1000)
+    Resultado : varchar(30)
+    Observaciones : varchar(1000)
+}
+
+class InformeDisponibilidad <<entity>> {
+    + IdInformeDisponibilidad : int <<PK>>
+    --
+    # IdUnidadFlota : int <<FK>>
+    # IdIntervencionMantenimiento : int <<FK>>
+    FechaHora : datetime
+    Disponible : boolean
+    EstadoUnidad : varchar(30)
+    Observaciones : varchar(1000)
+    Vigente : boolean
+}
+
+class ServicioTransporte <<entity>> {
+    + IdServicioTransporte : int <<PK>>
+    --
+    # IdUnidadFlota : int <<FK>>
+    # IdInformeDisponibilidad : int <<FK>>
+    FechaProgramada : datetime
+    EstadoServicio : varchar(30)
+}
+
+' ============================================================
+' RELACIONES
+' ============================================================
+
+UnidadFlota "1" -- "0..*" ParteEstadoUnidad : registra
+
+ParteEstadoUnidad "1" -- "0..1" OrdenMantenimiento : origina
+
+UnidadFlota "1" - "0..*" OrdenMantenimiento : recibe
+
+OrdenMantenimiento "1" - "0..*" IntervencionMantenimiento : contiene
+
+UnidadFlota "1" -- "0..*" InformeDisponibilidad : posee
+
+IntervencionMantenimiento "1" - "0..1" InformeDisponibilidad : genera
+
+UnidadFlota "0..1" - "0..*" ServicioTransporte : asignada a
+
+InformeDisponibilidad "0..1" -- "0..*" ServicioTransporte : respalda asignación
+
+' ============================================================
+' NOTAS
+' ============================================================
+
+note right of UnidadFlota
+Entidad central del proceso MF.
+
+EstadoOperativo puede tomar valores como:
+- Disponible
+- En mantenimiento
+- Fuera de servicio
+end note
+
+note bottom of ParteEstadoUnidad
+Registra el estado o una novedad
+detectada sobre una unidad de flota.
+
+Puede indicar una falla, anomalía
+o necesidad de mantenimiento.
+end note
+
+note bottom of OrdenMantenimiento
+Un parte puede generar una orden
+de mantenimiento cuando la situación
+detectada requiere una intervención.
+end note
+
+note bottom of IntervencionMantenimiento
+Registra los trabajos efectivamente
+realizados sobre la unidad.
+
+Una orden puede requerir una o
+varias intervenciones.
+end note
+
+note bottom of InformeDisponibilidad
+Registra el resultado de la verificación
+posterior al mantenimiento.
+
+Permite determinar si la unidad
+puede volver a utilizarse.
+end note
+
+note right of ServicioTransporte
+Entidad perteneciente al proceso TD
+que se relaciona con MF para consultar
+y utilizar unidades disponibles.
+end note
+
+@enduml

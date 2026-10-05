@@ -21,6 +21,7 @@ namespace IngSoft
         {
             InitializeComponent();
             InicializarTD();
+            InicializarMF();
             InicializarConfiguracionBD();
         }
 
@@ -70,6 +71,7 @@ namespace IngSoft
         private void ValidarPermiso()
         {
             ValidarPermisosTD();
+            ValidarPermisosMF();
             menuConfiguracionBD.Enabled = SessionManager.GetInstance()?.TienePermiso(ConfiguracionBDManager.Permiso) == true;
             clientesToolStripMenuItem.Enabled = Servicios.SessionManager.GetInstance().TienePermiso("GESTION_VENTAS");
             productosToolStripMenuItem.Enabled = Servicios.SessionManager.GetInstance().TienePermiso("ABM_CLIENTES");

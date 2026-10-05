@@ -74,4 +74,12 @@
   <ItemGroup>
     <Compile Include="ConfiguracionBaseDatos.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="UnidadFlota.cs" />
+    <Compile Include="ParteEstadoUnidad.cs" />
+    <Compile Include="OrdenMantenimiento.cs" />
+    <Compile Include="IntervencionMantenimiento.cs" />
+    <Compile Include="InformeDisponibilidad.cs" />
+    <Compile Include="ReglaMFException.cs" />
+  </ItemGroup>
 </Project>

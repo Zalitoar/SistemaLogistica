@@ -147,6 +147,9 @@ internal static class FlujoTD
             var builder=new SqlConnectionStringBuilder(ConfigurationManager.ConnectionStrings["SQL"].ConnectionString);
             if(!builder.InitialCatalog.StartsWith("SistemaLogistica_TD_Test_",StringComparison.Ordinal))
                 throw new Exception("La prueba requiere una base aislada SistemaLogistica_TD_Test_*.");
+            // Aislar DAL del perfil de conexión de la aplicación instalada.
+            typeof(ConexionLocal).GetField("activa",System.Reflection.BindingFlags.Static|System.Reflection.BindingFlags.NonPublic)
+                .SetValue(null,builder.ConnectionString);
             Flujo();
             Console.WriteLine("TOTAL: "+comprobaciones+" comprobaciones correctas.");
             return 0;

@@ -1,0 +1,64 @@
+@startuml
+title MF — Modelo de dominio
+skinparam classAttributeIconSize 0
+
+class UnidadFlota <<entity>> {
+  - idUnidad : int
+  - identificacion : string
+  - tipo : string
+  - estado : string
+  - kilometraje : decimal
+  + requiereMantenimiento() : bool
+  + marcarDisponible() : void
+  + marcarNoDisponible() : void
+}
+
+class ParteEstadoUnidad <<entity>> {
+  - idParte : int
+  - numero : string
+  - fecha : DateTime
+  - descripcion : string
+  - estadoDetectado : string
+}
+
+class OrdenMantenimiento <<entity>> {
+  - idOrden : int
+  - numero : string
+  - fecha : DateTime
+  - tipo : string
+  - prioridad : string
+  - estado : string
+  + programar() : void
+  + cerrar() : void
+}
+
+class IntervencionMantenimiento <<entity>> {
+  - idIntervencion : int
+  - fechaInicio : DateTime
+  - fechaFinalizacion : DateTime?
+  - descripcion : string
+  - resultado : string?
+  + registrarResultado(resultado : string) : void
+}
+
+class InformeDisponibilidad <<entity>> {
+  - idInforme : int
+  - fecha : DateTime
+  - condicion : string
+  - observaciones : string?
+  + esApta() : bool
+}
+
+class Viaje <<entity>> {
+  - idViaje : int
+  - numero : string
+  - estado : string
+}
+
+UnidadFlota "1" -- "0..*" ParteEstadoUnidad : presenta >
+ParteEstadoUnidad "1" -- "0..1" OrdenMantenimiento : origina >
+OrdenMantenimiento "1" *-- "1..*" IntervencionMantenimiento : dispone >
+IntervencionMantenimiento "0..*" -> "1" UnidadFlota : se realiza sobre >
+UnidadFlota "1" -- "0..*" InformeDisponibilidad : posee >
+Viaje "0..*" --> "0..1" UnidadFlota : utiliza >
+@enduml

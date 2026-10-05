@@ -6,6 +6,8 @@ namespace BE
     public class Viaje
     {
         public int IdViaje { get; set; }
+        public int? IdUnidadFlota { get; set; }
+        public int? IdInformeDisponibilidad { get; set; }
         public int IdPlan { get; set; }
         public string Numero { get; set; }
         public DateTime FechaPrevista { get; set; }

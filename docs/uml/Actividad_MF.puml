@@ -1,0 +1,30 @@
+@startuml
+title MF — Gestión de mantenimiento y disponibilidad de flota
+|Operaciones de Flota|
+start
+:Controlar estado de las unidades;
+if (¿Requiere mantenimiento?) then (Sí)
+  :Identificar necesidad de mantenimiento;
+  note right: «documento»\nParte de estado de unidad
+  |Mantenimiento|
+  :Revisar parte de estado;
+  :Evaluar condiciones de la unidad;
+  :Programar mantenimiento;
+  note right: «documento»\nOrden de mantenimiento
+  :Realizar mantenimiento;
+  :Verificar condiciones de la unidad;
+  while (¿Requiere nuevas tareas?) is (Sí)
+    :Realizar tareas adicionales;
+    :Verificar condiciones de la unidad;
+  endwhile (No)
+  :Habilitar unidad para operar;
+  note right: «documento»\nInforme de disponibilidad
+else (No)
+  :Confirmar disponibilidad de unidad;
+  note right: «documento»\nInforme de disponibilidad
+endif
+|Planificación y Tráfico|
+:Revisar disponibilidad de la flota;
+:Asignar unidad a servicio de transporte;
+stop
+@enduml

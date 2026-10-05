@@ -1,0 +1,104 @@
+@startuml
+title Modelo conceptual - MF - Mantenimiento de Flota
+
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+skinparam shadowing false
+skinparam class {
+    BackgroundColor White
+    BorderColor #444444
+    ArrowColor #444444
+}
+
+hide methods
+
+class UnidadFlota {
+    idUnidad
+    dominio
+    tipo
+    marca
+    modelo
+    capacidad
+    kilometraje
+    estadoOperativo
+}
+
+class ParteEstadoUnidad {
+    idParte
+    fecha
+    kilometraje
+    estadoDetectado
+    descripcion
+    requiereMantenimiento
+}
+
+class OrdenMantenimiento {
+    idOrden
+    fechaEmision
+    tipoMantenimiento
+    prioridad
+    descripcion
+    fechaProgramada
+    estado
+}
+
+class IntervencionMantenimiento {
+    idIntervencion
+    fechaInicio
+    fechaFin
+    trabajoRealizado
+    resultado
+    observaciones
+}
+
+class InformeDisponibilidad {
+    idInforme
+    fechaEmision
+    estadoUnidad
+    habilitada
+    observaciones
+}
+
+class ServicioTransporte <<TD>> {
+    idServicio
+    fechaPrevista
+    estado
+}
+
+' =========================
+' Relaciones conceptuales
+' =========================
+
+UnidadFlota "1" *-- "0..*" ParteEstadoUnidad : posee >
+
+ParteEstadoUnidad "1" --> "0..1" OrdenMantenimiento : origina >
+
+UnidadFlota "1" -> "0..*" OrdenMantenimiento : recibe >
+
+OrdenMantenimiento "1" *-- "0..*" IntervencionMantenimiento : comprende >
+
+UnidadFlota "1" --> "0..*" IntervencionMantenimiento : es objeto de >
+
+UnidadFlota "1" --> "0..*" InformeDisponibilidad : posee >
+
+IntervencionMantenimiento "0..*" --> "0..1" InformeDisponibilidad : permite emitir >
+
+ServicioTransporte "0..*" ..> "1" UnidadFlota : requiere unidad disponible >
+
+note right of ServicioTransporte
+Concepto externo al proceso MF.
+
+Representa la integración con TD:
+Planificación consulta la disponibilidad
+antes de asignar una unidad.
+end note
+
+note bottom of UnidadFlota
+Concepto central del proceso MF.
+
+Su estado evoluciona a partir de
+partes, mantenimiento, intervenciones
+y verificaciones de disponibilidad.
+end note
+
+@enduml

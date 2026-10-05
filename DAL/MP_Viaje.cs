@@ -13,6 +13,7 @@ namespace DAL
         {
             return MP_TD.Leer("TD_LISTAR_VIAJES").AsEnumerable().Select(r => new Viaje
             {
+                IdUnidadFlota=r.Field<int?>("IdUnidadFlota"), IdInformeDisponibilidad=r.Field<int?>("IdInformeDisponibilidad"),
                 IdViaje=MP_TD.Id(r,"Id_Viaje"), IdPlan=MP_TD.Id(r,"Id_Plan"), Numero=(string)r["Numero"],
                 FechaPrevista=(DateTime)r["FechaPrevista"], FechaInicio=MP_TD.FechaOpcional(r,"FechaInicio"),
                 FechaFinalizacion=MP_TD.FechaOpcional(r,"FechaFinalizacion"), Estado=(string)r["Estado"],

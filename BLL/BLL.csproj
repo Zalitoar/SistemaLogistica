@@ -79,4 +79,10 @@
   <ItemGroup>
     <Compile Include="GestorCumplimiento.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ReglasMF.cs" />
+    <Compile Include="GestorFlota.cs" />
+    <Compile Include="GestorMantenimiento.cs" />
+    <Compile Include="GestorDisponibilidad.cs" />
+  </ItemGroup>
 </Project>
