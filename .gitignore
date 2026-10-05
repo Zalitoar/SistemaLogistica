@@ -362,3 +362,26 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 /CLAUDE.md
+
+# Salidas locales de generación y revisión de documentos.
+# Las guías finales de docs/ sí se versionan.
+/output/
+/tmp/
+
+# Paquetes SQL compilados y respaldos de bases de datos.
+*.dacpac
+*.bacpac
+*.bak
+*.trn
+
+# Instaladores generados y prerrequisitos offline descargados.
+# artifacts/ ya está excluido en la sección de resultados de compilación.
+/Installer/Output/
+/Installer/prereqs/*
+!/Installer/prereqs/README.txt
+
+# Configuración local con secretos; conservar las plantillas de ejemplo.
+.env
+.env.*
+!.env.example
+!.env.sample
