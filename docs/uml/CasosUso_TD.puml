@@ -1,0 +1,30 @@
+@startuml
+title TD — Casos de uso de Transporte y Distribución
+left to right direction
+skinparam packageStyle rectangle
+
+actor "Planificador de Tráfico" as Planificador
+actor "Responsable de Expedición" as Expedicion
+actor "Operador de Transporte /\nConductor" as Operador
+
+rectangle "Sistema de Gestión Logística\n[Transporte y Distribución]" {
+  usecase "ECU-TD-01\nPlanificar distribución" as TD01
+  usecase "ECU-TD-02\nPreparar despacho" as TD02
+  usecase "ECU-TD-03\nRegistrar ejecución de viaje" as TD03
+  usecase "ECU-TD-04\nRegistrar entrega" as TD04
+  usecase "ECU-TD-05\nControlar cumplimiento de viaje" as TD05
+}
+
+Planificador -- TD01
+Planificador -- TD05
+Expedicion -- TD02
+Operador -- TD03
+Operador -- TD04
+
+note bottom of TD04
+Una entrega puede quedar
+Entregada, Parcial o Incumplida.
+La gestión completa de incidencias
+queda fuera del alcance TD actual.
+end note
+@enduml

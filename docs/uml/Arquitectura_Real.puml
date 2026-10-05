@@ -1,0 +1,21 @@
+@startuml
+title Arquitectura real de SistemaLogistica
+component IngSoft
+component BLL
+component Servicios
+component DAL
+component BE
+database "SQL Server" as DB
+artifact "Database.sqlproj" as SSDT
+IngSoft --> BLL
+IngSoft --> Servicios
+IngSoft --> BE
+BLL --> DAL
+BLL --> Servicios
+BLL --> BE
+Servicios --> DAL
+Servicios --> BE
+DAL --> BE
+DAL --> DB
+SSDT ..> DB : publica esquema
+@enduml

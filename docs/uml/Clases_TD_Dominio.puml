@@ -1,0 +1,60 @@
+@startuml
+skinparam classAttributeIconSize 0
+class RequerimientoDistribucion <<entity>> { -IdRequerimiento:int
+-Numero:string
+-Fecha:DateTime
+-Origen:string
+-Estado:string
++Validar():bool
++MarcarPlanificado():void }
+class PlanDistribucion <<entity>> { -IdPlan:int
+-Numero:string
+-Fecha:DateTime
+-Estado:string
++Confirmar():void
++Replanificar():void }
+class Viaje <<entity>> { -IdViaje:int
+-Numero:string
+-FechaPrevista:DateTime
+-FechaInicio:DateTime?
+-FechaFinalizacion:DateTime?
+-Estado:string
+-PorcentajeCumplimiento:decimal
++PuedeIniciarse():bool
++Iniciar():void
++Finalizar():void
++CalcularCumplimiento():decimal }
+class Entrega <<entity>> { -IdEntrega:int
+-Destino:string
+-FechaPrevista:DateTime
+-FechaRealizada:DateTime?
+-Estado:string
+-Observaciones:string
++RegistrarResultado(resultado:string):void
++MarcarEntregada():void
++MarcarParcial():void
++MarcarIncumplida():void }
+class DocumentoDespacho <<entity>> { -IdDespacho:int
+-Numero:string
+-Fecha:DateTime
+-Estado:string
++Confirmar():void }
+class DetalleDespacho <<entity>> { -IdDetalle:int
+-Cantidad:decimal }
+class Mercaderia <<entity>> { -IdMercaderia:int
+-Codigo:string
+-Descripcion:string }
+class ComprobanteEntrega <<entity>> { -IdComprobante:int
+-Numero:string
+-Fecha:DateTime
+-Resultado:string
+-Observaciones:string
++Emitir():void }
+RequerimientoDistribucion "1" -- "0..1" PlanDistribucion
+PlanDistribucion "1" *-- "1..*" Viaje
+Viaje "1" *-- "1..*" Entrega
+Viaje "1" *-- "0..1" DocumentoDespacho
+DocumentoDespacho "1" *-- "1..*" DetalleDespacho
+DetalleDespacho "0..*" --> "1" Mercaderia
+Entrega "1" *-- "0..1" ComprobanteEntrega
+@enduml

@@ -1,0 +1,29 @@
+@startuml
+title ECU-TD-02 — Preparar despacho
+actor "Responsable de Expedición" as actor
+boundary "ui:VistaDespacho" as ui
+control "gestor:GestorDespacho" as gestor
+entity "viaje:Viaje" as viaje
+entity "despacho:DocumentoDespacho" as despacho
+entity "detalle:DetalleDespacho" as detalle
+entity "mercaderia:Mercaderia" as mercaderia
+
+actor -> ui : seleccionarViaje()
+ui -> gestor : consultarCarga(viaje)
+gestor -> viaje : obtenerDetalle()
+viaje --> gestor : datos del viaje
+
+gestor -> mercaderia : consultarMercaderiaPrevista()
+mercaderia --> gestor : mercadería
+gestor --> ui : detalle de carga
+
+actor -> ui : confirmarCargaPreparada()
+ui -> gestor : registrarDespacho(datos)
+gestor -> despacho : crear()
+loop por cada producto
+  gestor -> detalle : crear(cantidad)
+  detalle -> mercaderia : asociar()
+end
+gestor -> viaje : marcarPreparado()
+gestor --> ui : despacho preparado
+@enduml

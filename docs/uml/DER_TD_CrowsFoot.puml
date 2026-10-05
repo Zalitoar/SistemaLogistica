@@ -1,0 +1,79 @@
+@startuml
+title TD — Modelo relacional (Crow's Foot / IE)
+hide methods
+hide stereotypes
+entity REQUERIMIENTO_DISTRIBUCION {
+  * Id_Requerimiento : int <<PK>>
+  --
+  Numero : varchar
+  Fecha : datetime
+  Origen : varchar
+  Estado : varchar
+}
+entity PLAN_DISTRIBUCION {
+  * Id_Plan : int <<PK>>
+  --
+  Id_Requerimiento : int <<FK>>
+  Numero : varchar
+  Fecha : datetime
+  Estado : varchar
+}
+entity VIAJE {
+  * Id_Viaje : int <<PK>>
+  --
+  Id_Plan : int <<FK>>
+  Numero : varchar
+  FechaPrevista : datetime
+  FechaInicio : datetime?
+  FechaFinalizacion : datetime?
+  Estado : varchar
+  PorcentajeCumplimiento : decimal
+}
+entity ENTREGA {
+  * Id_Entrega : int <<PK>>
+  --
+  Id_Viaje : int <<FK>>
+  Destino : varchar
+  FechaPrevista : datetime
+  FechaRealizada : datetime?
+  Estado : varchar
+  Observaciones : varchar?
+}
+entity DOCUMENTO_DESPACHO {
+  * Id_Despacho : int <<PK>>
+  --
+  Id_Viaje : int <<FK>>
+  Numero : varchar
+  Fecha : datetime
+  Estado : varchar
+}
+entity MERCADERIA {
+  * Id_Mercaderia : int <<PK>>
+  --
+  Codigo : varchar
+  Descripcion : varchar
+}
+entity DETALLE_DESPACHO {
+  * Id_Detalle : int <<PK>>
+  --
+  Id_Despacho : int <<FK>>
+  Id_Mercaderia : int <<FK>>
+  Cantidad : decimal
+}
+entity COMPROBANTE_ENTREGA {
+  * Id_Comprobante : int <<PK>>
+  --
+  Id_Entrega : int <<FK>>
+  Numero : varchar
+  Fecha : datetime
+  Resultado : varchar
+  Observaciones : varchar?
+}
+REQUERIMIENTO_DISTRIBUCION ||--o| PLAN_DISTRIBUCION
+PLAN_DISTRIBUCION ||--|{ VIAJE
+VIAJE ||--|{ ENTREGA
+VIAJE ||--o| DOCUMENTO_DESPACHO
+DOCUMENTO_DESPACHO ||--|{ DETALLE_DESPACHO
+MERCADERIA ||--o{ DETALLE_DESPACHO
+ENTREGA ||--o| COMPROBANTE_ENTREGA
+@enduml

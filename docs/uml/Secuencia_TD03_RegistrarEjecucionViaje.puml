@@ -1,0 +1,28 @@
+@startuml
+title ECU-TD-03 — Registrar ejecución de viaje
+actor "Operador de Transporte / Conductor" as actor
+boundary "ui:VistaEjecucionViaje" as ui
+control "gestor:GestorViaje" as gestor
+entity "viaje:Viaje" as viaje
+entity "despacho:DocumentoDespacho" as despacho
+entity "entrega:Entrega" as entrega
+
+actor -> ui : seleccionarViaje()
+ui -> gestor : consultarDetalle(viaje)
+gestor -> despacho : obtenerDespacho()
+despacho --> gestor : despacho
+gestor -> entrega : obtenerEntregas()
+entrega --> gestor : entregas
+gestor --> ui : detalle
+
+actor -> ui : confirmarInicio()
+ui -> gestor : iniciarViaje(viaje)
+gestor -> viaje : puedeIniciarse()
+viaje --> gestor : válido / inválido
+alt viaje habilitado
+  gestor -> viaje : iniciar()
+  gestor --> ui : viaje en curso
+else viaje no habilitado
+  gestor --> ui : informar causa
+end
+@enduml
