@@ -16,14 +16,14 @@ namespace DAL
         public void Abrir()
         {
             conexion = new SqlConnection();         
-            conexion.ConnectionString = ConfigurationManager.ConnectionStrings["SQL"].ConnectionString;
+            conexion.ConnectionString = ConexionLocal.Actual;
             conexion.Open();
         }
 
         public void AbrirMaster()
         {
             var builder = new SqlConnectionStringBuilder(
-                ConfigurationManager.ConnectionStrings["SQL"].ConnectionString)
+                ConexionLocal.Actual)
             {
                 InitialCatalog = "master"
             };

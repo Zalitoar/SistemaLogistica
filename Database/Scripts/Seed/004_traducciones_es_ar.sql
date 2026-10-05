@@ -298,3 +298,74 @@ WHERE NOT EXISTS (
     WHERE destino.Id_Idioma = @IdIdioma_es_AR
       AND destino.Clave_Traduccion = origen.Clave_Traduccion
 );
+
+-- Configuración de conexión e inicialización de la base.
+DECLARE @Conexion_es_AR TABLE (Clave NVARCHAR(200), Valor NVARCHAR(1000));
+INSERT @Conexion_es_AR VALUES
+(N'BD.SinConfigurar',N'No hay una conexión a base de datos configurada. Configure el servidor y la base antes de iniciar sesión.'),
+(N'BD.ConexionFallida',N'No se pudo conectar a SQL Server. Revise servidor, puerto, servicio, red y certificado. No desactive la validación del certificado salvo que confíe en ese servidor.'),
+(N'BD.Autenticacion',N'SQL Server rechazó las credenciales. Revise el usuario, la contraseña y el modo de autenticación habilitado.'),
+(N'BD.BaseInaccesible',N'La base no existe o su cuenta no tiene acceso. Conecte al servidor y seleccione una base accesible.'),
+(N'BD.PermisosSQL',N'La cuenta de SQL Server no tiene permisos suficientes para la operación.'),
+(N'BD.BaseExiste',N'Ya existe una base con ese nombre. Selecciónela y verifíquela.'),
+(N'BD.Metadatos',N'Se requiere permiso VIEW DEFINITION en la base para comprobar sus objetos.'),
+(N'BD.BaseSistema',N'No se permite utilizar ni inicializar una base de sistema.'),
+(N'BD.NoVacia',N'La base contiene objetos. No se ejecutó la inicialización. Use Database para una actualización controlada.'),
+(N'BD.Incompatible',N'La base no está lista: faltan objetos o datos iniciales. Si contiene objetos, solicite una actualización con Database; no se sobrescribirán datos.'),
+(N'BD.ConfiguracionLocal',N'No se pudo leer o guardar la configuración local protegida. Revise los permisos del perfil de Windows y vuelva a configurar la conexión.'),
+(N'BD.PaqueteAusente',N'Falta el paquete DatabaseSetup. Repare o vuelva a instalar la aplicación.'),
+(N'BD.DatosInvalidos',N'Complete servidor y base. Para puerto TCP use sólo el host, sin instancia ni coma. Complete el usuario cuando utilice autenticación SQL Server.'),
+(N'BD.ClaveInicial',N'Para crear el usuario admin de SistemaLogistica, complete una contraseña nueva de al menos 8 caracteres y repítala exactamente. No es la contraseña de SQL Server. Luego pulse Inicializar base.'),
+(N'BD.SinPermiso',N'No tiene permiso para configurar la base de datos.'),
+(N'BD.Instrucciones',N'Conecte al servidor, seleccione una base y pulse Verificar estructura de la base. Guarde sólo después de una verificación correcta.'),
+(N'BD.Busqueda',N'Búsqueda finalizada. La lista puede estar incompleta; escriba manualmente el servidor si no aparece.'),
+(N'BD.Conectado',N'Conexión al servidor correcta. Seleccione una base de la lista, o escriba un nombre nuevo y pulse Crear base vacía.'),
+(N'BD.Trabajando',N'Operación en curso. Espere a que finalice.'),
+(N'BD.Compatible',N'Conexión correcta. Los objetos y datos iniciales requeridos están presentes. Puede guardar la conexión.'),
+(N'BD.Vacia',N'La base está vacía: todavía no puede guardar la conexión. En Administrador inicial de SistemaLogistica escriba una contraseña nueva de al menos 8 caracteres y repítala. Pulse Inicializar base para crear los objetos y habilitar Guardar conexión.'),
+(N'BD.AdminCreado',N'Usuario inicial: admin. Ingrese con la contraseña elegida en este formulario.'),
+(N'BD.ConfirmarCrear',N'¿Crear una base vacía con el nombre indicado en el servidor seleccionado?'),
+(N'BD.ConfirmarInicializar',N'¿Crear las tablas, procedimientos y datos iniciales en la base vacía seleccionada?'),
+(N'BD.ConfirmarGuardar',N'¿Guardar esta conexión protegida para este usuario de Windows y continuar al login?'),
+(N'BD.ConfirmarReinicio',N'¿Guardar esta conexión y reiniciar la aplicación? Se cerrará la sesión y se perderán los cambios sin guardar en las ventanas abiertas.'),
+(N'BD.Error',N'No se pudo completar la operación de base de datos. Revise la configuración y los recursos de instalación.'),
+(N'FrmConfiguracionBD.Title',N'Configurar base de datos'),
+(N'FrmConfiguracionBD.lblServidor.Text',N'Servidor o servidor\instancia'),
+(N'FrmConfiguracionBD.lblPuerto.Text',N'Puerto TCP (0 = predeterminado)'),
+(N'FrmConfiguracionBD.lblAutenticacion.Text',N'Autenticación'),
+(N'FrmConfiguracionBD.chkWindows.Text',N'Usar autenticación de Windows'),
+(N'FrmConfiguracionBD.lblUsuario.Text',N'Usuario SQL Server'),
+(N'FrmConfiguracionBD.lblClave.Text',N'Contraseña SQL Server'),
+(N'FrmConfiguracionBD.lblCifrado.Text',N'Conexión cifrada'),
+(N'FrmConfiguracionBD.chkCertificado.Text',N'Confiar en el certificado del servidor'),
+(N'FrmConfiguracionBD.lblBase.Text',N'Base existente o nombre nuevo'),
+(N'FrmConfiguracionBD.lblAdmin.Text',N'Contraseña nueva (mínimo 8 caracteres)'),
+(N'FrmConfiguracionBD.lblRepetir.Text',N'Repetir contraseña nueva'),
+(N'FrmConfiguracionBD.lblAyuda.Text',N'Buscar instancias es opcional. También puede escribir el servidor. Para SQL Server, desmarque autenticación Windows. La clave de admin sólo se usa al inicializar una base vacía (mínimo 8 caracteres).'),
+(N'FrmConfiguracionBD.btnBuscar.Text',N'Buscar instancias'),
+(N'FrmConfiguracionBD.btnConectar.Text',N'Conectar y listar bases'),
+(N'FrmConfiguracionBD.btnCrear.Text',N'Crear base vacía'),
+(N'FrmConfiguracionBD.btnVerificar.Text',N'Verificar estructura de la base'),
+(N'FrmConfiguracionBD.btnInicializar.Text',N'Inicializar base'),
+(N'FrmConfiguracionBD.btnGuardar.Text',N'Guardar conexión'),
+(N'FrmConfiguracionBD.btnCancelar.Text',N'Cancelar'),
+(N'FrmApp.menuConfiguracionBD.Text',N'Configurar base de datos');
+INSERT @Conexion_es_AR VALUES
+(N'FrmConfiguracionBD.grpAdmin.Text',N'Administrador inicial de SistemaLogistica'),
+(N'FrmConfiguracionBD.lblNotaAdmin.Text',N'Sólo para una base vacía: cree la clave del usuario admin de la aplicación. No es una credencial de SQL Server.');
+INSERT dbo.TRADUCCION(Id_Idioma,Clave_Traduccion,Valor_Traduccion)
+SELECT @IdIdioma_es_AR,Clave,Valor FROM @Conexion_es_AR C
+WHERE NOT EXISTS (SELECT 1 FROM dbo.TRADUCCION T WHERE T.Id_Idioma=@IdIdioma_es_AR AND T.Clave_Traduccion=C.Clave);
+
+-- Mensajes de carga opcional de datos de prueba.
+DECLARE @Demo TABLE(Clave NVARCHAR(200), Valor NVARCHAR(1000));
+INSERT @Demo VALUES
+(N'FrmConfiguracionBD.btnDatosPrueba.Text',N'Inicializar datos de prueba'),
+(N'BD.ConfirmarDemo',N'¿Agregar usuarios y operaciones ficticias TD en la base seleccionada? Use una base de pruebas. No se restablecerán datos existentes. Se generará una contraseña para los cuatro usuarios demo.'),
+(N'BD.DemoCargado',N'Datos de prueba cargados. Usuarios: demo_planificador, demo_expedicion, demo_transporte y demo_consulta. Contraseña común: {0}. Anótela antes de cerrar; no se mostrará nuevamente. El usuario admin conserva su contraseña.'),
+(N'BD.DemoExistente',N'Los datos de prueba ya fueron cargados. No se duplicaron registros ni se restablecieron contraseñas o avances.'),
+(N'BD.DemoColision',N'Existen registros con nombres reservados para DEMO. No se modificó la base. Utilice otra base de pruebas.'),
+(N'BD.DemoIntegridad',N'La integridad de usuarios no es válida. No se cargaron datos ni se recalcularon sus verificadores.'),
+(N'BD.DemoError',N'No se pudo cargar el conjunto de prueba. La operación fue revertida.');
+INSERT dbo.TRADUCCION(Id_Idioma,Clave_Traduccion,Valor_Traduccion)
+SELECT @IdIdioma_es_AR,Clave,Valor FROM @Demo D WHERE NOT EXISTS (SELECT 1 FROM dbo.TRADUCCION T WHERE T.Id_Idioma=@IdIdioma_es_AR AND T.Clave_Traduccion=D.Clave);

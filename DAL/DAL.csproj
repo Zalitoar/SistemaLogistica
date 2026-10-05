@@ -74,4 +74,9 @@
   <ItemGroup>
     <Compile Include="MP_Entrega.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ConexionLocal.cs" />
+    <Compile Include="MP_ConfiguracionBD.cs" />
+    <Reference Include="System.Security" />
+  </ItemGroup>
 </Project>

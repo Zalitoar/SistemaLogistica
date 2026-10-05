@@ -298,3 +298,74 @@ WHERE NOT EXISTS (
     WHERE destino.Id_Idioma = @IdIdioma_pt_BR
       AND destino.Clave_Traduccion = origen.Clave_Traduccion
 );
+
+-- Configuración de conexión e inicialización de la base.
+DECLARE @Conexion_pt_BR TABLE (Clave NVARCHAR(200), Valor NVARCHAR(1000));
+INSERT @Conexion_pt_BR VALUES
+(N'BD.SinConfigurar',N'Nenhuma conexão com banco de dados está configurada. Configure o servidor e o banco antes de entrar.'),
+(N'BD.ConexionFallida',N'Não foi possível conectar ao SQL Server. Verifique servidor, porta, serviço, rede e certificado. Confie no certificado somente se confiar nesse servidor.'),
+(N'BD.Autenticacion',N'O SQL Server rejeitou as credenciais. Verifique usuário, senha e modo de autenticação habilitado.'),
+(N'BD.BaseInaccesible',N'O banco não existe ou sua conta não tem acesso. Conecte ao servidor e selecione um banco acessível.'),
+(N'BD.PermisosSQL',N'A conta do SQL Server não possui permissões suficientes para esta operação.'),
+(N'BD.BaseExiste',N'Já existe um banco com esse nome. Selecione e verifique esse banco.'),
+(N'BD.Metadatos',N'É necessária a permissão VIEW DEFINITION no banco para verificar seus objetos.'),
+(N'BD.BaseSistema',N'Não é permitido utilizar ou inicializar bancos de sistema.'),
+(N'BD.NoVacia',N'O banco contém objetos. A inicialização não foi executada. Use Database para uma atualização controlada.'),
+(N'BD.Incompatible',N'O banco não está pronto: faltam objetos ou dados iniciais. Se houver objetos, solicite uma atualização com Database; os dados existentes não serão sobrescritos.'),
+(N'BD.ConfiguracionLocal',N'Não foi possível ler ou salvar a configuração local protegida. Verifique as permissões do perfil do Windows e configure a conexão novamente.'),
+(N'BD.PaqueteAusente',N'O pacote DatabaseSetup está ausente. Repare ou reinstale o aplicativo.'),
+(N'BD.DatosInvalidos',N'Informe servidor e banco. Para porta TCP, use apenas o host, sem instância nem vírgula. Informe o usuário para autenticação SQL Server.'),
+(N'BD.ClaveInicial',N'Para criar o usuário admin de SistemaLogistica, informe uma nova senha de pelo menos 8 caracteres e repita exatamente. Não é a senha do SQL Server. Depois clique em Inicializar banco.'),
+(N'BD.SinPermiso',N'Você não tem permissão para configurar o banco de dados.'),
+(N'BD.Instrucciones',N'Conecte ao servidor, selecione um banco e clique em Verificar estrutura do banco. Salve somente após uma verificação bem-sucedida.'),
+(N'BD.Busqueda',N'Busca concluída. A lista pode estar incompleta; digite o servidor manualmente se ele não aparecer.'),
+(N'BD.Conectado',N'Conectado ao servidor. Selecione um banco ou digite um novo nome e clique em Criar banco vazio.'),
+(N'BD.Trabajando',N'Operação em andamento. Aguarde.'),
+(N'BD.Compatible',N'Conexão bem-sucedida. Os objetos e dados iniciais necessários estão presentes. Você pode salvar a conexão.'),
+(N'BD.Vacia',N'O banco está vazio. Informe a senha inicial de admin e clique em Inicializar banco.'),
+(N'BD.AdminCreado',N'Usuário inicial: admin. Entre com a senha escolhida neste formulário.'),
+(N'BD.ConfirmarCrear',N'Criar um banco vazio com o nome informado no servidor selecionado?'),
+(N'BD.ConfirmarInicializar',N'Criar tabelas, procedimentos e dados iniciais no banco vazio selecionado?'),
+(N'BD.ConfirmarGuardar',N'Salvar esta conexão protegida para este usuário do Windows e continuar para o login?'),
+(N'BD.ConfirmarReinicio',N'Salvar esta conexão e reiniciar o aplicativo? A sessão será encerrada e as alterações não salvas nas janelas abertas serão perdidas.'),
+(N'BD.Error',N'Não foi possível concluir a operação de banco de dados. Verifique a configuração e os recursos de instalação.'),
+(N'FrmConfiguracionBD.Title',N'Configurar banco de dados'),
+(N'FrmConfiguracionBD.lblServidor.Text',N'Servidor ou servidor\instância'),
+(N'FrmConfiguracionBD.lblPuerto.Text',N'Porta TCP (0 = padrão)'),
+(N'FrmConfiguracionBD.lblAutenticacion.Text',N'Autenticação'),
+(N'FrmConfiguracionBD.chkWindows.Text',N'Usar autenticação do Windows'),
+(N'FrmConfiguracionBD.lblUsuario.Text',N'Usuário SQL Server'),
+(N'FrmConfiguracionBD.lblClave.Text',N'Senha SQL Server'),
+(N'FrmConfiguracionBD.lblCifrado.Text',N'Conexão criptografada'),
+(N'FrmConfiguracionBD.chkCertificado.Text',N'Confiar no certificado do servidor'),
+(N'FrmConfiguracionBD.lblBase.Text',N'Banco existente ou novo nome'),
+(N'FrmConfiguracionBD.lblAdmin.Text',N'Nova senha (mínimo de 8 caracteres)'),
+(N'FrmConfiguracionBD.lblRepetir.Text',N'Repetir nova senha'),
+(N'FrmConfiguracionBD.lblAyuda.Text',N'A busca de instâncias é opcional. Você também pode digitar o servidor. Para SQL Server, desmarque a autenticação Windows. A senha de admin é usada apenas para inicializar um banco vazio (mínimo de 8 caracteres).'),
+(N'FrmConfiguracionBD.btnBuscar.Text',N'Buscar instâncias'),
+(N'FrmConfiguracionBD.btnConectar.Text',N'Conectar e listar bancos'),
+(N'FrmConfiguracionBD.btnCrear.Text',N'Criar banco vazio'),
+(N'FrmConfiguracionBD.btnVerificar.Text',N'Verificar estrutura do banco'),
+(N'FrmConfiguracionBD.btnInicializar.Text',N'Inicializar banco'),
+(N'FrmConfiguracionBD.btnGuardar.Text',N'Salvar conexão'),
+(N'FrmConfiguracionBD.btnCancelar.Text',N'Cancelar'),
+(N'FrmApp.menuConfiguracionBD.Text',N'Configurar banco de dados');
+INSERT @Conexion_pt_BR VALUES
+(N'FrmConfiguracionBD.grpAdmin.Text',N'Administrador inicial do SistemaLogistica'),
+(N'FrmConfiguracionBD.lblNotaAdmin.Text',N'Somente para um banco vazio: crie a senha do usuário admin do aplicativo. Não é uma credencial do SQL Server.');
+INSERT dbo.TRADUCCION(Id_Idioma,Clave_Traduccion,Valor_Traduccion)
+SELECT @IdIdioma_pt_BR,Clave,Valor FROM @Conexion_pt_BR C
+WHERE NOT EXISTS (SELECT 1 FROM dbo.TRADUCCION T WHERE T.Id_Idioma=@IdIdioma_pt_BR AND T.Clave_Traduccion=C.Clave);
+
+-- Mensajes de carga opcional de datos de prueba.
+DECLARE @Demo TABLE(Clave NVARCHAR(200), Valor NVARCHAR(1000));
+INSERT @Demo VALUES
+(N'FrmConfiguracionBD.btnDatosPrueba.Text',N'Inicializar dados de teste'),
+(N'BD.ConfirmarDemo',N'Adicionar usuários e operações fictícias TD ao banco selecionado? Use um banco de testes. Dados existentes não serão redefinidos. Uma senha será gerada para os quatro usuários demo.'),
+(N'BD.DemoCargado',N'Dados de teste carregados. Usuários: demo_planificador, demo_expedicion, demo_transporte e demo_consulta. Senha comum: {0}. Anote antes de fechar; ela não será exibida novamente. A senha de admin permanece inalterada.'),
+(N'BD.DemoExistente',N'Os dados de teste já foram carregados. Nenhum registro foi duplicado e senhas e avanços não foram redefinidos.'),
+(N'BD.DemoColision',N'Já existem registros com nomes reservados para DEMO. O banco não foi alterado. Use outro banco de testes.'),
+(N'BD.DemoIntegridad',N'A integridade dos usuários é inválida. Nenhum dado foi carregado e os verificadores não foram recalculados.'),
+(N'BD.DemoError',N'Não foi possível carregar os dados de teste. A operação foi revertida.');
+INSERT dbo.TRADUCCION(Id_Idioma,Clave_Traduccion,Valor_Traduccion)
+SELECT @IdIdioma_pt_BR,Clave,Valor FROM @Demo D WHERE NOT EXISTS (SELECT 1 FROM dbo.TRADUCCION T WHERE T.Id_Idioma=@IdIdioma_pt_BR AND T.Clave_Traduccion=D.Clave);

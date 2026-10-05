@@ -95,3 +95,10 @@ IF @AdministradorTD IS NULL THROW 50002, 'No existe el rol Administrador.', 1;
 INSERT dbo.ROL_COMPONENTE(Id_Rol,Id_Componente)
 SELECT @AdministradorTD,P.Id_Permiso FROM dbo.PERMISO P JOIN @PermisosTD T ON T.Nombre=P.Nombre_Permiso
 WHERE NOT EXISTS (SELECT 1 FROM dbo.ROL_COMPONENTE R WHERE R.Id_Rol=@AdministradorTD AND R.Id_Componente=P.Id_Permiso);
+
+-- Configuración de conexión: autorización por permiso, sin comprobar nombres en la UI.
+IF NOT EXISTS (SELECT 1 FROM dbo.PERMISO WHERE Nombre_Permiso='CONFIGURAR_BD')
+    INSERT dbo.PERMISO(Nombre_Permiso,Tipo_Permiso) VALUES ('CONFIGURAR_BD','PERMISO');
+INSERT dbo.ROL_COMPONENTE(Id_Rol,Id_Componente)
+SELECT @AdministradorTD,Id_Permiso FROM dbo.PERMISO P WHERE Nombre_Permiso='CONFIGURAR_BD'
+AND NOT EXISTS (SELECT 1 FROM dbo.ROL_COMPONENTE R WHERE R.Id_Rol=@AdministradorTD AND R.Id_Componente=P.Id_Permiso);

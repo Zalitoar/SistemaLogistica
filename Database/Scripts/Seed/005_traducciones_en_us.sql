@@ -298,3 +298,74 @@ WHERE NOT EXISTS (
     WHERE destino.Id_Idioma = @IdIdioma_en_US
       AND destino.Clave_Traduccion = origen.Clave_Traduccion
 );
+
+-- Configuración de conexión e inicialización de la base.
+DECLARE @Conexion_en_US TABLE (Clave NVARCHAR(200), Valor NVARCHAR(1000));
+INSERT @Conexion_en_US VALUES
+(N'BD.SinConfigurar',N'No database connection is configured. Configure the server and database before signing in.'),
+(N'BD.ConexionFallida',N'Could not connect to SQL Server. Check the server, port, service, network and certificate. Only trust a server certificate if you trust that server.'),
+(N'BD.Autenticacion',N'SQL Server rejected the credentials. Check the user, password and enabled authentication mode.'),
+(N'BD.BaseInaccesible',N'The database does not exist or your account cannot access it. Connect to the server and select an accessible database.'),
+(N'BD.PermisosSQL',N'The SQL Server account does not have sufficient permissions for this operation.'),
+(N'BD.BaseExiste',N'A database with that name already exists. Select it and verify it.'),
+(N'BD.Metadatos',N'VIEW DEFINITION permission on the database is required to check its objects.'),
+(N'BD.BaseSistema',N'System databases cannot be used or initialized.'),
+(N'BD.NoVacia',N'The database contains objects. Initialization was not performed. Use Database for a controlled upgrade.'),
+(N'BD.Incompatible',N'The database is not ready: objects or initial data are missing. If it contains objects, request an upgrade using Database; existing data will not be overwritten.'),
+(N'BD.ConfiguracionLocal',N'Could not read or save the protected local configuration. Check Windows profile permissions and configure the connection again.'),
+(N'BD.PaqueteAusente',N'The DatabaseSetup package is missing. Repair or reinstall the application.'),
+(N'BD.DatosInvalidos',N'Enter a server and database. For a TCP port use only the host, without an instance or comma. Enter a user for SQL Server authentication.'),
+(N'BD.ClaveInicial',N'To create the admin user of SistemaLogistica, enter a new password of at least 8 characters and repeat it exactly. This is not the SQL Server password. Then click Initialize database.'),
+(N'BD.SinPermiso',N'You do not have permission to configure the database.'),
+(N'BD.Instrucciones',N'Connect to the server, select a database and click Verify database structure. Save only after successful verification.'),
+(N'BD.Busqueda',N'Search completed. The list may be incomplete; enter the server manually if it is missing.'),
+(N'BD.Conectado',N'Connected to the server. Select a database or enter a new name and click Create empty database.'),
+(N'BD.Trabajando',N'Operation in progress. Please wait.'),
+(N'BD.Compatible',N'Connection successful. Required objects and initial data are present. You can save the connection.'),
+(N'BD.Vacia',N'The database is empty. Enter the initial admin password and click Initialize database.'),
+(N'BD.AdminCreado',N'Initial user: admin. Sign in with the password chosen in this form.'),
+(N'BD.ConfirmarCrear',N'Create an empty database with the specified name on the selected server?'),
+(N'BD.ConfirmarInicializar',N'Create tables, procedures and initial data in the selected empty database?'),
+(N'BD.ConfirmarGuardar',N'Save this protected connection for this Windows user and continue to sign in?'),
+(N'BD.ConfirmarReinicio',N'Save this connection and restart the application? Your session will end and unsaved changes in open windows will be lost.'),
+(N'BD.Error',N'Could not complete the database operation. Check the configuration and installation resources.'),
+(N'FrmConfiguracionBD.Title',N'Configure database'),
+(N'FrmConfiguracionBD.lblServidor.Text',N'Server or server\instance'),
+(N'FrmConfiguracionBD.lblPuerto.Text',N'TCP port (0 = default)'),
+(N'FrmConfiguracionBD.lblAutenticacion.Text',N'Authentication'),
+(N'FrmConfiguracionBD.chkWindows.Text',N'Use Windows authentication'),
+(N'FrmConfiguracionBD.lblUsuario.Text',N'SQL Server user'),
+(N'FrmConfiguracionBD.lblClave.Text',N'SQL Server password'),
+(N'FrmConfiguracionBD.lblCifrado.Text',N'Encrypted connection'),
+(N'FrmConfiguracionBD.chkCertificado.Text',N'Trust server certificate'),
+(N'FrmConfiguracionBD.lblBase.Text',N'Existing database or new name'),
+(N'FrmConfiguracionBD.lblAdmin.Text',N'New password (at least 8 characters)'),
+(N'FrmConfiguracionBD.lblRepetir.Text',N'Repeat new password'),
+(N'FrmConfiguracionBD.lblAyuda.Text',N'Instance discovery is optional. You can also type the server. For SQL Server authentication, uncheck Windows authentication. The admin password is only used to initialize an empty database (at least 8 characters).'),
+(N'FrmConfiguracionBD.btnBuscar.Text',N'Find instances'),
+(N'FrmConfiguracionBD.btnConectar.Text',N'Connect and list databases'),
+(N'FrmConfiguracionBD.btnCrear.Text',N'Create empty database'),
+(N'FrmConfiguracionBD.btnVerificar.Text',N'Verify database structure'),
+(N'FrmConfiguracionBD.btnInicializar.Text',N'Initialize database'),
+(N'FrmConfiguracionBD.btnGuardar.Text',N'Save connection'),
+(N'FrmConfiguracionBD.btnCancelar.Text',N'Cancel'),
+(N'FrmApp.menuConfiguracionBD.Text',N'Configure database');
+INSERT @Conexion_en_US VALUES
+(N'FrmConfiguracionBD.grpAdmin.Text',N'Initial SistemaLogistica administrator'),
+(N'FrmConfiguracionBD.lblNotaAdmin.Text',N'For an empty database only: create the password for the application admin user. This is not a SQL Server credential.');
+INSERT dbo.TRADUCCION(Id_Idioma,Clave_Traduccion,Valor_Traduccion)
+SELECT @IdIdioma_en_US,Clave,Valor FROM @Conexion_en_US C
+WHERE NOT EXISTS (SELECT 1 FROM dbo.TRADUCCION T WHERE T.Id_Idioma=@IdIdioma_en_US AND T.Clave_Traduccion=C.Clave);
+
+-- Mensajes de carga opcional de datos de prueba.
+DECLARE @Demo TABLE(Clave NVARCHAR(200), Valor NVARCHAR(1000));
+INSERT @Demo VALUES
+(N'FrmConfiguracionBD.btnDatosPrueba.Text',N'Initialize test data'),
+(N'BD.ConfirmarDemo',N'Add fictitious TD users and operations to the selected database? Use a test database. Existing data will not be reset. A password will be generated for the four demo users.'),
+(N'BD.DemoCargado',N'Test data loaded. Users: demo_planificador, demo_expedicion, demo_transporte and demo_consulta. Shared password: {0}. Record it before closing; it will not be shown again. The admin password remains unchanged.'),
+(N'BD.DemoExistente',N'Test data has already been loaded. No records were duplicated and no passwords or progress were reset.'),
+(N'BD.DemoColision',N'Records with reserved DEMO names already exist. The database was not changed. Use another test database.'),
+(N'BD.DemoIntegridad',N'User integrity is invalid. No data was loaded and no integrity checksums were recalculated.'),
+(N'BD.DemoError',N'Could not load the test dataset. The operation was rolled back.');
+INSERT dbo.TRADUCCION(Id_Idioma,Clave_Traduccion,Valor_Traduccion)
+SELECT @IdIdioma_en_US,Clave,Valor FROM @Demo D WHERE NOT EXISTS (SELECT 1 FROM dbo.TRADUCCION T WHERE T.Id_Idioma=@IdIdioma_en_US AND T.Clave_Traduccion=D.Clave);

@@ -117,6 +117,7 @@
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="PostDeployment.sql" />
+    <None Include="Scripts\DevData\TD_DatosPrueba.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Database.publish.xml" />
