@@ -13,7 +13,7 @@ namespace DAL
         public int Restore()
         {
             var builder = new SqlConnectionStringBuilder(
-                ConfigurationManager.ConnectionStrings["SQL"].ConnectionString);
+                ConexionLocal.Actual);
 
             ACCESO acceso = new ACCESO();
             acceso.AbrirMaster();

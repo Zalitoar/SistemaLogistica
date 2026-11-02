@@ -1,0 +1,6 @@
+﻿CREATE PROCEDURE dbo.MF_LISTAR_ORDENES @IdUnidadFlota INT=NULL AS
+BEGIN
+    SET NOCOUNT ON;
+    SET XACT_ABORT ON;
+SELECT O.*,U.Dominio FROM dbo.ORDEN_MANTENIMIENTO O JOIN dbo.UNIDAD_FLOTA U ON U.IdUnidadFlota=O.IdUnidadFlota WHERE @IdUnidadFlota IS NULL OR O.IdUnidadFlota=@IdUnidadFlota ORDER BY O.IdOrdenMantenimiento DESC;
+END;

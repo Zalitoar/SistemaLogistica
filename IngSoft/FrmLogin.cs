@@ -31,6 +31,7 @@ namespace IngSoft
 
 		private void Login_Load(object sender, EventArgs e)
 		{
+			integridadok = true;
 			// Mantener la validación de integridad existente
 			ValidarIntegridad();
 
@@ -219,5 +220,6 @@ namespace IngSoft
 			string patron = @"^(?=.*[A-Z])(?=.*\d).{6,}$";
 			return Regex.IsMatch(_c, patron);
 		}
-	}
+
+    }
 }

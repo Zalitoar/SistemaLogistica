@@ -1,0 +1,9 @@
+﻿CREATE TABLE dbo.COMPROBANTE_ENTREGA
+(
+    Id_Comprobante INT IDENTITY PRIMARY KEY,
+    Id_Entrega INT NOT NULL UNIQUE REFERENCES dbo.ENTREGA(Id_Entrega),
+    Numero NVARCHAR(50) NOT NULL UNIQUE,
+    Fecha DATETIME NOT NULL,
+    Resultado VARCHAR(20) NOT NULL CHECK (Resultado = 'Entregada'),
+    Observaciones NVARCHAR(1000) NULL
+);

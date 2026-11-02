@@ -1,0 +1,30 @@
+@startuml
+title ECU-TD-04 — Registrar entrega
+actor "Operador de Transporte / Conductor" as actor
+boundary "ui:VistaRegistroEntrega" as ui
+control "gestor:GestorEntrega" as gestor
+entity "viaje:Viaje" as viaje
+entity "entrega:Entrega" as entrega
+entity "comprobante:ComprobanteEntrega" as comprobante
+
+actor -> ui : seleccionarEntrega()
+ui -> gestor : consultarEntrega()
+gestor -> viaje : validarEnCurso()
+viaje --> gestor : válido
+
+actor -> ui : registrarResultado(resultado)
+ui -> gestor : registrarResultado(entrega, resultado)
+gestor -> entrega : registrarResultado(resultado)
+
+alt Entregada
+  gestor -> entrega : marcarEntregada()
+  gestor -> comprobante : emitir()
+else Parcial
+  gestor -> entrega : marcarParcial()
+else Incumplida
+  gestor -> entrega : marcarIncumplida()
+end
+
+gestor --> ui : resultado registrado
+ui --> actor : confirmar
+@enduml

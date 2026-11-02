@@ -1,0 +1,21 @@
+@startuml
+title ECU-MF-02 — Programar mantenimiento
+actor "Responsable/Técnico de Mantenimiento" as actor
+boundary "ui:VistaMantenimiento" as ui
+control "gestor:GestorMantenimiento" as gestor
+entity "parte:ParteEstadoUnidad" as parte
+entity "unidad:UnidadFlota" as unidad
+entity "orden:OrdenMantenimiento" as orden
+
+actor -> ui : seleccionarParte()
+ui -> gestor : evaluarParte(parte)
+gestor -> parte : obtenerDetalle()
+parte --> gestor : detalle
+gestor -> unidad : consultarCondicion()
+unidad --> gestor : condición
+
+actor -> ui : definirTipoPrioridadFecha()
+ui -> gestor : programarMantenimiento(datos)
+gestor -> orden : programar()
+gestor --> ui : orden creada
+@enduml

@@ -74,7 +74,7 @@ namespace IngSoft
             if (ok == 1)
             {
                 MessageBox.Show(ObtenerTexto("frmRestore.msgRestauracionExitosa", "Restauración completada con éxito."));
-                VolverAlLogin();
+                //VolverAlLogin();
             }
             else
             {
@@ -101,7 +101,7 @@ namespace IngSoft
             BitacoraManager.Registrar("Se recalcularon los dígitos verificadores de Usuario.");
             MessageBox.Show("Dígitos verificadores recalculados.");
 
-            VolverAlLogin();
+            //VolverAlLogin();
         }
 
         private void VolverAlLogin()

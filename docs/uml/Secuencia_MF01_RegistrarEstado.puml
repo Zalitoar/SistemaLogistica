@@ -1,0 +1,26 @@
+@startuml
+title ECU-MF-01 — Registrar estado y necesidad de mantenimiento
+actor "Responsable de Flota" as actor
+boundary "ui:VistaEstadoFlota" as ui
+control "gestor:GestorFlota" as gestor
+entity "unidad:UnidadFlota" as unidad
+entity "parte:ParteEstadoUnidad" as parte
+
+actor -> ui : seleccionarUnidad()
+ui -> gestor : consultarEstado(unidad)
+gestor -> unidad : obtenerEstado()
+unidad --> gestor : estado
+gestor --> ui : estado actual
+
+actor -> ui : registrarObservacion(datos)
+ui -> gestor : registrarEstado(datos)
+gestor -> unidad : requiereMantenimiento()
+unidad --> gestor : sí / no
+alt requiere mantenimiento
+  gestor -> parte : crear()
+  gestor -> unidad : marcarNoDisponible()
+else no requiere mantenimiento
+  gestor -> unidad : marcarDisponible()
+end
+gestor --> ui : estado registrado
+@enduml

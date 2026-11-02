@@ -20,6 +20,9 @@ namespace IngSoft
         public FrmApp()
         {
             InitializeComponent();
+            InicializarTD();
+            InicializarMF();
+            InicializarConfiguracionBD();
         }
 
         private void App_Load(object sender, EventArgs e)
@@ -67,6 +70,9 @@ namespace IngSoft
 
         private void ValidarPermiso()
         {
+            ValidarPermisosTD();
+            ValidarPermisosMF();
+            menuConfiguracionBD.Enabled = SessionManager.GetInstance()?.TienePermiso(ConfiguracionBDManager.Permiso) == true;
             clientesToolStripMenuItem.Enabled = Servicios.SessionManager.GetInstance().TienePermiso("GESTION_VENTAS");
             productosToolStripMenuItem.Enabled = Servicios.SessionManager.GetInstance().TienePermiso("ABM_CLIENTES");
             productosToolStripMenuItem1.Enabled = Servicios.SessionManager.GetInstance().TienePermiso("ABM_PRODUCTOS");
@@ -74,6 +80,7 @@ namespace IngSoft
             usuariosToolStripMenuItem.Enabled = Servicios.SessionManager.GetInstance().TienePermiso("ABM_USUARIOS");
             perfilesToolStripMenuItem.Enabled = Servicios.SessionManager.GetInstance().TienePermiso("ABM_ROLES");
             bitácoraToolStripMenuItem.Enabled = Servicios.SessionManager.GetInstance().TienePermiso("VER_BITACORA");
+            
         }
 
         // Nuevo handler para la lista en la cinta de menú
@@ -155,19 +162,35 @@ namespace IngSoft
             }
         }
 
+        // Reutiliza la ventana sin recargar datos ni perder ediciones pendientes.
+        private void AbrirMdi<T>(Func<T> crear) where T : Form
+        {
+            var formulario = MdiChildren.FirstOrDefault(f => f.GetType() == typeof(T) && !f.IsDisposed);
+            if (formulario == null)
+            {
+                formulario = crear();
+                formulario.MdiParent = this;
+                formulario.WindowState = FormWindowState.Maximized;
+                formulario.Show();
+            }
+            else
+            {
+                if (formulario.WindowState == FormWindowState.Minimized)
+                    formulario.WindowState = FormWindowState.Maximized;
+                formulario.BringToFront();
+                formulario.Activate();
+            }
+        }
+
         private void usuariosToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FrmABMUsuarios frmu = new FrmABMUsuarios();
-            frmu.MdiParent = this;
-            frmu.Show();
+            AbrirMdi(() => new FrmABMUsuarios());
         }
 
         
         private void perfilesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-           FrmABMRoles frmRol = new FrmABMRoles();
-            frmRol.MdiParent = this;
-            frmRol.Show();
+           AbrirMdi(() => new FrmABMRoles());
         }
 
         private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
@@ -177,9 +200,7 @@ namespace IngSoft
 
         private void bitácoraToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FrmBitacora frmb = new FrmBitacora();
-            frmb.MdiParent = this;
-            frmb.Show();
+            AbrirMdi(() => new FrmBitacora());
         }
 
         // IIdiomaObserver
@@ -219,9 +240,7 @@ namespace IngSoft
         {
             try
             {
-                FrmIdioma frm = new FrmIdioma();
-                frm.MdiParent = this;
-                frm.Show();
+                AbrirMdi(() => new FrmIdioma());
             }
             catch (Exception ex)
             {

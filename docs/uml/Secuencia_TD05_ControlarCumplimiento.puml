@@ -1,0 +1,24 @@
+@startuml
+title ECU-TD-05 — Controlar cumplimiento de viaje
+actor "Planificador de Tráfico" as actor
+boundary "ui:VistaCumplimiento" as ui
+control "gestor:GestorCumplimiento" as gestor
+entity "viaje:Viaje" as viaje
+entity "entrega:Entrega" as entrega
+entity "comprobante:ComprobanteEntrega" as comprobante
+
+actor -> ui : seleccionarViaje()
+ui -> gestor : analizarCumplimiento(viaje)
+gestor -> entrega : obtenerResultados()
+entrega --> gestor : resultados
+gestor -> comprobante : consultarComprobantes()
+comprobante --> gestor : comprobantes
+gestor -> viaje : calcularCumplimiento()
+viaje --> gestor : porcentaje
+gestor --> ui : resumen de cumplimiento
+
+actor -> ui : confirmarCierre()
+ui -> gestor : cerrarViaje(viaje)
+gestor -> viaje : finalizar()
+gestor --> ui : viaje cerrado
+@enduml

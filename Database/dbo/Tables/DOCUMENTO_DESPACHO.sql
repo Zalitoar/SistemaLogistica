@@ -1,0 +1,9 @@
+﻿CREATE TABLE dbo.DOCUMENTO_DESPACHO
+(
+    Id_Despacho INT IDENTITY PRIMARY KEY,
+    Id_Viaje INT NOT NULL UNIQUE REFERENCES dbo.VIAJE(Id_Viaje),
+    Numero NVARCHAR(50) NOT NULL UNIQUE,
+    Fecha DATETIME NOT NULL,
+    Estado VARCHAR(20) NOT NULL CHECK (Estado IN ('Pendiente','Confirmado')),
+    Observaciones NVARCHAR(1000) NULL
+);

@@ -1,0 +1,6 @@
+﻿CREATE PROCEDURE dbo.MF_LISTAR_PARTES @IdUnidadFlota INT=NULL AS
+BEGIN
+    SET NOCOUNT ON;
+    SET XACT_ABORT ON;
+SELECT P.*,U.Dominio FROM dbo.PARTE_ESTADO_UNIDAD P JOIN dbo.UNIDAD_FLOTA U ON U.IdUnidadFlota=P.IdUnidadFlota WHERE @IdUnidadFlota IS NULL OR P.IdUnidadFlota=@IdUnidadFlota ORDER BY P.IdParteEstadoUnidad DESC;
+END;

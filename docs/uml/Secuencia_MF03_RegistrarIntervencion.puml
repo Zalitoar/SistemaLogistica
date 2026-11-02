@@ -1,0 +1,21 @@
+@startuml
+title ECU-MF-03 — Registrar intervención de mantenimiento
+actor "Responsable/Técnico de Mantenimiento" as actor
+boundary "ui:VistaIntervencion" as ui
+control "gestor:GestorMantenimiento" as gestor
+entity "orden:OrdenMantenimiento" as orden
+entity "intervencion:IntervencionMantenimiento" as intervencion
+entity "unidad:UnidadFlota" as unidad
+
+actor -> ui : seleccionarOrden()
+ui -> gestor : iniciarIntervencion(orden)
+gestor -> orden : validarVigencia()
+orden --> gestor : válida
+gestor -> intervencion : crear()
+
+actor -> ui : registrarTareasYResultado()
+ui -> gestor : finalizarIntervencion(datos)
+gestor -> intervencion : registrarResultado()
+gestor -> unidad : actualizarEstado()
+gestor --> ui : intervención registrada
+@enduml

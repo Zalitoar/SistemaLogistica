@@ -117,6 +117,8 @@
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="PostDeployment.sql" />
+    <None Include="Scripts\DevData\TD_DatosPrueba.sql" />
+    <None Include="Scripts\DevData\MF_DatosPrueba.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Database.publish.xml" />
@@ -124,5 +126,56 @@
     <None Include="Scripts\Seed\005_traducciones_en_us.sql" />
     <None Include="Scripts\Seed\006_traducciones_pt_br.sql" />
     <None Include="Scripts\Seed\008_ajustes_interfaz.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="dbo\Stored Procedures\TD_CONFIRMAR_PLAN.sql" />
+    <Build Include="dbo\Stored Procedures\TD_CREAR_MERCADERIA.sql" />
+    <Build Include="dbo\Stored Procedures\TD_LISTAR_MERCADERIA.sql" />
+    <Build Include="dbo\Stored Procedures\TD_LISTAR_REQUERIMIENTOS.sql" />
+    <Build Include="dbo\Stored Procedures\TD_RECIBIR_REQUERIMIENTO.sql" />
+    <Build Include="dbo\Tables\COMPROBANTE_ENTREGA.sql" />
+    <Build Include="dbo\Tables\DETALLE_CARGA_PLANIFICADA.sql" />
+    <Build Include="dbo\Tables\DETALLE_DESPACHO.sql" />
+    <Build Include="dbo\Tables\DOCUMENTO_DESPACHO.sql" />
+    <Build Include="dbo\Tables\ENTREGA.sql" />
+    <Build Include="dbo\Tables\MERCADERIA.sql" />
+    <Build Include="dbo\Tables\PLAN_DISTRIBUCION.sql" />
+    <Build Include="dbo\Tables\REQUERIMIENTO_DISTRIBUCION.sql" />
+    <Build Include="dbo\Tables\VIAJE.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="dbo\Stored Procedures\TD_GUARDAR_DESPACHO.sql" />
+    <Build Include="dbo\Stored Procedures\TD_LISTAR_VIAJES.sql" />
+    <Build Include="dbo\Stored Procedures\TD_OBTENER_CARGA.sql" />
+    <Build Include="dbo\Stored Procedures\TD_OBTENER_DESPACHO.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="dbo\Stored Procedures\TD_INICIAR_VIAJE.sql" />
+    <Build Include="dbo\Stored Procedures\TD_OBTENER_ENTREGAS.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="dbo\Stored Procedures\TD_REGISTRAR_ENTREGA.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="dbo\Stored Procedures\TD_CERRAR_VIAJE.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="dbo\Tables\UNIDAD_FLOTA.sql" />
+    <Build Include="dbo\Tables\PARTE_ESTADO_UNIDAD.sql" />
+    <Build Include="dbo\Tables\ORDEN_MANTENIMIENTO.sql" />
+    <Build Include="dbo\Tables\INTERVENCION_MANTENIMIENTO.sql" />
+    <Build Include="dbo\Tables\INFORME_DISPONIBILIDAD.sql" />
+    <Build Include="dbo\Stored Procedures\MF_LISTAR_UNIDADES.sql" />
+    <Build Include="dbo\Stored Procedures\MF_LISTAR_PARTES.sql" />
+    <Build Include="dbo\Stored Procedures\MF_LISTAR_ORDENES.sql" />
+    <Build Include="dbo\Stored Procedures\MF_LISTAR_INTERVENCIONES.sql" />
+    <Build Include="dbo\Stored Procedures\MF_LISTAR_INFORMES.sql" />
+    <Build Include="dbo\Stored Procedures\MF_CREAR_UNIDAD.sql" />
+    <Build Include="dbo\Stored Procedures\MF_REGISTRAR_ESTADO.sql" />
+    <Build Include="dbo\Stored Procedures\MF_PROGRAMAR.sql" />
+    <Build Include="dbo\Stored Procedures\MF_INICIAR_INTERVENCION.sql" />
+    <Build Include="dbo\Stored Procedures\MF_FINALIZAR_INTERVENCION.sql" />
+    <Build Include="dbo\Stored Procedures\MF_HABILITAR.sql" />
+    <Build Include="dbo\Stored Procedures\MF_ASIGNAR.sql" />
   </ItemGroup>
 </Project>

@@ -1,0 +1,8 @@
+﻿CREATE TABLE dbo.REQUERIMIENTO_DISTRIBUCION
+(
+    Id_Requerimiento INT IDENTITY PRIMARY KEY,
+    Numero NVARCHAR(50) NOT NULL UNIQUE,
+    Fecha DATETIME NOT NULL,
+    Origen NVARCHAR(200) NOT NULL,
+    Estado VARCHAR(20) NOT NULL CHECK (Estado IN ('Pendiente','Planificado'))
+);
