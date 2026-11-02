@@ -1,0 +1,180 @@
+@startuml
+scale max 1500 width
+title MF — Clases de implementación — colaboración por capas
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 10
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+skinparam groupInheritance 2
+skinparam packageStyle rectangle
+skinparam nodesep 20
+skinparam ranksep 25
+hide circle
+
+left to right direction
+
+package "Presentación — IngSoft" as P_MF {
+  class FormularioTraducible {
+    # FormularioTraducible()
+    + ActualizarIdioma(idioma) : void
+    # ObtenerTexto(clave, fallback) : string
+  }
+
+  class MFPresentacion <<helper>> {
+    ~ Ejecutar(accion) : void
+    ~ AplicarFormatos() : void
+    ~ Seleccionar() : object
+  }
+
+  together {
+    class FrmEstadoFlota {
+      - gestor : GestorFlota
+      + FrmEstadoFlota()
+      - Cargar() : void
+      - RegistrarEstado() : void
+    }
+    class FrmProgramarMantenimiento {
+      - gestor : GestorMantenimiento
+      + FrmProgramarMantenimiento()
+      - Cargar() : void
+      - Programar() : void
+    }
+    class FrmIntervencionMantenimiento {
+      - gestor : GestorMantenimiento
+      + FrmIntervencionMantenimiento()
+      - Cargar() : void
+      - Iniciar() : void
+      - Finalizar() : void
+    }
+    class FrmHabilitarUnidad {
+      - gestor : GestorDisponibilidad
+      + FrmHabilitarUnidad()
+      - Cargar() : void
+      - Habilitar() : void
+    }
+    class FrmDisponibilidadFlota {
+      - gestor : GestorDisponibilidad
+      + FrmDisponibilidadFlota()
+      - Cargar() : void
+      - Asignar() : void
+    }
+  }
+}
+
+package "BLL" as B_MF {
+  class GestorFlota {
+    + Unidades() : List<UnidadFlota>
+    + Partes(idUnidad : int) : List<ParteEstadoUnidad>
+    + Crear(unidad : UnidadFlota) : int
+    + Registrar(parte : ParteEstadoUnidad) : int
+  }
+  class GestorMantenimiento {
+    + PartesPendientes() : List<ParteEstadoUnidad>
+    + Ordenes() : List<OrdenMantenimiento>
+    + Intervenciones(idOrden : int) : List<IntervencionMantenimiento>
+    + Programar(orden : OrdenMantenimiento) : int
+    + Iniciar(idOrden : int) : int
+    + Finalizar(intervencion : IntervencionMantenimiento) : void
+  }
+  class GestorDisponibilidad {
+    + Unidades() : List<UnidadFlota>
+    + Informes(idUnidad : int) : List<InformeDisponibilidad>
+    + Habilitar(idUnidad : int, observaciones : string) : int
+    + Viajes() : List<Viaje>
+    + Disponibles(idViaje : int?) : List<UnidadFlota>
+    + Asignar(idUnidad : int, idViaje : int) : void
+  }
+  class ReglasMF <<utility>> {
+    ~ Permiso(nombre : string) : void
+    ~ Exigir(condicion : bool, clave : string) : void
+    ~ Km(valor : decimal) : bool
+  }
+}
+
+package "DAL" as D_MF {
+  class MP_MF {
+    + Unidades() : List<UnidadFlota>
+    + Partes(idUnidad : int?) : List<ParteEstadoUnidad>
+    + Ordenes(idUnidad : int?) : List<OrdenMantenimiento>
+    + Intervenciones(idOrden : int) : List<IntervencionMantenimiento>
+    + Informes(idUnidad : int?) : List<InformeDisponibilidad>
+    + CrearUnidad(unidad : UnidadFlota) : int
+    + RegistrarEstado(parte : ParteEstadoUnidad) : int
+    + Programar(orden : OrdenMantenimiento) : int
+    + Iniciar(idOrden : int) : int
+    + Finalizar(intervencion : IntervencionMantenimiento) : int
+    + Habilitar(idUnidad : int, observaciones : string) : int
+    + Asignar(idUnidad : int, idViaje : int) : int
+  }
+  class MP_Viaje {
+    + Listar() : List<Viaje>
+  }
+  class MP_TD <<helper>> {
+    ~ Leer(procedimiento, parametros)
+  }
+  class ACCESO {
+    + Abrir() : void
+    + Cerrar() : void
+    + Leer(procedimiento, parametros)
+  }
+}
+
+package "Servicios" as S_MF {
+  interface IIdiomaObserver {
+    + ActualizarIdioma(idioma) : void
+  }
+  class SessionManager <<singleton>> {
+    + GetInstance() : SessionManager
+    + TienePermiso(nombre : string) : bool
+  }
+  class BitacoraManager <<utility>> {
+    + Registrar(actividad : string) : void
+  }
+}
+
+IIdiomaObserver <|.. FormularioTraducible
+FormularioTraducible <|-- FrmEstadoFlota
+FormularioTraducible <|-- FrmProgramarMantenimiento
+FormularioTraducible <|-- FrmIntervencionMantenimiento
+FormularioTraducible <|-- FrmHabilitarUnidad
+FormularioTraducible <|-- FrmDisponibilidadFlota
+
+FrmEstadoFlota --> GestorFlota : gestor
+FrmProgramarMantenimiento --> GestorMantenimiento : gestor
+FrmIntervencionMantenimiento --> GestorMantenimiento : gestor
+FrmHabilitarUnidad --> GestorDisponibilidad : gestor
+FrmDisponibilidadFlota --> GestorDisponibilidad : gestor
+
+
+
+
+P_MF ..> B_MF : invoca lógica de negocio
+B_MF ..> D_MF : consulta / persiste
+B_MF ..> S_MF : permisos / auditoría
+ReglasMF ..> SessionManager
+
+
+MP_MF ..> ACCESO
+MP_Viaje ..> MP_TD
+MP_TD ..> ACCESO
+
+note bottom of MP_MF
+  <<data access>>
+  Mapper único del proceso MF.
+  ACCESO queda como infraestructura interna, no como base de datos.
+end note
+
+note bottom of MFPresentacion
+  <<helper de UI>>
+  Utilizado por los formularios MF para
+  construir controles, aplicar formato y manejar errores.
+end note
+
+note bottom of ReglasMF
+  <<servicio transversal>>
+  Los gestores validan permisos mediante SessionManager
+  y auditan operaciones relevantes en BitacoraManager.
+end note
+@enduml

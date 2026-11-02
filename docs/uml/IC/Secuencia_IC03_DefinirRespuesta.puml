@@ -1,0 +1,50 @@
+@startuml
+scale max 1600 width
+title IC-03 — Definir respuesta operativa — Diseño de implementación
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 11
+skinparam sequenceMessageAlign center
+skinparam responseMessageBelowArrow true
+hide footbox
+autonumber
+
+actor "Controlador de Tráfico" as ACT
+participant "[Presentación]\nFrmRespuestaOperativa" as UI
+participant "[BLL]\nGestorRespuestaIncidencia" as BLL
+participant "[BLL]\nReglasIC" as RULES
+participant "[Servicios]\nSessionManager" as SES
+participant "[DAL]\nMP_IC" as DAL
+database "[SQL Server]\nSistemaLogistica" as DB
+participant "[Servicios]\nBitacoraManager" as BIT
+
+ACT -> UI : seleccionar incidencia analizada
+UI -> BLL : PendientesRespuesta()
+BLL -> RULES : validar permiso
+RULES -> SES : TienePermiso("IC_GESTIONAR_RESPUESTA")
+SES --> RULES : autorizado / denegado
+BLL -> DAL : PendientesRespuesta()
+DAL -> DB : consultar incidencias que requieren respuesta
+DB --> DAL : incidencias
+DAL --> BLL : incidencias
+BLL --> UI : incidencias
+
+ACT -> UI : definir instrucción operativa
+UI -> BLL : Definir(instruccion)
+BLL -> RULES : validar contenido y estado
+
+alt instrucción válida
+  BLL -> DAL : Definir(instruccion)
+  DAL -> DB : registrar instrucción y pasar a EnTratamiento\n(procedimiento IC_DEFINIR_RESPUESTA)
+  DB --> DAL : idInstruccion
+  DAL --> BLL : idInstruccion
+  BLL -> BIT : Registrar("IC: respuesta operativa definida")
+  BLL --> UI : instrucción registrada
+  UI --> ACT : respuesta disponible para el operador
+else estado incompatible
+  RULES --> BLL : ReglaICException
+  BLL --> UI : informar causa
+  UI --> ACT : operación rechazada
+end
+@enduml

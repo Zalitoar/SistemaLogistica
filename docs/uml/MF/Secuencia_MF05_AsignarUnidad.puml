@@ -1,0 +1,50 @@
+@startuml
+scale max 1600 width
+title MF-05 — Consultar disponibilidad y asignar unidad — Diseño de implementación
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 11
+skinparam sequenceMessageAlign center
+skinparam responseMessageBelowArrow true
+hide footbox
+autonumber
+
+actor "Planificador de Tráfico" as ACT
+participant "[Presentación]\nFrmDisponibilidadFlota" as UI
+participant "[BLL]\nGestorDisponibilidad" as BLL
+participant "[BLL]\nReglasMF" as RULES
+participant "[Servicios]\nSessionManager" as SES
+participant "[DAL]\nMP_MF" as DAL
+database "[SQL Server]\nSistemaLogistica" as DB
+participant "[Servicios]\nBitacoraManager" as BIT
+
+ACT -> UI : seleccionar viaje sin unidad
+UI -> BLL : Disponibles(idViaje)
+BLL -> DAL : consultar unidades disponibles
+DAL -> DB : obtener unidades con informe vigente
+DB --> DAL : unidades disponibles
+DAL --> BLL : unidades disponibles
+BLL --> UI : alternativas disponibles
+
+ACT -> UI : seleccionar unidad
+UI -> BLL : Asignar(idUnidad, idViaje)
+BLL -> RULES : validar permiso
+RULES -> SES : TienePermiso("MF_ASIGNAR_UNIDAD")
+SES --> RULES : autorizado / denegado
+
+alt disponibilidad vigente al confirmar
+  BLL -> DAL : Asignar(idUnidad, idViaje)
+  DAL -> DB : revalidar y asignar unidad\n(procedimiento MF_ASIGNAR)
+  DB --> DAL : asignación confirmada
+  DAL --> BLL : operación confirmada
+  BLL -> BIT : Registrar("MF: unidad asignada")
+  BLL --> UI : viaje actualizado
+  UI --> ACT : unidad asignada
+else disponibilidad cambió
+  DB --> DAL : asignación rechazada
+  DAL --> BLL : conflicto de disponibilidad
+  BLL --> UI : solicitar nueva selección
+  UI --> ACT : elegir otra unidad
+end
+@enduml

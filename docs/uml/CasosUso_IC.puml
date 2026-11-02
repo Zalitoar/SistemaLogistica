@@ -1,0 +1,26 @@
+@startuml
+left to right direction
+title IC — Casos de uso
+skinparam packageStyle rectangle
+actor "Operador de Transporte /\nConductor" as Operador
+actor "Controlador de Tráfico" as Controlador
+actor "Analista de Calidad y\nMejora Continua" as Calidad
+actor "Planificador de Tráfico" as Planificador
+rectangle "Sistema de Gestión Logística\n[Gestión de Incidencias y Cumplimiento]" {
+ usecase "ECU-IC-01\nRegistrar incidencia\noperativa" as IC01
+ usecase "ECU-IC-02\nClasificar y evaluar\nimpacto" as IC02
+ usecase "ECU-IC-03\nDefinir respuesta\noperativa" as IC03
+ usecase "ECU-IC-04\nRegistrar seguimiento\ny resultado" as IC04
+ usecase "ECU-IC-05\nVerificar y cerrar\nincidencia" as IC05
+ usecase "ECU-IC-06\nAnalizar indicadores\ny recurrencia" as IC06
+ usecase "ECU-IC-07\nGestionar acciones\nde mejora" as IC07
+}
+Operador -- IC01
+Controlador -- IC02
+Controlador -- IC03
+Operador -- IC04
+Controlador -- IC05
+Calidad -- IC06
+Planificador -- IC06
+Calidad -- IC07
+@enduml

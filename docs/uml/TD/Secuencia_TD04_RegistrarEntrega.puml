@@ -1,0 +1,54 @@
+@startuml
+scale max 1600 width
+title TD-04 — Registrar entrega — Diseño de implementación
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 11
+skinparam sequenceMessageAlign center
+skinparam responseMessageBelowArrow true
+hide footbox
+autonumber
+
+actor "Operador de Transporte" as ACT
+participant "[Presentación]\nFrmRegistroEntrega" as UI
+participant "[BLL]\nGestorEntrega" as BLL
+participant "[BLL]\nReglasTD" as RULES
+participant "[Servicios]\nSessionManager" as SES
+participant "[DAL]\nMP_Entrega" as DAL
+database "[SQL Server]\nSistemaLogistica" as DB
+participant "[Servicios]\nBitacoraManager" as BIT
+
+ACT -> UI : seleccionar entrega pendiente
+UI -> BLL : ObtenerEntregas(idViaje)
+BLL -> DAL : Obtener(idViaje)
+DAL -> DB : consultar entregas del viaje\n(procedimiento TD_OBTENER_ENTREGAS)
+DB --> DAL : entregas
+DAL --> BLL : entregas
+BLL --> UI : entregas
+
+ACT -> UI : informar resultado de entrega
+UI -> BLL : Registrar(idViaje, idEntrega, resultado, fecha, observaciones)
+BLL -> RULES : validar permiso, viaje y resultado
+RULES -> SES : TienePermiso("TD_REGISTRAR_ENTREGA")
+SES --> RULES : autorizado / denegado
+
+alt resultado válido
+  BLL -> DAL : Registrar(...)
+  DAL -> DB : registrar resultado\n(procedimiento TD_REGISTRAR_ENTREGA)
+  DB --> DAL : entrega actualizada
+  DAL --> BLL : operación confirmada
+  BLL -> BIT : Registrar("TD: resultado de entrega")
+  BLL --> UI : resultado registrado
+  UI --> ACT : confirmación
+else datos o estado incompatibles
+  RULES --> BLL : ReglaTDException
+  BLL --> UI : informar causa
+  UI --> ACT : corregir datos
+end
+
+note over UI, DB
+  Una entrega Parcial o Incumplida queda disponible
+  como fuente para IC; TD no crea la incidencia automáticamente.
+end note
+@enduml

@@ -1,0 +1,176 @@
+@startuml
+scale max 1500 width
+title IC — Clases BE y DTO — detalle de implementación
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 10
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+skinparam groupInheritance 2
+skinparam packageStyle rectangle
+skinparam nodesep 20
+skinparam ranksep 25
+hide circle
+
+left to right direction
+
+package "BE — Entidades IC" {
+class Incidencia <<BE>> {
+  + IdIncidencia : int
+  + IdViaje : int
+  + IdEntrega : int?
+  + IdUnidadFlota : int?
+  + Origen : string
+  + FechaApertura : DateTime
+  + FechaActualizacion : DateTime
+  + Estado : string
+  + TipoActual : string
+  + SeveridadActual : string
+  + ImpactoEstimado : string
+}
+
+class ReporteIncidencia <<BE>> {
+  + IdReporteIncidencia : int
+  + IdIncidencia : int
+  + IdUsuarioReporta : int
+  + FechaHora : DateTime
+  + Descripcion : string
+  + Ubicacion : string
+}
+
+class AnalisisIncidencia <<BE>> {
+  + IdAnalisisIncidencia : int
+  + IdIncidencia : int
+  + IdUsuarioAnaliza : int
+  + FechaHora : DateTime
+  + TipoIncidencia : string
+  + Severidad : string
+  + ImpactoEstimado : string
+  + RequiereRespuesta : bool
+  + Observaciones : string
+}
+
+class InstruccionOperativa <<BE>> {
+  + IdInstruccionOperativa : int
+  + IdIncidencia : int
+  + IdUsuarioEmite : int
+  + FechaHora : DateTime
+  + Accion : string
+  + Prioridad : string
+  + Estado : string
+}
+
+class SeguimientoIncidencia <<BE>> {
+  + IdSeguimientoIncidencia : int
+  + IdIncidencia : int
+  + IdInstruccionOperativa : int?
+  + IdUsuarioRegistra : int
+  + FechaHora : DateTime
+  + Detalle : string
+  + Resultado : string
+}
+
+class InformeCierreIncidencia <<BE>> {
+  + IdCierreIncidencia : int
+  + IdIncidencia : int
+  + IdUsuarioCierra : int
+  + FechaHora : DateTime
+  + ResultadoFinal : string
+  + CategoriaCausa : string
+  + CausaRaiz : string
+  + ImpactoFinal : string
+  + MinutosDemora : int
+  + AfectoCumplimiento : bool
+  + ResultadoEntrega : string
+  + Observaciones : string
+}
+
+class AccionMejora <<BE>> {
+  + IdAccionMejora : int
+  + Codigo : string
+  + FechaAlta : DateTime
+  + Tipo : string
+  + Titulo : string
+  + Descripcion : string
+  + Prioridad : string
+  + Estado : string
+  + FechaObjetivo : DateTime?
+  + IdUsuarioPropone : int
+}
+
+}
+
+package "DTO — Consulta y análisis" {
+class FuenteIncidencia <<DTO>> {
+  + Origen : string
+  + IdViaje : int
+  + IdEntrega : int?
+  + IdUnidadFlota : int?
+  + Descripcion : string
+}
+
+class ContextoIncidencia <<DTO>> {
+  + Incidencia : Incidencia
+  + Viaje : Viaje
+  + Entrega : Entrega
+  + Unidad : UnidadFlota
+  + Instrucciones : List<InstruccionOperativa>
+  + Seguimientos : List<SeguimientoIncidencia>
+}
+
+class IndicadorAgrupado <<DTO>> {
+  + Clave : string
+  + Cantidad : int
+  + Porcentaje : decimal
+}
+
+class IndicadoresIC <<DTO>> {
+  + Total : int
+  + Abiertas : int
+  + Cerradas : int
+  + Criticas : int
+  + TiempoMedioResolucionMin : decimal
+  + Entregadas : int
+  + Parciales : int
+  + Incumplidas : int
+  + PorCausa : List<IndicadorAgrupado>
+  + PorUnidad : List<IndicadorAgrupado>
+}
+
+}
+
+package "Entidades externas — TD / MF" {
+class Viaje <<TD>>
+class Entrega <<TD>>
+class UnidadFlota <<MF>>
+}
+
+package "Excepciones" {
+class ReglaICException <<exception>> {
+  + ReglaICException(clave : string)
+}
+class Exception <<framework>>
+}
+
+Exception <|-- ReglaICException
+Incidencia "1" o-- "1" ReporteIncidencia
+Incidencia "1" o-- "0..*" AnalisisIncidencia
+Incidencia "1" o-- "0..*" InstruccionOperativa
+Incidencia "1" o-- "0..*" SeguimientoIncidencia
+InstruccionOperativa "0..1" -- "0..*" SeguimientoIncidencia
+Incidencia "1" o-- "0..1" InformeCierreIncidencia
+Viaje "1" -- "0..*" Incidencia
+Entrega "0..1" -- "0..*" Incidencia
+UnidadFlota "0..1" -- "0..*" Incidencia
+ContextoIncidencia --> Incidencia
+ContextoIncidencia --> Viaje
+ContextoIncidencia --> Entrega
+ContextoIncidencia --> UnidadFlota
+ContextoIncidencia --> InstruccionOperativa
+ContextoIncidencia --> SeguimientoIncidencia
+IndicadoresIC o-- IndicadorAgrupado
+FuenteIncidencia ..> Viaje
+FuenteIncidencia ..> Entrega
+FuenteIncidencia ..> UnidadFlota
+@enduml

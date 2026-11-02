@@ -1,0 +1,140 @@
+@startuml
+scale max 1500 width
+title MF — Modelo físico de datos — SQL Server
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 10
+skinparam linetype ortho
+skinparam packageStyle rectangle
+skinparam nodesep 20
+skinparam ranksep 25
+hide circle
+
+left to right direction
+
+package "Mantenimiento y Disponibilidad de Flota (MF)" {
+ entity "UNIDAD_FLOTA" as UNIDAD {
+   *  IdUnidadFlota : INT IDENTITY
+   --
+    Dominio : NVARCHAR(10) NOT NULL
+   Tipo : NVARCHAR(50) NOT NULL
+   Marca : NVARCHAR(50) NOT NULL
+   Modelo : NVARCHAR(50) NOT NULL
+   Anio : INT NOT NULL
+   Capacidad : DECIMAL(18,3) NOT NULL
+   KilometrajeActual : DECIMAL(18,3) NOT NULL
+   EstadoOperativo : VARCHAR(30) NOT NULL
+   Activa : BIT NOT NULL
+ }
+
+ entity "PARTE_ESTADO_UNIDAD" as PARTE {
+   *  IdParteEstadoUnidad : INT IDENTITY
+   --
+    IdUnidadFlota : INT NOT NULL
+   FechaHora : DATETIME NOT NULL
+   Kilometraje : DECIMAL(18,3) NOT NULL
+   TipoNovedad : NVARCHAR(30) NOT NULL
+   Descripcion : NVARCHAR(500) NOT NULL
+   RequiereMantenimiento : BIT NOT NULL
+   EstadoParte : VARCHAR(30) NOT NULL
+ }
+
+ entity "ORDEN_MANTENIMIENTO" as ORDEN {
+   *  IdOrdenMantenimiento : INT IDENTITY
+   --
+    IdUnidadFlota : INT NOT NULL
+    IdParteEstadoUnidad : INT NOT NULL
+   FechaEmision : DATETIME NOT NULL
+   FechaProgramada : DATETIME NOT NULL
+   TipoMantenimiento : VARCHAR(30) NOT NULL
+   Prioridad : VARCHAR(20) NOT NULL
+   DescripcionTrabajo : NVARCHAR(500) NOT NULL
+   EstadoOrden : VARCHAR(30) NOT NULL
+ }
+
+ entity "INTERVENCION_MANTENIMIENTO" as INTERV {
+   *  IdIntervencionMantenimiento : INT IDENTITY
+   --
+    IdOrdenMantenimiento : INT NOT NULL
+   FechaInicio : DATETIME NOT NULL
+   FechaFin : DATETIME NULL
+   Kilometraje : DECIMAL(18,3) NOT NULL
+   TrabajoRealizado : NVARCHAR(1000) NOT NULL
+   Resultado : VARCHAR(30) NOT NULL
+   Observaciones : NVARCHAR(1000) NULL
+ }
+
+ entity "INFORME_DISPONIBILIDAD" as INF {
+   *  IdInformeDisponibilidad : INT IDENTITY
+   --
+    IdUnidadFlota : INT NOT NULL
+    IdIntervencionMantenimiento : INT NULL
+   FechaHora : DATETIME NOT NULL
+   Disponible : BIT NOT NULL
+   EstadoUnidad : VARCHAR(30) NOT NULL
+   Observaciones : NVARCHAR(1000) NULL
+   Vigente : BIT NOT NULL
+ }
+}
+
+package "Integración TD" {
+ entity "VIAJE" as VIAJE {
+   *  Id_Viaje : INT
+   --
+    IdUnidadFlota : INT NULL
+    IdInformeDisponibilidad : INT NULL
+   Estado : VARCHAR(20) NOT NULL
+ }
+}
+
+UNIDAD ||--o{ PARTE : "FK IdUnidadFlota"
+UNIDAD ||--o{ ORDEN : "FK IdUnidadFlota"
+PARTE ||--o| ORDEN : "FK IdParteEstadoUnidad"
+ORDEN ||--o{ INTERV : "FK IdOrdenMantenimiento"
+UNIDAD ||--o{ INF : "FK IdUnidadFlota"
+INTERV |o--o| INF : "FK IdIntervencionMantenimiento"
+UNIDAD |o--o{ VIAJE : "FK IdUnidadFlota"
+INF |o--o{ VIAJE : "FK IdInformeDisponibilidad"
+
+note right of UNIDAD
+ <<constraints>>
+ Dominio UNIQUE
+ Activa DEFAULT 1
+ CHECK de año, capacidad, kilometraje y EstadoOperativo
+end note
+
+note right of ORDEN
+ <<referential integrity>>
+ FK compuesta (IdParteEstadoUnidad, IdUnidadFlota)
+ garantiza que el parte corresponda a la misma unidad.
+
+ <<constraints>>
+ CHECK de tipo, prioridad y EstadoOrden
+end note
+
+note bottom of INTERV
+ <<index>>
+ UX_INTERVENCION_ACTIVA
+ UNIQUE (IdOrdenMantenimiento)
+ WHERE FechaFin IS NULL
+end note
+
+note bottom of INF
+ <<indexes>>
+ UX_INFORME_VIGENTE
+ UNIQUE (IdUnidadFlota) WHERE Vigente = 1
+
+ UX_INFORME_INTERVENCION
+ UNIQUE (IdIntervencionMantenimiento)
+ WHERE IdIntervencionMantenimiento IS NOT NULL
+end note
+
+note bottom of VIAJE
+ <<constraints>>
+ CK_VIAJE_ASIGNACION:
+ unidad e informe son ambos NULL o ambos informados.
+
+ No hay triggers de negocio de producción.
+end note
+@enduml

@@ -1,0 +1,167 @@
+@startuml
+scale max 1500 width
+title TD — Modelo físico de datos — SQL Server
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 10
+skinparam linetype ortho
+skinparam packageStyle rectangle
+skinparam nodesep 20
+skinparam ranksep 25
+hide circle
+
+left to right direction
+
+package "Transporte y Distribución (TD)" {
+ entity "REQUERIMIENTO_DISTRIBUCION" as REQ {
+   *  Id_Requerimiento : INT IDENTITY
+   --
+    Numero : NVARCHAR(50) NOT NULL
+   Fecha : DATETIME NOT NULL
+   Origen : NVARCHAR(200) NOT NULL
+   Estado : VARCHAR(20) NOT NULL
+ }
+
+ entity "PLAN_DISTRIBUCION" as PLAN {
+   *  Id_Plan : INT IDENTITY
+   --
+    Id_Requerimiento : INT NOT NULL
+    Numero : NVARCHAR(50) NOT NULL
+   Fecha : DATETIME NOT NULL
+   Estado : VARCHAR(20) NOT NULL
+ }
+
+ entity "VIAJE" as VIAJE {
+   *  Id_Viaje : INT IDENTITY
+   --
+    Id_Plan : INT NOT NULL
+    IdUnidadFlota : INT NULL
+    IdInformeDisponibilidad : INT NULL
+    Numero : NVARCHAR(50) NOT NULL
+   FechaPrevista : DATETIME NOT NULL
+   FechaInicio : DATETIME NULL
+   FechaFinalizacion : DATETIME NULL
+   Estado : VARCHAR(20) NOT NULL
+   PorcentajeCumplimiento : DECIMAL(5,2) NOT NULL
+ }
+
+ entity "ENTREGA" as ENTREGA {
+   *  Id_Entrega : INT IDENTITY
+   --
+    Id_Viaje : INT NOT NULL
+   Destino : NVARCHAR(200) NOT NULL
+   FechaPrevista : DATETIME NOT NULL
+   FechaRealizada : DATETIME NULL
+   Estado : VARCHAR(20) NOT NULL
+   Observaciones : NVARCHAR(1000) NULL
+ }
+
+ entity "MERCADERIA" as MERC {
+   *  Id_Mercaderia : INT IDENTITY
+   --
+    Codigo : NVARCHAR(50) NOT NULL
+   Descripcion : NVARCHAR(200) NOT NULL
+ }
+
+ entity "DETALLE_CARGA_PLANIFICADA" as CARGA {
+   *  Id_DetalleCargaPlanificada : INT IDENTITY
+   --
+    Id_Viaje : INT NOT NULL
+    Id_Mercaderia : INT NOT NULL
+   CantidadPrevista : DECIMAL(18,3) NOT NULL
+ }
+
+ entity "DOCUMENTO_DESPACHO" as DESP {
+   *  Id_Despacho : INT IDENTITY
+   --
+    Id_Viaje : INT NOT NULL
+    Numero : NVARCHAR(50) NOT NULL
+   Fecha : DATETIME NOT NULL
+   Estado : VARCHAR(20) NOT NULL
+   Observaciones : NVARCHAR(1000) NULL
+ }
+
+ entity "DETALLE_DESPACHO" as DDESP {
+   *  Id_Detalle : INT IDENTITY
+   --
+    Id_Despacho : INT NOT NULL
+    Id_Mercaderia : INT NOT NULL
+   Cantidad : DECIMAL(18,3) NOT NULL
+ }
+
+ entity "COMPROBANTE_ENTREGA" as COMP {
+   *  Id_Comprobante : INT IDENTITY
+   --
+    Id_Entrega : INT NOT NULL
+    Numero : NVARCHAR(50) NOT NULL
+   Fecha : DATETIME NOT NULL
+   Resultado : VARCHAR(20) NOT NULL
+   Observaciones : NVARCHAR(1000) NULL
+ }
+}
+
+package "Integración MF" {
+ entity "UNIDAD_FLOTA" as UNIDAD {
+   *  IdUnidadFlota : INT
+ }
+ entity "INFORME_DISPONIBILIDAD" as INF {
+   *  IdInformeDisponibilidad : INT
+   --
+    IdUnidadFlota : INT
+ }
+}
+
+REQ ||--o| PLAN : "FK Id_Requerimiento"
+PLAN ||--o{ VIAJE : "FK Id_Plan"
+VIAJE ||--o{ ENTREGA : "FK Id_Viaje"
+VIAJE ||--o{ CARGA : "FK Id_Viaje"
+MERC ||--o{ CARGA : "FK Id_Mercaderia"
+VIAJE ||--o| DESP : "FK Id_Viaje"
+DESP ||--o{ DDESP : "FK Id_Despacho"
+MERC ||--o{ DDESP : "FK Id_Mercaderia"
+ENTREGA ||--o| COMP : "FK Id_Entrega"
+UNIDAD |o--o{ VIAJE : "FK IdUnidadFlota"
+INF |o--o{ VIAJE : "FK IdInformeDisponibilidad"
+
+note right of REQ
+ <<constraints>>
+ Estado IN ('Pendiente','Planificado')
+end note
+
+note right of VIAJE
+ <<constraints>>
+ PorcentajeCumplimiento DEFAULT 0
+ CK_VIAJE_ASIGNACION
+ CK_VIAJE_FECHAS
+ CK_VIAJE_CIERRE
+
+ <<referential integrity>>
+ La FK compuesta con el informe garantiza
+ que la disponibilidad pertenezca a la unidad asignada.
+end note
+
+note bottom of CARGA
+ <<constraints>>
+ UNIQUE (Id_Viaje, Id_Mercaderia)
+ CHECK CantidadPrevista > 0
+end note
+
+note bottom of DDESP
+ <<constraints>>
+ UNIQUE (Id_Despacho, Id_Mercaderia)
+ CHECK Cantidad >= 0
+end note
+
+note bottom of COMP
+ <<constraints>>
+ Resultado = 'Entregada'
+end note
+
+note bottom of PLAN
+ <<physical design>>
+ No hay índices secundarios TD explícitos.
+ PK y UNIQUE generan índices en SQL Server.
+ No hay triggers de negocio de producción.
+end note
+@enduml

@@ -1,0 +1,46 @@
+@startuml
+scale max 1600 width
+title MF-01 — Registrar estado y necesidad de mantenimiento — Diseño de implementación
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 11
+skinparam sequenceMessageAlign center
+skinparam responseMessageBelowArrow true
+hide footbox
+autonumber
+
+actor "Responsable de Flota" as ACT
+participant "[Presentación]\nFrmEstadoFlota" as UI
+participant "[BLL]\nGestorFlota" as BLL
+participant "[BLL]\nReglasMF" as RULES
+participant "[Servicios]\nSessionManager" as SES
+participant "[DAL]\nMP_MF" as DAL
+database "[SQL Server]\nSistemaLogistica" as DB
+participant "[Servicios]\nBitacoraManager" as BIT
+
+ACT -> UI : registrar control de unidad
+UI -> BLL : Registrar(parte)
+BLL -> RULES : validar permiso, unidad y kilometraje
+RULES -> SES : TienePermiso("MF_REGISTRAR_ESTADO")
+SES --> RULES : autorizado / denegado
+
+alt datos válidos
+  BLL -> DAL : RegistrarEstado(parte)
+  DAL -> DB : registrar parte y actualizar disponibilidad\n(procedimiento MF_REGISTRAR_ESTADO)
+  DB --> DAL : idParte
+  DAL --> BLL : idParte
+  BLL -> BIT : Registrar("MF: parte de estado")
+  BLL --> UI : idParte
+  UI --> ACT : estado de unidad actualizado
+else validación o persistencia rechazada
+  RULES --> BLL : ReglaMFException
+  BLL --> UI : informar causa
+  UI --> ACT : corregir datos
+end
+
+note over DAL, DB
+  La operación es transaccional: registra el parte,
+  actualiza la unidad y mantiene un único informe vigente.
+end note
+@enduml

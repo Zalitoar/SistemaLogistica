@@ -1,0 +1,50 @@
+@startuml
+scale max 1600 width
+title IC-05 — Verificar y cerrar incidencia — Diseño de implementación
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 11
+skinparam sequenceMessageAlign center
+skinparam responseMessageBelowArrow true
+hide footbox
+autonumber
+
+actor "Controlador de Tráfico" as ACT
+participant "[Presentación]\nFrmCierreIncidencia" as UI
+participant "[BLL]\nGestorCierreIncidencia" as BLL
+participant "[BLL]\nReglasIC" as RULES
+participant "[Servicios]\nSessionManager" as SES
+participant "[DAL]\nMP_IC" as DAL
+database "[SQL Server]\nSistemaLogistica" as DB
+participant "[Servicios]\nBitacoraManager" as BIT
+
+ACT -> UI : seleccionar incidencia PendienteCierre
+UI -> BLL : Contexto(idIncidencia)
+BLL -> RULES : validar permiso
+RULES -> SES : TienePermiso("IC_CERRAR_INCIDENCIA")
+SES --> RULES : autorizado / denegado
+BLL -> DAL : Contexto(idIncidencia)
+DAL -> DB : consultar trazabilidad completa y contexto TD/MF\n(procedimiento IC_OBTENER_CONTEXTO)
+DB --> DAL : ContextoIncidencia
+DAL --> BLL : ContextoIncidencia
+BLL --> UI : trazabilidad
+
+ACT -> UI : registrar resultado, causa e impacto final
+UI -> BLL : Cerrar(informe)
+BLL -> RULES : validar información suficiente y cierre único
+
+alt cierre válido
+  BLL -> DAL : Cerrar(informe)
+  DAL -> DB : crear informe y cerrar incidencia\n(procedimiento IC_CERRAR_INCIDENCIA)
+  DB --> DAL : idCierre
+  DAL --> BLL : idCierre
+  BLL -> BIT : Registrar("IC: incidencia cerrada")
+  BLL --> UI : incidencia Cerrada
+  UI --> ACT : cierre confirmado
+else información insuficiente o cierre existente
+  RULES --> BLL : ReglaICException
+  BLL --> UI : informar causa
+  UI --> ACT : completar seguimiento o revisar cierre
+end
+@enduml

@@ -1,0 +1,210 @@
+@startuml
+scale max 1500 width
+title IC — Modelo físico de datos — SQL Server
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 10
+skinparam linetype ortho
+skinparam packageStyle rectangle
+skinparam nodesep 20
+skinparam ranksep 25
+hide circle
+
+left to right direction
+
+package "Fuentes existentes — TD / MF" {
+ entity "VIAJE" as VIAJE {
+   *  Id_Viaje : INT
+   --
+    IdUnidadFlota : INT NULL
+   Estado : VARCHAR(20) NOT NULL
+ }
+ entity "ENTREGA" as ENTREGA {
+   *  Id_Entrega : INT
+   --
+    Id_Viaje : INT NOT NULL
+   Estado : VARCHAR(20) NOT NULL
+ }
+ entity "UNIDAD_FLOTA" as UNIDAD {
+   *  IdUnidadFlota : INT
+   --
+   EstadoOperativo : VARCHAR(30) NOT NULL
+ }
+ entity "USUARIO" as USR {
+   *  Id_Usuario : INT
+ }
+}
+
+package "Gestión de Incidencias (IC)" {
+ entity "INCIDENCIA" as INC {
+   *  IdIncidencia : INT IDENTITY
+   --
+    IdViaje : INT NOT NULL
+    IdEntrega : INT NULL
+    IdUnidadFlota : INT NULL
+   Origen : VARCHAR(10) NOT NULL
+   FechaApertura : DATETIME NOT NULL
+   FechaActualizacion : DATETIME NOT NULL
+   Estado : VARCHAR(20) NOT NULL
+   TipoActual : VARCHAR(30) NULL
+   SeveridadActual : VARCHAR(15) NULL
+   ImpactoEstimado : VARCHAR(30) NULL
+ }
+
+ entity "REPORTE_INCIDENCIA" as REP {
+   *  IdReporteIncidencia : INT IDENTITY
+   --
+    IdIncidencia : INT NOT NULL
+    IdUsuarioReporta : INT NOT NULL
+   FechaHora : DATETIME NOT NULL
+   Descripcion : NVARCHAR(1000) NOT NULL
+   Ubicacion : NVARCHAR(200) NULL
+ }
+
+ entity "ANALISIS_INCIDENCIA" as ANA {
+   *  IdAnalisisIncidencia : INT IDENTITY
+   --
+    IdIncidencia : INT NOT NULL
+    IdUsuarioAnaliza : INT NOT NULL
+   FechaHora : DATETIME NOT NULL
+   TipoIncidencia : VARCHAR(30) NOT NULL
+   Severidad : VARCHAR(15) NOT NULL
+   ImpactoEstimado : VARCHAR(30) NOT NULL
+   RequiereRespuesta : BIT NOT NULL
+   Observaciones : NVARCHAR(1000) NULL
+ }
+
+ entity "INSTRUCCION_OPERATIVA" as INST {
+   *  IdInstruccionOperativa : INT IDENTITY
+   --
+    IdIncidencia : INT NOT NULL
+    IdUsuarioEmite : INT NOT NULL
+   FechaHora : DATETIME NOT NULL
+   Accion : NVARCHAR(1000) NOT NULL
+   Prioridad : VARCHAR(15) NOT NULL
+   Estado : VARCHAR(15) NOT NULL
+ }
+
+ entity "SEGUIMIENTO_INCIDENCIA" as SEG {
+   *  IdSeguimientoIncidencia : INT IDENTITY
+   --
+    IdIncidencia : INT NOT NULL
+    IdInstruccionOperativa : INT NULL
+    IdUsuarioRegistra : INT NOT NULL
+   FechaHora : DATETIME NOT NULL
+   Detalle : NVARCHAR(1000) NOT NULL
+   Resultado : VARCHAR(20) NOT NULL
+ }
+
+ entity "INFORME_CIERRE_INCIDENCIA" as CIERRE {
+   *  IdCierreIncidencia : INT IDENTITY
+   --
+    IdIncidencia : INT NOT NULL
+    IdUsuarioCierra : INT NOT NULL
+   FechaHora : DATETIME NOT NULL
+   ResultadoFinal : VARCHAR(20) NOT NULL
+   CategoriaCausa : VARCHAR(30) NOT NULL
+   CausaRaiz : NVARCHAR(1000) NOT NULL
+   ImpactoFinal : NVARCHAR(1000) NOT NULL
+   MinutosDemora : INT NOT NULL
+   AfectoCumplimiento : BIT NOT NULL
+   ResultadoEntrega : VARCHAR(20) NULL
+   Observaciones : NVARCHAR(1000) NULL
+ }
+
+ entity "ACCION_MEJORA" as MEJORA {
+   *  IdAccionMejora : INT IDENTITY
+   --
+    Codigo : NVARCHAR(50) NOT NULL
+    IdUsuarioPropone : INT NOT NULL
+   FechaAlta : DATETIME NOT NULL
+   Tipo : VARCHAR(20) NOT NULL
+   Titulo : NVARCHAR(200) NOT NULL
+   Descripcion : NVARCHAR(1500) NOT NULL
+   Prioridad : VARCHAR(15) NOT NULL
+   Estado : VARCHAR(20) NOT NULL
+   FechaObjetivo : DATETIME NULL
+ }
+
+ entity "INCIDENCIA_ACCION_MEJORA" as LINK {
+   *  IdIncidencia : INT
+   *  IdAccionMejora : INT
+   --
+   FechaVinculacion : DATETIME NOT NULL
+ }
+}
+
+VIAJE ||--o{ ENTREGA : "FK Id_Viaje"
+VIAJE ||--o{ INC : "FK IdViaje"
+ENTREGA |o--o{ INC : "FK IdEntrega"
+UNIDAD |o--o{ INC : "FK IdUnidadFlota"
+
+INC ||--|| REP : "FK IdIncidencia"
+INC ||--o{ ANA : "FK IdIncidencia"
+INC ||--o{ INST : "FK IdIncidencia"
+INC ||--o{ SEG : "FK IdIncidencia"
+INST |o--o{ SEG : "FK IdInstruccionOperativa"
+INC ||--o| CIERRE : "FK IdIncidencia"
+INC ||--o{ LINK : "FK IdIncidencia"
+MEJORA ||--o{ LINK : "FK IdAccionMejora"
+
+USR ||--o{ REP : "reporta"
+USR ||--o{ ANA : "analiza"
+USR ||--o{ INST : "emite"
+USR ||--o{ SEG : "registra"
+USR ||--o{ CIERRE : "cierra"
+USR ||--o{ MEJORA : "propone"
+
+note right of INC
+ <<constraints>>
+ Origen IN ('Manual','TD','MF')
+ Estado IN ('Reportada','EnAnalisis','EnTratamiento',
+            'PendienteCierre','Cerrada')
+ SeveridadActual NULL o IN ('Baja','Media','Alta','Critica')
+
+ <<indexes>>
+ IX_IC_INCIDENCIA_ESTADO_FECHA (Estado, FechaApertura)
+ IX_IC_INCIDENCIA_VIAJE (IdViaje, IdEntrega)
+ IX_IC_INCIDENCIA_UNIDAD (IdUnidadFlota, FechaApertura)
+end note
+
+note bottom of ANA
+ <<index>>
+ IX_IC_ANALISIS_INCIDENCIA_FECHA
+ (IdIncidencia, FechaHora DESC)
+end note
+
+note bottom of SEG
+ <<constraints>>
+ Resultado IN ('Parcial','SinCambio','Resuelta','NoResuelta')
+
+ <<index>>
+ IX_IC_SEGUIMIENTO_INCIDENCIA_FECHA
+ (IdIncidencia, FechaHora DESC)
+end note
+
+note bottom of CIERRE
+ <<constraints>>
+ IdIncidencia UNIQUE
+ MinutosDemora >= 0
+ ResultadoFinal IN ('Resuelta','NoResuelta','Parcial')
+
+ <<index>>
+ IX_IC_CIERRE_CAUSA_FECHA (CategoriaCausa, FechaHora)
+end note
+
+note bottom of MEJORA
+ <<constraints>>
+ Codigo UNIQUE
+ Tipo IN ('Preventiva','Correctiva','Proceso')
+ Estado IN ('Propuesta','Aprobada','EnCurso','Implementada','Descartada')
+end note
+
+note bottom of LINK
+ <<physical design>>
+ PK compuesta (IdIncidencia, IdAccionMejora).
+ No hay triggers de negocio previstos.
+ Los indicadores se calculan por consultas agregadas.
+end note
+@enduml

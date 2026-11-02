@@ -1,0 +1,98 @@
+@startuml
+scale max 1400 width
+title IC — Modelo conceptual
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 10
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+skinparam packageStyle rectangle
+skinparam nodesep 20
+skinparam ranksep 25
+hide circle
+
+left to right direction
+
+class Viaje <<concepto TD>> {
+  numero
+  estado
+}
+
+class Entrega <<concepto TD>> {
+  destino
+  estado
+}
+
+class UnidadFlota <<concepto MF>> {
+  dominio
+  estadoOperativo
+}
+
+class Incidencia <<concepto>> {
+  origen
+  fechaApertura
+  estado
+  tipo
+  severidad
+}
+
+class ReporteIncidencia <<concepto>> {
+  fechaHora
+  descripcion
+}
+
+class AnalisisIncidencia <<concepto>> {
+  fechaHora
+  impactoEstimado
+  requiereRespuesta
+}
+
+class InstruccionOperativa <<concepto>> {
+  fechaHora
+  accion
+  prioridad
+}
+
+class SeguimientoIncidencia <<concepto>> {
+  fechaHora
+  detalle
+  resultado
+}
+
+class InformeCierreIncidencia <<concepto>> {
+  fechaHora
+  resultadoFinal
+  categoriaCausa
+  causaRaiz
+}
+
+class AccionMejora <<concepto>> {
+  codigo
+  tipo
+  prioridad
+  estado
+}
+
+class VinculoMejora <<asociacion>> {
+  fechaVinculacion
+}
+
+Viaje "1" -- "0..*" Incidencia : contexto >
+Entrega "0..1" -- "0..*" Incidencia : puede originar >
+UnidadFlota "0..1" -- "0..*" Incidencia : contexto >
+Incidencia "1" *-- "1" ReporteIncidencia : inicia con >
+Incidencia "1" *-- "0..*" AnalisisIncidencia : es analizada por >
+Incidencia "1" *-- "0..*" InstruccionOperativa : recibe >
+Incidencia "1" *-- "0..*" SeguimientoIncidencia : registra >
+InstruccionOperativa "0..1" -- "0..*" SeguimientoIncidencia : es atendida por >
+Incidencia "1" *-- "0..1" InformeCierreIncidencia : finaliza con >
+Incidencia "1" -- "0..*" VinculoMejora
+AccionMejora "1" -- "0..*" VinculoMejora
+
+note bottom of Incidencia
+  <<regla de negocio>>
+  IC referencia información de TD y MF;
+  no duplica ni modifica sus datos propietarios.
+end note
+@enduml

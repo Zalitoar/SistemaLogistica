@@ -1,0 +1,49 @@
+@startuml
+scale max 1600 width
+title TD-02 — Preparar despacho — Diseño de implementación
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 11
+skinparam sequenceMessageAlign center
+skinparam responseMessageBelowArrow true
+hide footbox
+autonumber
+
+actor "Responsable de Expedición" as ACT
+participant "[Presentación]\nFrmPrepararDespacho" as UI
+participant "[BLL]\nGestorDespacho" as BLL
+participant "[BLL]\nReglasTD" as RULES
+participant "[Servicios]\nSessionManager" as SES
+participant "[DAL]\nMP_DocumentoDespacho" as DAL
+database "[SQL Server]\nSistemaLogistica" as DB
+participant "[Servicios]\nBitacoraManager" as BIT
+
+ACT -> UI : seleccionar viaje pendiente
+UI -> BLL : ObtenerCarga(idViaje)
+BLL -> DAL : ObtenerCarga(idViaje)
+DAL -> DB : consultar carga planificada\n(procedimiento TD_OBTENER_CARGA)
+DB --> DAL : carga prevista
+DAL --> BLL : carga planificada
+BLL --> UI : carga prevista
+
+ACT -> UI : registrar cantidades preparadas
+UI -> BLL : Guardar(idViaje, numero, observaciones, carga)
+BLL -> RULES : validar permiso y diferencias
+RULES -> SES : TienePermiso("TD_PREPARAR_DESPACHO")
+SES --> RULES : autorizado / denegado
+
+alt carga coincide y datos válidos
+  BLL -> DAL : Guardar(...)
+  DAL -> DB : registrar despacho\n(procedimiento TD_GUARDAR_DESPACHO)
+  DB --> DAL : DocumentoDespacho confirmado
+  DAL --> BLL : DocumentoDespacho
+  BLL -> BIT : Registrar("TD: despacho confirmado")
+  BLL --> UI : despacho confirmado
+  UI --> ACT : viaje preparado
+else existen diferencias o datos inválidos
+  RULES --> BLL : resultado de validación
+  BLL --> UI : despacho pendiente / informar diferencia
+  UI --> ACT : resolver diferencia antes de iniciar viaje
+end
+@enduml

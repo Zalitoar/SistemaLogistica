@@ -1,0 +1,48 @@
+@startuml
+scale max 1600 width
+title MF-04 — Habilitar unidad para operar — Diseño de implementación
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 11
+skinparam sequenceMessageAlign center
+skinparam responseMessageBelowArrow true
+hide footbox
+autonumber
+
+actor "Responsable/Técnico de Mantenimiento" as ACT
+participant "[Presentación]\nFrmHabilitarUnidad" as UI
+participant "[BLL]\nGestorDisponibilidad" as BLL
+participant "[BLL]\nReglasMF" as RULES
+participant "[Servicios]\nSessionManager" as SES
+participant "[DAL]\nMP_MF" as DAL
+database "[SQL Server]\nSistemaLogistica" as DB
+participant "[Servicios]\nBitacoraManager" as BIT
+
+ACT -> UI : seleccionar unidad pendiente de verificación
+UI -> BLL : Intervenciones(idUnidad)
+BLL -> DAL : Intervenciones(idUnidad)
+DAL -> DB : consultar intervenciones finalizadas
+DB --> DAL : intervenciones
+DAL --> BLL : intervenciones
+BLL --> UI : historial de intervención
+
+ACT -> UI : confirmar aptitud de la unidad
+UI -> BLL : Habilitar(idUnidad, observaciones)
+BLL -> RULES : validar permiso y condición técnica
+RULES -> SES : TienePermiso("MF_HABILITAR_UNIDAD")
+SES --> RULES : autorizado / denegado
+
+alt unidad apta
+  BLL -> DAL : Habilitar(idUnidad, observaciones)
+  DAL -> DB : habilitar unidad y emitir informe\n(procedimiento MF_HABILITAR)
+  DB --> DAL : idInformeDisponibilidad
+  DAL --> BLL : idInformeDisponibilidad
+  BLL -> BIT : Registrar("MF: unidad habilitada")
+  BLL --> UI : disponibilidad vigente
+  UI --> ACT : unidad disponible
+else unidad no apta
+  BLL --> UI : mantener no disponible
+  UI --> ACT : continuar mantenimiento
+end
+@enduml

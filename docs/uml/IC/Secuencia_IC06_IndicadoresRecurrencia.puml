@@ -1,0 +1,44 @@
+@startuml
+scale max 1600 width
+title IC-06 — Analizar indicadores y recurrencia — Diseño de implementación
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 11
+skinparam sequenceMessageAlign center
+skinparam responseMessageBelowArrow true
+hide footbox
+autonumber
+
+actor "Analista de Calidad / Planificador" as ACT
+participant "[Presentación]\nFrmIndicadoresIC" as UI
+participant "[BLL]\nGestorIndicadoresIC" as BLL
+participant "[BLL]\nReglasIC" as RULES
+participant "[Servicios]\nSessionManager" as SES
+participant "[DAL]\nMP_IC" as DAL
+database "[SQL Server]\nSistemaLogistica" as DB
+
+ACT -> UI : definir período y filtros
+UI -> BLL : Consultar(desde, hasta, filtro)
+BLL -> RULES : validar permiso y período
+RULES -> SES : TienePermiso("IC_ANALIZAR_INDICADORES")
+SES --> RULES : autorizado / denegado
+
+alt período válido
+  BLL -> DAL : ConsultarIndicadores(...)
+  DAL -> DB : calcular métricas IC + TD + MF\n(procedimientos de indicadores IC)
+  DB --> DAL : resumen + recurrencias
+  DAL --> BLL : IndicadoresIC
+  BLL --> UI : IndicadoresIC
+  UI --> ACT : métricas y rankings
+else período inválido o sin permiso
+  RULES --> BLL : ReglaICException
+  BLL --> UI : informar causa
+  UI --> ACT : corregir filtros
+end
+
+note over DAL, DB
+  Los indicadores se calculan a partir de datos transaccionales;
+  no se persisten en una tabla resumen.
+end note
+@enduml

@@ -1,49 +1,83 @@
 @startuml
 title IC — Gestión de incidencias y cumplimiento de entregas
+
 |Operaciones de Transporte|
 start
 :Controlar desarrollo de las entregas;
+
 if (¿Se detecta un desvío?) then (Sí)
   :Detectar desvío;
   :Describir incidencia;
-  note right: «documento»\nReporte de incidencia
+  note right
+    <<documento>>
+    Reporte de incidencia
+  end note
+
   |Control de Tráfico|
   :Revisar reporte de incidencia;
   :Clasificar incidencia;
   :Evaluar impacto sobre las entregas;
+
   if (¿Puede resolverse durante la operación?) then (Sí)
     :Definir acción de respuesta;
-    note right: «documento»\nInstrucción operativa
+    note right
+      <<documento>>
+      Instrucción operativa
+    end note
+
     |Operaciones de Transporte|
     :Revisar instrucción operativa;
     :Aplicar acción definida;
     :Evaluar posibilidad de entrega;
+
     if (¿Puede realizarse la entrega?) then (Sí)
       :Realizar entrega;
-      note right: «documento»\nComprobante de entrega
+      note right
+        <<documento>>
+        Comprobante de entrega
+      end note
     else (No)
       :Informar incumplimiento;
-      note right: «documento»\nConstancia de incumplimiento
+      note right
+        <<documento>>
+        Constancia de incumplimiento
+      end note
     endif
+
   else (No)
     |Operaciones de Transporte|
     :Informar imposibilidad de cumplimiento;
-    note right: «documento»\nConstancia de incumplimiento
+    note right
+      <<documento>>
+      Constancia de incumplimiento
+    end note
   endif
+
   |Control de Tráfico|
   :Verificar resultado de la incidencia;
   :Cerrar incidencia;
-  note right: «documento»\nInforme de cierre de incidencia
+  note right
+    <<documento>>
+    Informe de cierre de incidencia
+  end note
+
   |Calidad y Mejora Continua|
   :Revisar incidencias cerradas;
   :Analizar causas;
   :Identificar problemas recurrentes;
+
   if (¿Requiere acción de mejora?) then (Sí)
     :Proponer acción de mejora;
-    note right: «documento»\nInforme de mejora operativa
+    note right
+      <<documento>>
+      Informe de mejora operativa
+    end note
+  else (No)
   endif
+
 else (No)
   :Continuar distribución;
 endif
+
 stop
 @enduml

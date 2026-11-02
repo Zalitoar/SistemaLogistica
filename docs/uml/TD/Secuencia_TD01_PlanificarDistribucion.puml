@@ -1,0 +1,49 @@
+@startuml
+scale max 1600 width
+title TD-01 — Planificar distribución — Diseño de implementación
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 11
+skinparam sequenceMessageAlign center
+skinparam responseMessageBelowArrow true
+hide footbox
+autonumber
+
+actor "Planificador de Tráfico" as ACT
+participant "[Presentación]\nFrmPlanificacionDistribucion" as UI
+participant "[BLL]\nGestorPlanificacion" as BLL
+participant "[BLL]\nReglasTD" as RULES
+participant "[Servicios]\nSessionManager" as SES
+participant "[DAL]\nMP_PlanDistribucion" as DAL
+database "[SQL Server]\nSistemaLogistica" as DB
+participant "[Servicios]\nBitacoraManager" as BIT
+
+ACT -> UI : abrir planificación
+UI -> BLL : ObtenerPendientes()
+BLL -> DAL : ListarPendientes()
+DAL -> DB : consultar requerimientos pendientes
+DB --> DAL : requerimientos
+DAL --> BLL : requerimientos pendientes
+BLL --> UI : requerimientos
+
+ACT -> UI : definir viajes, entregas y carga
+UI -> BLL : Confirmar(plan)
+BLL -> RULES : validar plan y permiso
+RULES -> SES : TienePermiso("TD_PLANIFICAR_DISTRIBUCION")
+SES --> RULES : autorizado / denegado
+
+alt autorizado y planificación válida
+  BLL -> DAL : Confirmar(plan)
+  DAL -> DB : guardar plan completo\n(procedimiento TD_CONFIRMAR_PLAN)
+  DB --> DAL : idPlan
+  DAL --> BLL : idPlan
+  BLL -> BIT : Registrar("TD: plan confirmado")
+  BLL --> UI : idPlan
+  UI --> ACT : planificación confirmada
+else permiso o datos inválidos
+  RULES --> BLL : ReglaTDException
+  BLL --> UI : informar validación
+  UI --> ACT : corregir o cancelar
+end
+@enduml

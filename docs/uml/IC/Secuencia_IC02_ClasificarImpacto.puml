@@ -1,0 +1,50 @@
+@startuml
+scale max 1600 width
+title IC-02 — Clasificar y evaluar impacto — Diseño de implementación
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 11
+skinparam sequenceMessageAlign center
+skinparam responseMessageBelowArrow true
+hide footbox
+autonumber
+
+actor "Controlador de Tráfico" as ACT
+participant "[Presentación]\nFrmAnalizarIncidencia" as UI
+participant "[BLL]\nGestorIncidencias" as BLL
+participant "[BLL]\nReglasIC" as RULES
+participant "[Servicios]\nSessionManager" as SES
+participant "[DAL]\nMP_IC" as DAL
+database "[SQL Server]\nSistemaLogistica" as DB
+participant "[Servicios]\nBitacoraManager" as BIT
+
+ACT -> UI : seleccionar incidencia Reportada
+UI -> BLL : Contexto(idIncidencia)
+BLL -> RULES : validar permiso
+RULES -> SES : TienePermiso("IC_ANALIZAR_INCIDENCIA")
+SES --> RULES : autorizado / denegado
+BLL -> DAL : Contexto(idIncidencia)
+DAL -> DB : consultar incidencia + contexto TD/MF\n(procedimiento IC_OBTENER_CONTEXTO)
+DB --> DAL : ContextoIncidencia
+DAL --> BLL : ContextoIncidencia
+BLL --> UI : contexto
+
+ACT -> UI : clasificar tipo, severidad e impacto
+UI -> BLL : Analizar(analisis)
+BLL -> RULES : validar estado y clasificación
+
+alt análisis válido
+  BLL -> DAL : Analizar(analisis)
+  DAL -> DB : guardar análisis y transición de estado\n(procedimiento IC_ANALIZAR_INCIDENCIA)
+  DB --> DAL : idAnalisis + nuevoEstado
+  DAL --> BLL : resultado
+  BLL -> BIT : Registrar("IC: incidencia analizada")
+  BLL --> UI : nuevo estado
+  UI --> ACT : análisis registrado
+else incidencia cerrada o datos inválidos
+  RULES --> BLL : ReglaICException
+  BLL --> UI : informar causa
+  UI --> ACT : operación rechazada
+end
+@enduml

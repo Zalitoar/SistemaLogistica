@@ -1,0 +1,58 @@
+@startuml
+scale max 1600 width
+title IC-01 — Registrar incidencia operativa — Diseño de implementación
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 11
+skinparam sequenceMessageAlign center
+skinparam responseMessageBelowArrow true
+hide footbox
+autonumber
+
+actor "Operador de Transporte" as ACT
+participant "[Presentación]\nFrmRegistrarIncidencia" as UI
+participant "[BLL]\nGestorIncidencias" as BLL
+participant "[BLL]\nReglasIC" as RULES
+participant "[Servicios]\nSessionManager" as SES
+participant "[DAL]\nMP_IC" as DAL
+database "[SQL Server]\nSistemaLogistica" as DB
+participant "[Servicios]\nBitacoraManager" as BIT
+
+ACT -> UI : abrir registro de incidencia
+UI -> BLL : FuentesPendientes()
+BLL -> RULES : validar permiso
+RULES -> SES : TienePermiso("IC_REGISTRAR_INCIDENCIA")
+SES --> RULES : autorizado / denegado
+BLL -> DAL : FuentesPendientes()
+DAL -> DB : consultar fuentes Manual / TD / MF\n(procedimiento IC_LISTAR_FUENTES)
+DB --> DAL : fuentes disponibles
+DAL --> BLL : fuentes disponibles
+BLL --> UI : fuentes
+
+ACT -> UI : seleccionar fuente y describir desvío
+UI -> BLL : ContextoFuente(fuente)
+BLL -> DAL : ContextoFuente(fuente)
+DAL -> DB : consultar viaje, entrega y contexto de flota\n(procedimiento IC_OBTENER_CONTEXTO_FUENTE)
+DB --> DAL : ContextoIncidencia
+DAL --> BLL : ContextoIncidencia
+BLL --> UI : contexto
+
+ACT -> UI : confirmar
+UI -> BLL : Registrar(incidencia, reporte)
+BLL -> RULES : validar referencias y duplicado activo
+
+alt registro válido
+  BLL -> DAL : Registrar(incidencia, reporte)
+  DAL -> DB : crear incidencia y reporte\n(procedimiento IC_REGISTRAR_INCIDENCIA)
+  DB --> DAL : idIncidencia
+  DAL --> BLL : idIncidencia
+  BLL -> BIT : Registrar("IC: incidencia registrada")
+  BLL --> UI : idIncidencia
+  UI --> ACT : incidencia Reportada
+else datos inconsistentes o duplicado activo
+  RULES --> BLL : ReglaICException
+  BLL --> UI : informar causa
+  UI --> ACT : corregir o cancelar
+end
+@enduml

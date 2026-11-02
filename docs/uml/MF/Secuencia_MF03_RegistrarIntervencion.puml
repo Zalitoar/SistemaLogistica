@@ -1,0 +1,54 @@
+@startuml
+scale max 1600 width
+title MF-03 — Registrar intervención de mantenimiento — Diseño de implementación
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 11
+skinparam sequenceMessageAlign center
+skinparam responseMessageBelowArrow true
+hide footbox
+autonumber
+
+actor "Responsable/Técnico de Mantenimiento" as ACT
+participant "[Presentación]\nFrmIntervencionMantenimiento" as UI
+participant "[BLL]\nGestorMantenimiento" as BLL
+participant "[BLL]\nReglasMF" as RULES
+participant "[Servicios]\nSessionManager" as SES
+participant "[DAL]\nMP_MF" as DAL
+database "[SQL Server]\nSistemaLogistica" as DB
+participant "[Servicios]\nBitacoraManager" as BIT
+
+ACT -> UI : seleccionar orden
+UI -> BLL : Ordenes()
+BLL -> DAL : Ordenes()
+DAL -> DB : consultar órdenes habilitadas
+DB --> DAL : órdenes
+DAL --> BLL : órdenes de mantenimiento
+BLL --> UI : órdenes
+
+BLL -> RULES : validar permiso
+RULES -> SES : TienePermiso("MF_REGISTRAR_INTERVENCION")
+SES --> RULES : autorizado / denegado
+
+alt iniciar intervención
+  ACT -> UI : confirmar inicio
+  UI -> BLL : Iniciar(idOrden)
+  BLL -> DAL : Iniciar(idOrden)
+  DAL -> DB : iniciar intervención\n(procedimiento MF_INICIAR_INTERVENCION)
+  DB --> DAL : idIntervencion
+  DAL --> BLL : idIntervencion
+  BLL -> BIT : Registrar("MF: intervención iniciada")
+  BLL --> UI : intervención EnCurso
+else finalizar intervención
+  ACT -> UI : registrar trabajo y resultado
+  UI -> BLL : Finalizar(intervencion)
+  BLL -> RULES : validar resultado y kilometraje
+  BLL -> DAL : Finalizar(intervencion)
+  DAL -> DB : finalizar intervención\n(procedimiento MF_FINALIZAR_INTERVENCION)
+  DB --> DAL : intervención finalizada
+  DAL --> BLL : operación confirmada
+  BLL -> BIT : Registrar("MF: intervención finalizada")
+  BLL --> UI : resultado registrado
+end
+@enduml

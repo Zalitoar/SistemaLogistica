@@ -1,0 +1,147 @@
+@startuml
+scale max 1500 width
+title TD — Clases BE y DTO — detalle de implementación
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 10
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+skinparam groupInheritance 2
+skinparam packageStyle rectangle
+skinparam nodesep 20
+skinparam ranksep 25
+hide circle
+
+left to right direction
+
+package "BE — Entidades TD" {
+class RequerimientoDistribucion <<BE>> {
+  + IdRequerimiento : int
+  + Numero : string
+  + Fecha : DateTime
+  + Origen : string
+  + Estado : string
+}
+
+class PlanDistribucion <<BE>> {
+  + IdPlan : int
+  + IdRequerimiento : int
+  + Numero : string
+  + Fecha : DateTime
+  + Estado : string
+  + Viajes : List<Viaje>
+}
+
+class Viaje <<BE>> {
+  + IdViaje : int
+  + IdPlan : int
+  + IdUnidadFlota : int?
+  + IdInformeDisponibilidad : int?
+  + Numero : string
+  + FechaPrevista : DateTime
+  + FechaInicio : DateTime?
+  + FechaFinalizacion : DateTime?
+  + Estado : string
+  + PorcentajeCumplimiento : decimal
+  + Entregas : List<Entrega>
+  + CargaPlanificada : List<DetalleCargaPlanificada>
+}
+
+class Entrega <<BE>> {
+  + IdEntrega : int
+  + IdViaje : int
+  + Destino : string
+  + FechaPrevista : DateTime
+  + FechaRealizada : DateTime?
+  + Estado : string
+  + Observaciones : string
+  + Comprobante : ComprobanteEntrega
+}
+
+class Mercaderia <<BE>> {
+  + IdMercaderia : int
+  + Codigo : string
+  + Descripcion : string
+}
+
+class DetalleCargaPlanificada <<BE>> {
+  + IdDetalleCargaPlanificada : int
+  + IdViaje : int
+  + IdMercaderia : int
+  + CantidadPrevista : decimal
+}
+
+class DocumentoDespacho <<BE>> {
+  + IdDespacho : int
+  + IdViaje : int
+  + Numero : string
+  + Fecha : DateTime
+  + Estado : string
+  + Observaciones : string
+  + Detalles : List<DetalleDespacho>
+}
+
+class DetalleDespacho <<BE>> {
+  + IdDetalle : int
+  + IdDespacho : int
+  + IdMercaderia : int
+  + Cantidad : decimal
+}
+
+class ComprobanteEntrega <<BE>> {
+  + IdComprobante : int
+  + IdEntrega : int
+  + Numero : string
+  + Fecha : DateTime
+  + Resultado : string
+  + Observaciones : string
+}
+
+}
+
+package "DTO — Objetos de transferencia" {
+class CargaDespacho <<DTO>> {
+  + IdMercaderia : int
+  + Codigo : string
+  + Descripcion : string
+  + CantidadPrevista : decimal
+  + CantidadPreparada : decimal
+  + Diferencia : decimal
+}
+
+class CumplimientoViaje <<DTO>> {
+  + Viaje : Viaje
+  + Entregas : List<Entrega>
+  + Total : int
+  + Entregadas : int
+  + Parciales : int
+  + Incumplidas : int
+  + Pendientes : int
+  + Porcentaje : decimal
+  + PuedeCerrar : bool
+}
+
+}
+
+package "Excepciones" {
+class ReglaTDException <<exception>> {
+  + ReglaTDException(clave : string)
+}
+class Exception <<framework>>
+}
+
+Exception <|-- ReglaTDException
+RequerimientoDistribucion "1" -- "0..1" PlanDistribucion
+PlanDistribucion "1" o-- "0..*" Viaje : Viajes
+Viaje "1" o-- "0..*" Entrega : Entregas
+Viaje "1" o-- "0..*" DetalleCargaPlanificada : CargaPlanificada
+Mercaderia "1" -- "0..*" DetalleCargaPlanificada
+Viaje "1" -- "0..1" DocumentoDespacho
+DocumentoDespacho "1" o-- "0..*" DetalleDespacho : Detalles
+Mercaderia "1" -- "0..*" DetalleDespacho
+Entrega "1" o-- "0..1" ComprobanteEntrega : Comprobante
+CumplimientoViaje --> Viaje
+CumplimientoViaje --> Entrega
+CargaDespacho ..> Mercaderia
+@enduml

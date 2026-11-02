@@ -1,0 +1,50 @@
+@startuml
+scale max 1600 width
+title IC-04 — Registrar seguimiento y resultado — Diseño de implementación
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 11
+skinparam sequenceMessageAlign center
+skinparam responseMessageBelowArrow true
+hide footbox
+autonumber
+
+actor "Operador de Transporte" as ACT
+participant "[Presentación]\nFrmSeguimientoIncidencia" as UI
+participant "[BLL]\nGestorSeguimientoIncidencia" as BLL
+participant "[BLL]\nReglasIC" as RULES
+participant "[Servicios]\nSessionManager" as SES
+participant "[DAL]\nMP_IC" as DAL
+database "[SQL Server]\nSistemaLogistica" as DB
+participant "[Servicios]\nBitacoraManager" as BIT
+
+ACT -> UI : seleccionar incidencia EnTratamiento
+UI -> BLL : EnTratamiento()
+BLL -> RULES : validar permiso
+RULES -> SES : TienePermiso("IC_REGISTRAR_SEGUIMIENTO")
+SES --> RULES : autorizado / denegado
+BLL -> DAL : EnTratamiento()
+DAL -> DB : consultar incidencias e instrucciones activas
+DB --> DAL : incidencias + instrucciones
+DAL --> BLL : datos de seguimiento
+BLL --> UI : datos
+
+ACT -> UI : registrar acción realizada y resultado
+UI -> BLL : Registrar(seguimiento)
+BLL -> RULES : validar incidencia, instrucción y resultado
+
+alt seguimiento válido
+  BLL -> DAL : Registrar(seguimiento)
+  DAL -> DB : guardar seguimiento y actualizar estado\n(procedimiento IC_REGISTRAR_SEGUIMIENTO)
+  DB --> DAL : idSeguimiento + nuevoEstado
+  DAL --> BLL : resultado
+  BLL -> BIT : Registrar("IC: seguimiento registrado")
+  BLL --> UI : nuevo estado
+  UI --> ACT : seguimiento confirmado
+else referencia o resultado inválido
+  RULES --> BLL : ReglaICException
+  BLL --> UI : informar causa
+  UI --> ACT : corregir datos
+end
+@enduml

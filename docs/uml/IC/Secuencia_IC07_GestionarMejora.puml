@@ -1,0 +1,50 @@
+@startuml
+scale max 1600 width
+title IC-07 — Gestionar acciones de mejora — Diseño de implementación
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 11
+skinparam sequenceMessageAlign center
+skinparam responseMessageBelowArrow true
+hide footbox
+autonumber
+
+actor "Analista de Calidad y Mejora Continua" as ACT
+participant "[Presentación]\nFrmAccionMejora" as UI
+participant "[BLL]\nGestorMejoraContinua" as BLL
+participant "[BLL]\nReglasIC" as RULES
+participant "[Servicios]\nSessionManager" as SES
+participant "[DAL]\nMP_IC" as DAL
+database "[SQL Server]\nSistemaLogistica" as DB
+participant "[Servicios]\nBitacoraManager" as BIT
+
+ACT -> UI : revisar incidencias cerradas
+UI -> BLL : Cerradas(desde, hasta)
+BLL -> RULES : validar permiso
+RULES -> SES : TienePermiso("IC_GESTIONAR_MEJORA")
+SES --> RULES : autorizado / denegado
+BLL -> DAL : Cerradas(desde, hasta)
+DAL -> DB : consultar incidencias cerradas
+DB --> DAL : incidencias
+DAL --> BLL : incidencias
+BLL --> UI : incidencias
+
+ACT -> UI : definir acción y seleccionar evidencias
+UI -> BLL : Crear(accion, incidencias)
+BLL -> RULES : validar datos e incidencias cerradas
+
+alt acción válida
+  BLL -> DAL : Crear(accion, incidencias)
+  DAL -> DB : crear acción y vínculos N:M\n(procedimiento IC_CREAR_ACCION_MEJORA)
+  DB --> DAL : idAccion
+  DAL --> BLL : idAccion
+  BLL -> BIT : Registrar("IC: acción de mejora creada")
+  BLL --> UI : acción creada
+  UI --> ACT : confirmación
+else datos o evidencias inválidas
+  RULES --> BLL : ReglaICException
+  BLL --> UI : informar causa
+  UI --> ACT : corregir selección
+end
+@enduml

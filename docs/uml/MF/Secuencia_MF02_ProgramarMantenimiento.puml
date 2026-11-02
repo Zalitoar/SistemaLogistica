@@ -1,0 +1,49 @@
+@startuml
+scale max 1600 width
+title MF-02 — Programar mantenimiento — Diseño de implementación
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 11
+skinparam sequenceMessageAlign center
+skinparam responseMessageBelowArrow true
+hide footbox
+autonumber
+
+actor "Responsable/Técnico de Mantenimiento" as ACT
+participant "[Presentación]\nFrmProgramarMantenimiento" as UI
+participant "[BLL]\nGestorMantenimiento" as BLL
+participant "[BLL]\nReglasMF" as RULES
+participant "[Servicios]\nSessionManager" as SES
+participant "[DAL]\nMP_MF" as DAL
+database "[SQL Server]\nSistemaLogistica" as DB
+participant "[Servicios]\nBitacoraManager" as BIT
+
+ACT -> UI : seleccionar parte pendiente
+UI -> BLL : PartesPendientes()
+BLL -> DAL : PartesPendientes()
+DAL -> DB : consultar partes que requieren mantenimiento
+DB --> DAL : partes pendientes
+DAL --> BLL : partes de estado
+BLL --> UI : partes pendientes
+
+ACT -> UI : definir tipo, prioridad y fecha
+UI -> BLL : Programar(orden)
+BLL -> RULES : validar permiso y datos de la orden
+RULES -> SES : TienePermiso("MF_PROGRAMAR_MANTENIMIENTO")
+SES --> RULES : autorizado / denegado
+
+alt programación válida
+  BLL -> DAL : Programar(orden)
+  DAL -> DB : crear orden de mantenimiento\n(procedimiento MF_PROGRAMAR)
+  DB --> DAL : idOrden
+  DAL --> BLL : idOrden
+  BLL -> BIT : Registrar("MF: mantenimiento programado")
+  BLL --> UI : idOrden
+  UI --> ACT : orden programada
+else regla incumplida
+  RULES --> BLL : ReglaMFException
+  BLL --> UI : informar causa
+  UI --> ACT : corregir programación
+end
+@enduml

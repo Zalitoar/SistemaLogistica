@@ -1,0 +1,107 @@
+@startuml
+scale max 1500 width
+title MF — Clases BE — detalle de implementación
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 10
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+skinparam groupInheritance 2
+skinparam packageStyle rectangle
+skinparam nodesep 20
+skinparam ranksep 25
+hide circle
+
+left to right direction
+
+package "BE — Entidades MF" {
+class UnidadFlota <<BE>> {
+  + IdUnidadFlota : int
+  + Dominio : string
+  + Tipo : string
+  + Marca : string
+  + Modelo : string
+  + Anio : int
+  + Capacidad : decimal
+  + KilometrajeActual : decimal
+  + EstadoOperativo : string
+  + Activa : bool
+}
+
+class ParteEstadoUnidad <<BE>> {
+  + IdParteEstadoUnidad : int
+  + IdUnidadFlota : int
+  + FechaHora : DateTime
+  + Kilometraje : decimal
+  + TipoNovedad : string
+  + Descripcion : string
+  + RequiereMantenimiento : bool
+  + EstadoParte : string
+}
+
+class OrdenMantenimiento <<BE>> {
+  + IdOrdenMantenimiento : int
+  + IdUnidadFlota : int
+  + IdParteEstadoUnidad : int
+  + FechaEmision : DateTime
+  + FechaProgramada : DateTime
+  + TipoMantenimiento : string
+  + Prioridad : string
+  + DescripcionTrabajo : string
+  + EstadoOrden : string
+}
+
+class IntervencionMantenimiento <<BE>> {
+  + IdIntervencionMantenimiento : int
+  + IdOrdenMantenimiento : int
+  + FechaInicio : DateTime
+  + FechaFin : DateTime?
+  + Kilometraje : decimal
+  + TrabajoRealizado : string
+  + Resultado : string
+  + Observaciones : string
+}
+
+class InformeDisponibilidad <<BE>> {
+  + IdInformeDisponibilidad : int
+  + IdUnidadFlota : int
+  + IdIntervencionMantenimiento : int?
+  + FechaHora : DateTime
+  + Disponible : bool
+  + EstadoUnidad : string
+  + Observaciones : string
+  + Vigente : bool
+}
+
+}
+
+package "Integración con TD" {
+class Viaje <<TD>> {
+  + IdViaje : int
+  + IdUnidadFlota : int?
+  + IdInformeDisponibilidad : int?
+  + Numero : string
+  + FechaPrevista : DateTime
+  + Estado : string
+}
+
+}
+
+package "Excepciones" {
+class ReglaMFException <<exception>> {
+  + ReglaMFException(clave : string)
+}
+class Exception <<framework>>
+}
+
+Exception <|-- ReglaMFException
+UnidadFlota "1" o-- "0..*" ParteEstadoUnidad
+UnidadFlota "1" o-- "0..*" OrdenMantenimiento
+ParteEstadoUnidad "1" -- "0..1" OrdenMantenimiento
+OrdenMantenimiento "1" o-- "0..*" IntervencionMantenimiento
+UnidadFlota "1" o-- "0..*" InformeDisponibilidad
+IntervencionMantenimiento "0..1" -- "0..1" InformeDisponibilidad
+UnidadFlota "0..1" -- "0..*" Viaje
+InformeDisponibilidad "0..1" -- "0..*" Viaje
+@enduml

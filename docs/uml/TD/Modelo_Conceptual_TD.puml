@@ -1,0 +1,88 @@
+@startuml
+scale max 1400 width
+title TD — Modelo conceptual
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 10
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+skinparam packageStyle rectangle
+skinparam nodesep 20
+skinparam ranksep 25
+hide circle
+
+left to right direction
+
+class RequerimientoDistribucion <<concepto>> {
+  numero
+  fecha
+  origen
+  estado
+}
+
+class PlanDistribucion <<concepto>> {
+  numero
+  fecha
+  estado
+}
+
+class Viaje <<concepto>> {
+  numero
+  fechaPrevista
+  estado
+  porcentajeCumplimiento
+}
+
+class Entrega <<concepto>> {
+  destino
+  fechaPrevista
+  fechaRealizada
+  estado
+}
+
+class Mercaderia <<concepto>> {
+  codigo
+  descripcion
+}
+
+class DetalleCargaPlanificada <<concepto>> {
+  cantidadPrevista
+}
+
+class DocumentoDespacho <<concepto>> {
+  numero
+  fecha
+  estado
+}
+
+class DetalleDespacho <<concepto>> {
+  cantidad
+}
+
+class ComprobanteEntrega <<concepto>> {
+  numero
+  fecha
+  resultado
+}
+
+RequerimientoDistribucion "1" -- "0..1" PlanDistribucion : origina >
+PlanDistribucion "1" *-- "1..*" Viaje : comprende >
+Viaje "1" *-- "1..*" Entrega : planifica >
+Viaje "1" *-- "1..*" DetalleCargaPlanificada : prevé >
+Mercaderia "1" -- "0..*" DetalleCargaPlanificada : identifica >
+Viaje "1" *-- "0..1" DocumentoDespacho : genera >
+DocumentoDespacho "1" *-- "1..*" DetalleDespacho : contiene >
+Mercaderia "1" -- "0..*" DetalleDespacho : identifica >
+Entrega "1" *-- "0..1" ComprobanteEntrega : acredita >
+
+note bottom of DetalleCargaPlanificada
+  <<regla de negocio>>
+  Representa la mercadería prevista para el viaje.
+end note
+
+note bottom of DetalleDespacho
+  <<regla de negocio>>
+  Representa la cantidad efectivamente preparada.
+end note
+@enduml

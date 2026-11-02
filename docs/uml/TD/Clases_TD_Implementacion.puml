@@ -1,0 +1,193 @@
+@startuml
+scale max 1500 width
+title TD — Clases de implementación — colaboración por capas
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 10
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+skinparam groupInheritance 2
+skinparam packageStyle rectangle
+skinparam nodesep 20
+skinparam ranksep 25
+hide circle
+
+left to right direction
+
+package "Presentación — IngSoft" as P_TD {
+  class FormularioTraducible {
+    # FormularioTraducible()
+    + ActualizarIdioma(idioma) : void
+    # ObtenerTexto(clave, fallback) : string
+  }
+
+  class TDPresentacion <<helper>> {
+    ~ Ejecutar(accion) : void
+    ~ Confirmar() : bool
+    ~ AplicarFormatos() : void
+  }
+
+  together {
+    class FrmPlanificacionDistribucion {
+      - gestor : GestorPlanificacion
+      + FrmPlanificacionDistribucion()
+      - Cargar() : void
+      - ConfirmarPlan() : void
+    }
+    class FrmPrepararDespacho {
+      - gestor : GestorDespacho
+      + FrmPrepararDespacho()
+      - Cargar() : void
+      - GuardarDespacho() : void
+    }
+    class FrmEjecucionViaje {
+      - gestor : GestorViaje
+      + FrmEjecucionViaje()
+      - Cargar() : void
+      - IniciarViaje() : void
+    }
+    class FrmRegistroEntrega {
+      - gestor : GestorEntrega
+      + FrmRegistroEntrega()
+      - Cargar() : void
+      - RegistrarEntrega() : void
+    }
+    class FrmCumplimientoViaje {
+      - gestor : GestorCumplimiento
+      + FrmCumplimientoViaje()
+      - Analizar() : void
+      - CerrarViaje() : void
+    }
+  }
+}
+
+package "BLL" as B_TD {
+  together {
+    class GestorPlanificacion {
+      + ObtenerPendientes() : List<RequerimientoDistribucion>
+      + ObtenerMercaderia() : List<Mercaderia>
+      + Confirmar(plan : PlanDistribucion) : int
+    }
+    class GestorDespacho {
+      + ObtenerViajes() : List<Viaje>
+      + ObtenerCarga(idViaje : int) : List<CargaDespacho>
+      + Guardar(idViaje : int, numero : string, observaciones : string, carga : List<CargaDespacho>) : DocumentoDespacho
+    }
+    class GestorViaje {
+      + ObtenerViajes() : List<Viaje>
+      + ObtenerEntregas(idViaje : int) : List<Entrega>
+      + Iniciar(idViaje : int) : void
+    }
+    class GestorEntrega {
+      + ObtenerEntregas(idViaje : int) : List<Entrega>
+      + Registrar(idViaje : int, idEntrega : int, resultado : string, fecha : DateTime, observaciones : string) : void
+    }
+    class GestorCumplimiento {
+      + Analizar(idViaje : int) : CumplimientoViaje
+      + Cerrar(idViaje : int) : void
+    }
+  }
+
+  class ReglasTD <<utility>> {
+    ~ Permiso(nombre : string) : void
+    ~ Exigir(condicion : bool, clave : string) : void
+    ~ Cantidad(valor : decimal, admiteCero : bool) : bool
+  }
+}
+
+package "DAL" as D_TD {
+  together {
+    class MP_PlanDistribucion {
+      + ListarPendientes() : List<RequerimientoDistribucion>
+      + ListarMercaderia() : List<Mercaderia>
+      + Confirmar(plan : PlanDistribucion) : int
+    }
+    class MP_DocumentoDespacho {
+      + ObtenerCarga(idViaje : int) : List<CargaDespacho>
+      + Obtener(idViaje : int) : DocumentoDespacho
+      + Guardar(idViaje : int, numero : string, observaciones : string, carga : List<CargaDespacho>) : DocumentoDespacho
+    }
+    class MP_Viaje {
+      + Listar() : List<Viaje>
+      + Iniciar(idViaje : int) : void
+      + Cerrar(idViaje : int) : void
+    }
+    class MP_Entrega {
+      + Obtener(idViaje : int) : List<Entrega>
+      + Registrar(idViaje : int, idEntrega : int, resultado : string, fecha : DateTime, observaciones : string) : void
+    }
+  }
+
+  class MP_TD <<helper>> {
+    ~ Leer(procedimiento, parametros)
+    ~ Parametro(nombre, valor)
+  }
+
+  class ACCESO {
+    + Abrir() : void
+    + Cerrar() : void
+    + Leer(procedimiento, parametros)
+    + Escribir(procedimiento, parametros) : int
+  }
+}
+
+package "Servicios" as S_TD {
+  interface IIdiomaObserver {
+    + ActualizarIdioma(idioma) : void
+  }
+  class SessionManager <<singleton>> {
+    + GetInstance() : SessionManager
+    + TienePermiso(nombre : string) : bool
+  }
+  class BitacoraManager <<utility>> {
+    + Registrar(actividad : string) : void
+  }
+}
+
+IIdiomaObserver <|.. FormularioTraducible
+FormularioTraducible <|-- FrmPlanificacionDistribucion
+FormularioTraducible <|-- FrmPrepararDespacho
+FormularioTraducible <|-- FrmEjecucionViaje
+FormularioTraducible <|-- FrmRegistroEntrega
+FormularioTraducible <|-- FrmCumplimientoViaje
+
+FrmPlanificacionDistribucion --> GestorPlanificacion : gestor
+FrmPrepararDespacho --> GestorDespacho : gestor
+FrmEjecucionViaje --> GestorViaje : gestor
+FrmRegistroEntrega --> GestorEntrega : gestor
+FrmCumplimientoViaje --> GestorCumplimiento : gestor
+
+
+
+
+P_TD ..> B_TD : invoca lógica de negocio
+B_TD ..> D_TD : consulta / persiste
+B_TD ..> S_TD : permisos / auditoría
+ReglasTD ..> SessionManager
+
+
+MP_PlanDistribucion ..> MP_TD
+MP_DocumentoDespacho ..> MP_TD
+MP_Viaje ..> MP_TD
+MP_Entrega ..> MP_TD
+MP_TD ..> ACCESO
+
+note bottom of ACCESO
+  <<infraestructura>>
+  Encapsula SqlConnection y ejecución de comandos.
+  No es una base de datos.
+end note
+
+note bottom of TDPresentacion
+  <<helper de UI>>
+  Utilizado por los cinco formularios TD para
+  formato, confirmaciones y manejo uniforme de errores.
+end note
+
+note bottom of ReglasTD
+  <<servicio transversal>>
+  Los gestores validan permisos mediante SessionManager
+  y registran operaciones de escritura en BitacoraManager.
+end note
+@enduml

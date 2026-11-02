@@ -1,0 +1,195 @@
+@startuml
+scale max 1500 width
+title IC — Clases de implementación — colaboración por capas
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 10
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+skinparam groupInheritance 2
+skinparam packageStyle rectangle
+skinparam nodesep 20
+skinparam ranksep 25
+hide circle
+
+left to right direction
+
+package "Presentación — IngSoft" as P_IC {
+  class FormularioTraducible {
+    # FormularioTraducible()
+    + ActualizarIdioma(idioma) : void
+    # ObtenerTexto(clave, fallback) : string
+  }
+
+  class ICPresentacion <<helper>> {
+    ~ Ejecutar(accion) : void
+    ~ AplicarFormatos() : void
+    ~ Seleccionar() : object
+  }
+
+  together {
+    class FrmRegistrarIncidencia {
+      - gestor : GestorIncidencias
+      + FrmRegistrarIncidencia()
+      - Cargar() : void
+      - Registrar() : void
+    }
+    class FrmAnalizarIncidencia {
+      - gestor : GestorIncidencias
+      + FrmAnalizarIncidencia()
+      - Cargar() : void
+      - Analizar() : void
+    }
+    class FrmRespuestaOperativa {
+      - gestor : GestorRespuestaIncidencia
+      + FrmRespuestaOperativa()
+      - Cargar() : void
+      - Definir() : void
+    }
+    class FrmSeguimientoIncidencia {
+      - gestor : GestorSeguimientoIncidencia
+      + FrmSeguimientoIncidencia()
+      - Cargar() : void
+      - Registrar() : void
+    }
+    class FrmCierreIncidencia {
+      - gestor : GestorCierreIncidencia
+      + FrmCierreIncidencia()
+      - Cargar() : void
+      - Cerrar() : void
+    }
+    class FrmIndicadoresIC {
+      - gestor : GestorIndicadoresIC
+      + FrmIndicadoresIC()
+      - Consultar() : void
+    }
+    class FrmAccionMejora {
+      - gestor : GestorMejoraContinua
+      + FrmAccionMejora()
+      - Crear() : void
+      - ActualizarEstado() : void
+    }
+  }
+}
+
+package "BLL" as B_IC {
+  class GestorIncidencias {
+    + FuentesPendientes() : List<FuenteIncidencia>
+    + IncidenciasAbiertas() : List<Incidencia>
+    + ContextoFuente(fuente : FuenteIncidencia) : ContextoIncidencia
+    + Contexto(idIncidencia : int) : ContextoIncidencia
+    + Registrar(incidencia : Incidencia, reporte : ReporteIncidencia) : int
+    + Analizar(analisis : AnalisisIncidencia) : int
+  }
+  class GestorRespuestaIncidencia {
+    + PendientesRespuesta() : List<Incidencia>
+    + Instrucciones(idIncidencia : int) : List<InstruccionOperativa>
+    + Definir(instruccion : InstruccionOperativa) : int
+  }
+  class GestorSeguimientoIncidencia {
+    + EnTratamiento() : List<Incidencia>
+    + Seguimientos(idIncidencia : int) : List<SeguimientoIncidencia>
+    + Registrar(seguimiento : SeguimientoIncidencia) : int
+  }
+  class GestorCierreIncidencia {
+    + PendientesCierre() : List<Incidencia>
+    + Contexto(idIncidencia : int) : ContextoIncidencia
+    + Cerrar(informe : InformeCierreIncidencia) : int
+  }
+  class GestorIndicadoresIC {
+    + Consultar(desde : DateTime, hasta : DateTime, filtro : string) : IndicadoresIC
+  }
+  class GestorMejoraContinua {
+    + Cerradas(desde : DateTime?, hasta : DateTime?) : List<Incidencia>
+    + Acciones() : List<AccionMejora>
+    + Crear(accion : AccionMejora, incidencias : List<int>) : int
+    + ActualizarEstado(idAccion : int, estado : string) : void
+  }
+  class ReglasIC <<utility>> {
+    ~ Permiso(nombre : string) : void
+    ~ Exigir(condicion : bool, clave : string) : void
+    ~ ValidarPeriodo(desde : DateTime, hasta : DateTime) : void
+  }
+}
+
+package "DAL" as D_IC {
+  class MP_IC {
+    + FuentesPendientes() : List<FuenteIncidencia>
+    + ContextoFuente(fuente : FuenteIncidencia) : ContextoIncidencia
+    + Contexto(idIncidencia : int) : ContextoIncidencia
+    + Registrar(incidencia : Incidencia, reporte : ReporteIncidencia) : int
+    + Analizar(analisis : AnalisisIncidencia) : int
+    + Definir(instruccion : InstruccionOperativa) : int
+    + RegistrarSeguimiento(seguimiento : SeguimientoIncidencia) : int
+    + Cerrar(informe : InformeCierreIncidencia) : int
+    + Indicadores(desde : DateTime, hasta : DateTime, filtro : string) : IndicadoresIC
+    + CrearAccion(accion : AccionMejora, incidencias : List<int>) : int
+  }
+  class ACCESO {
+    + Abrir() : void
+    + Cerrar() : void
+    + Leer(procedimiento, parametros)
+    + Escribir(procedimiento, parametros) : int
+  }
+}
+
+package "Servicios" as S_IC {
+  interface IIdiomaObserver {
+    + ActualizarIdioma(idioma) : void
+  }
+  class SessionManager <<singleton>> {
+    + GetInstance() : SessionManager
+    + TienePermiso(nombre : string) : bool
+  }
+  class BitacoraManager <<utility>> {
+    + Registrar(actividad : string) : void
+  }
+}
+
+IIdiomaObserver <|.. FormularioTraducible
+FormularioTraducible <|-- FrmRegistrarIncidencia
+FormularioTraducible <|-- FrmAnalizarIncidencia
+FormularioTraducible <|-- FrmRespuestaOperativa
+FormularioTraducible <|-- FrmSeguimientoIncidencia
+FormularioTraducible <|-- FrmCierreIncidencia
+FormularioTraducible <|-- FrmIndicadoresIC
+FormularioTraducible <|-- FrmAccionMejora
+
+FrmRegistrarIncidencia --> GestorIncidencias : gestor
+FrmAnalizarIncidencia --> GestorIncidencias : gestor
+FrmRespuestaOperativa --> GestorRespuestaIncidencia : gestor
+FrmSeguimientoIncidencia --> GestorSeguimientoIncidencia : gestor
+FrmCierreIncidencia --> GestorCierreIncidencia : gestor
+FrmIndicadoresIC --> GestorIndicadoresIC : gestor
+FrmAccionMejora --> GestorMejoraContinua : gestor
+
+
+
+
+P_IC ..> B_IC : invoca lógica de negocio
+B_IC ..> D_IC : consulta / persiste
+B_IC ..> S_IC : permisos / auditoría
+ReglasIC ..> SessionManager
+
+
+MP_IC ..> ACCESO
+
+note bottom of MP_IC
+  <<data access>>
+  MP_IC es un mapper DAL, no una base de datos.
+  SQL Server sólo aparece en los diagramas de secuencia y DER.
+end note
+
+note bottom of ICPresentacion
+  <<helper de UI>>
+  Utilizado por los formularios IC para
+  formato, selección y manejo uniforme de errores.
+end note
+
+note bottom of ReglasIC
+  <<servicio transversal>>
+  Los gestores validan permisos mediante SessionManager
+  y auditan las operaciones de modificación.
+end note
+@enduml

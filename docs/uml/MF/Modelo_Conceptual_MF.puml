@@ -1,0 +1,69 @@
+@startuml
+scale max 1400 width
+title MF — Modelo conceptual
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 10
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+skinparam packageStyle rectangle
+skinparam nodesep 20
+skinparam ranksep 25
+hide circle
+
+left to right direction
+
+class UnidadFlota <<concepto>> {
+  dominio
+  estadoOperativo
+  kilometrajeActual
+}
+
+class ParteEstadoUnidad <<concepto>> {
+  fechaHora
+  kilometraje
+  tipoNovedad
+  requiereMantenimiento
+  estadoParte
+}
+
+class OrdenMantenimiento <<concepto>> {
+  fechaProgramada
+  tipoMantenimiento
+  prioridad
+  estadoOrden
+}
+
+class IntervencionMantenimiento <<concepto>> {
+  fechaInicio
+  fechaFin
+  trabajoRealizado
+  resultado
+}
+
+class InformeDisponibilidad <<concepto>> {
+  fechaHora
+  disponible
+  vigente
+}
+
+class Viaje <<concepto TD>> {
+  numero
+  fechaPrevista
+  estado
+}
+
+UnidadFlota "1" *-- "0..*" ParteEstadoUnidad : registra >
+ParteEstadoUnidad "1" -- "0..1" OrdenMantenimiento : puede originar >
+UnidadFlota "1" -- "0..*" OrdenMantenimiento : recibe >
+OrdenMantenimiento "1" *-- "0..*" IntervencionMantenimiento : comprende >
+UnidadFlota "1" *-- "0..*" InformeDisponibilidad : posee >
+IntervencionMantenimiento "0..1" -- "0..1" InformeDisponibilidad : sustenta >
+UnidadFlota "0..1" -- "0..*" Viaje : se asigna a >
+
+note bottom of InformeDisponibilidad
+  <<regla de negocio>>
+  Sólo un informe vigente determina la disponibilidad actual.
+end note
+@enduml
